@@ -1,0 +1,41 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "roboflex_core",
+    srcs = [
+        "message.cpp",
+        "message_backing_store.cpp",
+        "node.cpp",
+        "serialization/flex_utils.cpp",
+        "serialization/flex_tensor_format.cpp",
+        "util/utils.cpp",
+        "core_nodes/frequency_generator.cpp",
+    ],
+    hdrs = [
+        "core.h",
+        "message.h",
+        "message_backing_store.h",
+        "node.h",
+        "util/uuid.h",
+        "util/utils.h",
+        "serialization/flex_utils.h",
+        "serialization/flex_eigen.h",
+        "serialization/flex_xtensor.h",
+        "serialization/flex_tensor_format.h",
+        "core_messages/core_messages.h",
+        "core_nodes/core_nodes.h",
+        "core_nodes/callback_fun.h",
+        "core_nodes/filter_fun.h",
+        "core_nodes/frequency_generator.h",
+        "core_nodes/map_fun.h",
+        "core_nodes/message_printer.h",
+    ],
+    copts = ["-std=c++2a"],
+    include_prefix = "roboflex/core",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party:flatbuffers",
+        "//third_party:xtensor",
+        "//third_party:eigen",
+    ]
+)

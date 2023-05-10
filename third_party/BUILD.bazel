@@ -1,0 +1,37 @@
+#load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake", "make", "configure_make")
+
+package(default_visibility = ["//visibility:public"])
+
+# flatbuffers (actually we want flexbuffers)
+alias(
+    name = "flatbuffers",
+    actual = "@com_github_google_flatbuffers//:flatbuffers",
+)
+
+# eigen
+alias(
+    name = "eigen",
+    actual = "@eigen//:eigen",
+)
+
+# xtensor
+alias(
+    name = "xtl",
+    actual = "@xtl//:xtl",
+)
+
+alias(
+    name = "xsimd",
+    actual = "@xsimd//:xsimd",
+)
+
+alias(
+    name = "xtensor",
+    actual = "@xtensor//:xtensor",
+)
+
+# alias(
+#     name = "xtensor_python",
+#     actual = "@xtensor_python//:xtensor_python",
+# )
+
