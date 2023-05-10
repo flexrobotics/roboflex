@@ -22,8 +22,8 @@ void Message::print_on(ostream& os) const
 {
     os << "<Message \"" << module_name() << "::" << message_name() << "\""
        << " t: " << std::fixed << std::setprecision(3) << timestamp()
-       << " source: \"" << source_node_name() << "\"|" << source_node_guid()
        << " #: " << message_counter()
+       << " source: \"" << source_node_name() << "\"|" << source_node_guid()
        << " payload: " << payload()->get_size() << " bytes"
        << " <" << message_announce() << "|" << message_size() << ">"
        << ">";

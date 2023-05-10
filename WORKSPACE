@@ -2,6 +2,23 @@ workspace(name = "roboflex")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+
+#------------------#
+# System workspace #
+#------------------#
+
+# Hack to allow access to system libraries
+new_local_repository(
+    name = "system",
+    build_file = "third_party/system.BUILD",
+    path = "/",
+)
+
+
+#---------------------#
+# Remote repositories #
+#---------------------#
+
 # For now, use this fork of flatbuffers, which allows non-copying flex Blobs
 http_archive(
     name = "com_github_google_flatbuffers",
@@ -48,4 +65,12 @@ http_archive(
     sha256 = "8cd062cfefce0f5bff8961e0c42b3636d5e7eddbe33e5c3167e3fb6d8380f50e",
     strip_prefix = "xtensor-0.24.6",
     url = "https://github.com/xtensor-stack/xtensor/archive/0.24.6.zip",
+)
+
+http_archive(
+    name = "cppzmq",
+    build_file = "//third_party:cppzmq.BUILD",
+    sha256 = "32d07788bd60ba3cef09d43c7906153325c950c2dc4a9913876e4327dadca121",
+    strip_prefix = "cppzmq-4.6.0",
+    url = "https://github.com/zeromq/cppzmq/archive/v4.6.0.zip",
 )

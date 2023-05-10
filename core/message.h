@@ -138,15 +138,18 @@ public:
     const MessageBackingStorePtr payload() const { return _data; }
 
     // Get the actual active bytes and size
-    uint8_t* get_raw_data() { return payload() == nullptr ? nullptr : payload()->get_data(); }
-    uint32_t get_raw_size() const { return payload() == nullptr ? 0 : payload()->get_size(); }
+    uint8_t* get_data() { return payload() == nullptr ? nullptr : payload()->get_data(); }
+    uint32_t get_size() const { return payload() == nullptr ? 0 : payload()->get_size(); }
+
+    uint8_t* get_raw_data() { return payload() == nullptr ? nullptr : payload()->get_raw_data(); }
+    uint32_t get_raw_size() const { return payload() == nullptr ? 0 : payload()->get_raw_size(); }
 
     // These are common to all messages, not just flex messages. The "message announce"
     // is the 4 bytes of the header. For flex messages (currently the only message supported),
     // this value is "RFLX".
     std::string_view message_announce() const { return payload()->message_announce(); }
     // The message size is the size of the message, including the header, encoded in 
-    // the next four bytes.
+    // the next four bytes. It should be == to get_raw_size()
     const uint32_t message_size() const { return payload()->message_size(); }
     // ... after that, all data is encoded in Flexbuffers.
 

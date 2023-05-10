@@ -35,3 +35,8 @@ alias(
 #     actual = "@xtensor_python//:xtensor_python",
 # )
 
+# zmq/cppzmq
+alias(
+    name = "cppzmq",
+    actual = "@cppzmq//:cppzmq",
+)

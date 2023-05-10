@@ -1,0 +1,6 @@
+cc_binary(
+    name = "pub_sub_0",
+    srcs = ["pub_sub_0.cpp"],
+    copts = ["-std=c++2a"],
+    deps = ["//transport/zmq:zmq"],
+)

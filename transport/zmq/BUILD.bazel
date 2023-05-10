@@ -1,0 +1,14 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_binary")
+
+cc_library(
+    name = "zmq",
+    srcs = ["zmq_nodes.cpp"],
+    hdrs = ["zmq_nodes.h"],
+    copts = ["-std=c++2a"],
+    visibility = ["//visibility:public"],
+    include_prefix = "roboflex/transport/zmq",
+    deps = [
+        "//core:roboflex_core",
+        "//third_party:cppzmq",
+    ]
+)

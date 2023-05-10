@@ -67,9 +67,13 @@ struct MessageBackingStore
     // DO NOT DELETE IT! This is the pointer to the data portion, which 
     // starts 8 bytes after the message start, and which is currently
     // encoded in flexbuffer.
-    virtual uint8_t* get_data() = 0;
-    virtual const uint8_t* get_data() const = 0;
-    virtual uint32_t get_size() const = 0;
+    uint8_t* get_data() { return get_raw_data() + MESSAGE_HEADER_SIZE; }
+    const uint8_t* get_data() const { return get_raw_data() + MESSAGE_HEADER_SIZE; }
+    uint32_t get_size() const { return get_raw_size() - MESSAGE_HEADER_SIZE; }
+    
+    virtual uint8_t* get_raw_data() = 0;
+    virtual const uint8_t* get_raw_data() const = 0;
+    virtual uint32_t get_raw_size() const = 0;
 };
 
 inline std::ostream& operator<< (ostream& os, const MessageBackingStore& m)
@@ -91,14 +95,13 @@ struct MessageBackingStoreVector: public MessageBackingStore
 
     virtual ~MessageBackingStoreVector() {}
 
-    vector<uint8_t> vec_bytes;
-    size_t offset;
-
-    uint8_t* get_data() override { return vec_bytes.data()+MESSAGE_HEADER_SIZE; }
-    const uint8_t* get_data() const override { return vec_bytes.data()+MESSAGE_HEADER_SIZE; }
-    uint32_t get_size() const override { return vec_bytes.size()-MESSAGE_HEADER_SIZE; }
+    uint8_t* get_raw_data() override { return vec_bytes.data(); }
+    const uint8_t* get_raw_data() const override { return vec_bytes.data(); }
+    uint32_t get_raw_size() const override { return vec_bytes.size(); }
 
     void print_on(ostream& os) const override;
+
+    vector<uint8_t> vec_bytes;
 };
 
 // Assumes you allocated bytes with 'new': will call 'delete data' in destructor
@@ -109,14 +112,14 @@ struct MessageBackingStoreNew: public MessageBackingStore
 
     virtual ~MessageBackingStoreNew() { delete data; }
 
-    uint8_t * data;
-    size_t size;
-
-    uint8_t* get_data() override { return data+MESSAGE_HEADER_SIZE; }
-    const uint8_t* get_data() const override { return data+MESSAGE_HEADER_SIZE; }
-    uint32_t get_size() const override { return size-MESSAGE_HEADER_SIZE; }
+    uint8_t* get_raw_data() override { return data; }
+    const uint8_t* get_raw_data() const override { return data; }
+    uint32_t get_raw_size() const override { return size; }
 
     void print_on(ostream& os) const override;
+
+    uint8_t * data;
+    size_t size;
 };
 
 } // namespace roboflex::core
