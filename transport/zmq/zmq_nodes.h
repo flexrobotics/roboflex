@@ -6,7 +6,7 @@
 #include "core/core.h"
 
 namespace roboflex {
-namespace roboflexzmq {
+namespace transportzmq {
 
 using std::cout, std::string, std::list, core::Node, core::RunnableNode, core::MessagePtr;
 
@@ -110,7 +110,7 @@ protected:
 using ZMQSubscriberPtr = shared_ptr<ZMQSubscriber>;
 
 
-} // namespace roboflexzmq
+} // namespace transportzmq
 } // namespace roboflex
 
 #endif // ROBOFLEX_TRANSPORT_ZMQ_NODES__H

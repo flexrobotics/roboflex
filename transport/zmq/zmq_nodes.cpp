@@ -3,7 +3,7 @@
 #include "core/util/utils.h"
 
 namespace roboflex {
-namespace roboflexzmq {
+namespace transportzmq {
 
 
 // -- ZMQPublisher --
@@ -199,5 +199,5 @@ void ZMQSubscriber::child_thread_fn()
     destroy_sockets();
 }
 
-} // namespace roboflexzmq
+} // namespace transportzmq
 } // namespace roboflex
