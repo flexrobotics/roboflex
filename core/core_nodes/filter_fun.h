@@ -48,9 +48,9 @@ protected:
 /**
  * A Node that filters by message name, with a passthrough boolean.
  */
-class FilterNameP: public Node {
+class FilterNamePassthrough: public Node {
 public:
-    FilterNameP(const std::string& message_name, bool initial_passthrough, const std::string& name = "FilterNameP"):
+    FilterNamePassthrough(const std::string& message_name, bool initial_passthrough, const std::string& name = "FilterNamePassthrough"):
         Node(name), _message_name(message_name), passthrough(initial_passthrough) {}
 
     void set_passthrough(bool p) { passthrough = p; }

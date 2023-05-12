@@ -46,7 +46,7 @@ public:
     virtual ~Message() {}
 
     virtual void print_on(ostream& os) const;
-    string to_string() const;
+    virtual string to_string() const;
 
     void set_sender_info(const std::string& name, const sole::uuid& guid, uint64_t message_send_counter);
 

@@ -1,4 +1,5 @@
 #include <sstream>
+#include <signal.h>
 #include "node.h"
 #include "core_messages/core_messages.h"
 
@@ -201,6 +202,42 @@ void RunnableNode::request_stop()
     }
 }
 
+
+
+// We switch the signal handler if run() is called. When run()
+// is called, we simply run start_thread_fn() inside the current
+// thread, without launching another thread - we assume we are 
+// in the main thread of the process.
+std::atomic<RunnableNode*> running_node = NULL;
+
+void interrupt_signal_handler(int sig)
+{
+    RunnableNode *rn = running_node;
+    rn->request_stop();
+}
+
+void RunnableNode::run()
+{
+    struct SignalStacker {
+        SignalStacker(RunnableNode* n) {
+            running_node = n;
+            previous_interrupt_signal_handler = ::signal(SIGINT, interrupt_signal_handler);
+        }
+        ~SignalStacker() {
+            running_node = NULL;
+            ::signal(SIGINT, previous_interrupt_signal_handler);
+            previous_interrupt_signal_handler = 0;
+        }
+        sighandler_t previous_interrupt_signal_handler;
+    };
+
+    // Set myself as the signal handler
+    SignalStacker s = SignalStacker(this);
+
+    // and let's go - just run in this thread
+    child_thread_fn();
+}
+
 string RunnableNode::to_string() const
 {
     std::stringstream sst;
@@ -228,4 +265,5 @@ MessagePtr RunnableNode::handle_rpc(MessagePtr rpc_message)
 
     return nullptr;
 }
+
 } // roboflex::core

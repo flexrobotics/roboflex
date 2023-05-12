@@ -35,9 +35,9 @@ public:
     }
 };
 
-class ProducerNode: public RunnableNode {
+class MyProducerNode: public RunnableNode {
 public:
-    ProducerNode(): RunnableNode("Producer") {}
+    MyProducerNode(): RunnableNode("MyProducer") {}
     void child_thread_fn() override {
         for (int i=0; i<4; i++) {
             sleep_ms(500);
@@ -46,17 +46,17 @@ public:
     }
 };
 
-class ConsumerNode: public Node {
+class MyConsumerNode: public Node {
 public:
-    ConsumerNode(): Node("Consumer") {}
+    MyConsumerNode(): Node("MyConsumer") {}
     void receive(MessagePtr m) override {
-        std::cout << "ConsumerNode received: " << *m << std::endl;
+        std::cout << "MyConsumerNode received: " << *m << std::endl;
     }
 };
 
 int main() {
-    ProducerNode p;
-    ConsumerNode c;
+    MyProducerNode p;
+    MyConsumerNode c;
     std::cout << "Producer: " << p.to_string() << std::endl;
     std::cout << "Consumer: " << c.to_string() << std::endl;
     p > c; // same as p.connect(c);

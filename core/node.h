@@ -65,7 +65,6 @@ public:
 
     virtual MessagePtr handle_rpc(MessagePtr rpc_message);
 
-
 protected:
 
     // Every node has a name, but it is optional, 
@@ -101,7 +100,6 @@ protected:
  */
 class RunnableNode : public Node {
 public:
-
     RunnableNode(const string& name = "");
     virtual ~RunnableNode();
 
@@ -111,6 +109,11 @@ public:
     virtual void stop_and_join();
     virtual void stop() { this->stop_and_join(); }
     virtual void request_stop();
+    bool stop_requested() const { return my_thread ? stop_token.stop_requested() : false; }
+
+    // Calls start_thread_fn in the current thread (does not launch
+    // another thread).
+    void run();
 
     MessagePtr handle_rpc(MessagePtr rpc_message) override;
 
@@ -118,8 +121,6 @@ protected:
 
     std::unique_ptr<std::jthread> my_thread = nullptr;
     std::stop_token stop_token;
-
-    bool stop_requested() const { return my_thread ? stop_token.stop_requested() : false; }
 
     // Child classes should override this 
     // method to run in a thread.

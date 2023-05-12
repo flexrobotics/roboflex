@@ -1,0 +1,36 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_library(
+    name = "roboflex_core_python_header",
+    hdrs = ["pybindings.h"],
+    copts = ["-std=c++2a"],
+    include_prefix = "roboflex/core",
+    visibility = ["//visibility:public"],
+    deps = ["//core:roboflex_core"],
+)
+
+pybind_extension(
+    name = "roboflex_core_python_ext",
+    srcs = [ "pybindings.cpp" ],
+    copts = ["-std=c++2a"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":roboflex_core_python_header",
+        "//core:roboflex_core",
+        "//third_party:xtensor_python",
+    ],
+)
+
+py_library(
+    name = "roboflex_core_python",
+    srcs = [
+        "__init__.py",
+        "flexbuffers.py",
+        "flextensors.py",
+        "dynoflex.py",
+    ],
+    #imports = ['core/python'],
+    data = ["//core/python:roboflex_core_python_ext.so"],
+    visibility = ["//visibility:public"],
+)

@@ -26,4 +26,4 @@ Roboflex.core takes care of Message and Node classes, eigen/xtensor serializatio
 
 Run [core/examples/tensors_0.cpp](core/examples/tensors_0.cpp) to see a quick example, in c++, of running a producer sending xtensor messages to a consumer.
 
-    bazel run -c opt //core/examples:tensors_0
+    bazel run -c opt //core/examples/cpp:tensors_0

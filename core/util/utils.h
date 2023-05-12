@@ -13,7 +13,7 @@ namespace roboflex::core {
 std::string string_from_fixed(const char* s, int len);
 
 /**
- * Gets the current srl/supercore version.
+ * Gets the current roboflex version.
  */
 std::string get_roboflex_core_version();
 
