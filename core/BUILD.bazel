@@ -30,6 +30,7 @@ cc_library(
         "core_nodes/map_fun.h",
         "core_nodes/message_printer.h",
     ],
+    data = ['__init__.py'], # yeah it's a python file, but it won't hurt to just have it there
     copts = ["-std=c++2a"],
     include_prefix = "roboflex/core",
     visibility = ["//visibility:public"],

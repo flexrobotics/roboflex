@@ -1,11 +1,11 @@
 import time
 import numpy as np
-import roboflex.core.python as rfc
+from roboflex.core import FrequencyGenerator, MapFun, MessagePrinter, CallbackFun
 
-frequency_generator = rfc.FrequencyGenerator(2.0)
-tensor_creator = rfc.MapFun(lambda m: {"t": np.ones((2, 3)) * m.message_counter})
-message_printer = rfc.MessagePrinter("MESSAGE IS:")
-tensor_printer = rfc.CallbackFun(lambda m: print("TENSOR IS:\n", m["t"]))
+frequency_generator = FrequencyGenerator(2.0)
+tensor_creator = MapFun(lambda m: {"t": np.ones((2, 3)) * m.message_counter})
+message_printer = MessagePrinter("MESSAGE IS:")
+tensor_printer = CallbackFun(lambda m: print("TENSOR IS:", type(m["t"]), m["t"].shape, m["t"].dtype, "\n", m["t"]))
 
 frequency_generator > tensor_creator > message_printer > tensor_printer;
 

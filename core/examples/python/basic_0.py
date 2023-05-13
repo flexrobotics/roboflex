@@ -1,8 +1,5 @@
 import time
-import roboflex.core.python as rfc
-#import roboflex.core as rfc
-
-print(dir(rfc))
+import roboflex.core as rfc
 
 class MyProducerNode(rfc.RunnableNode):
     def child_thread_fn(self):

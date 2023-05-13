@@ -30,7 +30,6 @@ py_library(
         "flextensors.py",
         "dynoflex.py",
     ],
-    #imports = ['core/python'],
     data = ["//core/python:roboflex_core_python_ext.so"],
     visibility = ["//visibility:public"],
 )
