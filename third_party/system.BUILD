@@ -13,3 +13,10 @@ cc_library(
     hdrs = ["usr/include/zmq.h"],
     includes = ["usr/include"],
 )
+
+cc_library(
+    name = "libsdl2",
+    srcs = ["lib/x86_64-linux-gnu/libSDL2-2.0.so"],
+    hdrs = glob(["usr/include/SDL2/**"]),
+    includes = ["usr/include"],
+)

@@ -1,0 +1,17 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_binary(
+    name = "display_static_cpp",
+    srcs = ["display_static_cpp.cpp"],
+    copts = ["-std=c++2a"],
+    deps = ["//visualization:visualization"],
+)
+
+py_binary(
+    name = "display_static_py",
+    srcs = ["display_static_py.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//visualization:roboflex_visualization_python",
+    ],
+)

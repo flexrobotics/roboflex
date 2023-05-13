@@ -36,3 +36,8 @@ alias(
     name = "cppzmq",
     actual = "@cppzmq//:cppzmq",
 )
+
+alias(
+    name = "sdl2",
+    actual = "@system//:libsdl2",
+)
