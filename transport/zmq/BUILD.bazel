@@ -5,6 +5,7 @@ cc_library(
     srcs = ["zmq_nodes.cpp"],
     hdrs = ["zmq_nodes.h"],
     copts = ["-std=c++2a"],
+    data = ['__init__.py'],
     visibility = ["//visibility:public"],
     include_prefix = "roboflex/transport/zmq",
     deps = [

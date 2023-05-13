@@ -5,7 +5,7 @@
 # instead of 'import roboflex.core', which is what we want.
 
 try:
-    from roboflex.core.python import *
+    from roboflex.transport.zmq.python import *
 except Exception as e:
-    print("Error trying to import roboflex.core.python:", e)
+    print("Error trying to import roboflex.transport.zmq.python:", e)
     raise e
