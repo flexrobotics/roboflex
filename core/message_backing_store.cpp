@@ -24,7 +24,7 @@ std::string MessageBackingStore::to_string() const
 void MessageBackingStore::blit_header() 
 {
     uint8_t* message_start = (uint8_t*)(get_data()) - MESSAGE_HEADER_SIZE;
-    memcpy(message_start, ROBOCORE_FLEX_MESSAGE_FORMAT_HEADER, 4);
+    memcpy(message_start, ROBOFLEX_FLEX_MESSAGE_FORMAT_HEADER, 4);
     uint32_t size = get_size() + MESSAGE_HEADER_SIZE;
     memcpy(message_start + 4, &size, 4);
 }

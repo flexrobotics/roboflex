@@ -1,4 +1,4 @@
-#load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake", "make", "configure_make")
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake", "make", "configure_make")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -40,4 +40,27 @@ alias(
 alias(
     name = "sdl2",
     actual = "@system//:libsdl2",
+)
+
+alias(
+    name = "usb-1.0",
+    actual = "@system//:usb-1.0",
+)
+
+alias(
+    name = "libjpeg",
+    actual = "@system//:libjpeg",
+)
+
+#-------------#
+# CMake repos #
+#-------------#
+
+# Cmake repos can be processed via `cmake`. They can be linked to as `//third_party:<name>`
+
+cmake(
+    name = "libuvc",
+    cache_entries = {"DCMAKE_BUILD_TYPE": "Release"},
+    env = {"CFLAGS": "-fPIC"},
+    lib_source = "@libuvc//:all",
 )

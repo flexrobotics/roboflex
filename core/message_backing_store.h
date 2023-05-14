@@ -26,7 +26,7 @@ using std::ostream, std::shared_ptr, std::vector;
  */
 const uint32_t MESSAGE_HEADER_SIZE = 8;
 
-constexpr char ROBOCORE_FLEX_MESSAGE_FORMAT_HEADER[] = "RFLX";
+constexpr char ROBOFLEX_FLEX_MESSAGE_FORMAT_HEADER[] = "RFLX";
 
 /**
  * A message serialization just defines an interface

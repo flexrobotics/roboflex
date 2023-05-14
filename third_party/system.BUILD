@@ -20,3 +20,17 @@ cc_library(
     hdrs = glob(["usr/include/SDL2/**"]),
     includes = ["usr/include"],
 )
+
+cc_library(
+    name = "usb-1.0",
+    srcs = ["usr/lib/x86_64-linux-gnu/libusb-1.0.so"],
+    hdrs = ["usr/include/libusb-1.0/libusb.h"],
+    includes = ["usr/include"],
+)
+
+cc_library(
+    name = "libjpeg",
+    srcs = ["usr/lib/x86_64-linux-gnu/libjpeg.so"],
+    hdrs = ["usr/include/jpeglib.h"],
+    includes = ["usr/include"],
+)

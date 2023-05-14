@@ -2,6 +2,31 @@ workspace(name = "roboflex")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+#---------------#
+# CMake Support #
+#---------------#
+
+http_archive(
+    name = "rules_foreign_cc",
+    sha256 = "2a4d07cd64b0719b39a7c12218a3e507672b82a97b98c6a89d38565894cf7c51",
+    strip_prefix = "rules_foreign_cc-0.9.0",
+    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/0.9.0.tar.gz",
+)
+
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+
+# This sets up some common toolchains for building targets. For more details, please see
+# https://github.com/bazelbuild/rules_foreign_cc/tree/main/docs#rules_foreign_cc_dependencies
+rules_foreign_cc_dependencies()
+
+# Group the sources of the library so that CMake rule have access to it
+all_content = """
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+"""
 
 #------------------#
 # System workspace #
@@ -86,7 +111,6 @@ http_archive(
 http_archive(
     name = "rules_python",
     sha256 = "b6d46438523a3ec0f3cead544190ee13223a52f6a6765a29eae7b7cc24cc83a0",
-    #strip_prefix = "rules_python-a0fbf98d4e3a232144df4d0d80b577c7a693b570",
     url = "https://github.com/bazelbuild/rules_python/releases/download/0.1.0/rules_python-0.1.0.tar.gz",
 )
 
@@ -111,4 +135,12 @@ load("@pybind11_bazel//:python_configure.bzl", "python_configure")
 python_configure(
     name = "local_config_python", 
     python_version = "3",
+)
+
+http_archive(
+    name = "libuvc",
+    build_file_content = all_content,
+    sha256 = "dec3f5ff83d7913fa93caac7113e8d6eb88ff186d3f9f609667fa50b14a3e1bd",
+    strip_prefix = "libuvc-05e7ba682d5761b05a9b212ef84775068fbc94e3",
+    url = "https://github.com/libuvc/libuvc/archive/05e7ba682d5761b05a9b212ef84775068fbc94e3.zip",
 )
