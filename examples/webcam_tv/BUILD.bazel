@@ -1,0 +1,23 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_binary(
+    name = "webcam_tv_cpp",
+    srcs = ["webcam_tv_cpp.cpp"],
+    copts = ["-std=c++2a"],
+    linkopts = ["-pthread"],
+    deps = [
+        "//core:roboflex_core",
+        "//webcam_uvc:webcam_uvc",
+        "//visualization:visualization",
+    ],
+)
+
+py_binary(
+    name = "webcam_tv_py",
+    srcs = ["webcam_tv_py.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//webcam_uvc:roboflex_webcam_uvc_python",
+        "//visualization:roboflex_visualization_python",
+     ],
+)

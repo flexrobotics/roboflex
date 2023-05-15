@@ -1,0 +1,23 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+py_binary(
+    name = "webcam_tv_distributed_zmq",
+    srcs = ["webcam_tv_distributed_zmq.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//webcam_uvc:roboflex_webcam_uvc_python",
+        "//visualization:roboflex_visualization_python",
+        "//transport/zmq/python:roboflex_transport_zmq_python",
+    ],
+)
+
+# py_binary(
+#     name = "webcam_tv_distributed_mqtt",
+#     srcs = ["webcam_tv_distributed_mqtt.py"],
+#     deps = [
+#         "//core/python:roboflex_core_python",
+#         "//webcam:robocore_webcam_uvc_python",
+#         "//visualization:roboflex_visualization_python",
+#         "//transport/mqtt/python:roboflex_transport_mqtt_python",
+#     ],
+# )
