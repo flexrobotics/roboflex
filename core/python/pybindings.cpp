@@ -317,16 +317,16 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             auto l = [f](MessagePtr m){
                 pybind11::gil_scoped_acquire acq;
 
-                // I can't figure out how to test whether a py::object is a py::dict
-                // or not. dynamic_cast doesn't work, because neither appear to actually
-                // be polymorphic. So just handle the exception...
-                
-                try {
-                    py::dict o = f(m);
-                    return pybind11::detail::dynoflex_from_object(o);
-                } catch (...) {
+                // Invoke the map function
+                py::object o = f(m);
+
+                // ... which must return a dict.
+                if (!py::isinstance<py::dict>(o)) {
                     throw std::runtime_error("MapFun function must return a dict.");
                 }
+
+                // Return a dynoflex message to contain the result
+                return pybind11::detail::dynoflex_from_object(o);
             };
             return std::make_shared<MapFun>(l, name);
         }),
