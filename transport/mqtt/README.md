@@ -24,11 +24,18 @@ any node -> MQTTPublisher ==MQTT BROKER==> MQTTSubscriber -> any node
     apt-get install mosquitto
     apt-get install libmosquitto-dev
 
+## Build
+
+    bazel build -c opt //transport/mqtt/...
+
+## Run Examples (see [examples](examples))
+
+    bazel run -c opt //transport/mqtt/examples:pub_sub_0_cpp
+    bazel run -c opt //transport/mqtt/examples:pub_sub_0_py
 
 ## Import
 
-    import robocore.mqtt as srm
-
+    import robocore.transport.mqtt as srm
 
 # Classes
 
