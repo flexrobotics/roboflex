@@ -7,12 +7,6 @@ package(default_visibility = ["//visibility:public"])
 # Third party libraries installed on the system #
 #-----------------------------------------------#
 
-cc_library(
-    name = "zmq",
-    srcs = ["usr/lib/x86_64-linux-gnu/libzmq.so"],
-    hdrs = ["usr/include/zmq.h"],
-    includes = ["usr/include"],
-)
 
 cc_library(
     name = "libsdl2",
@@ -32,5 +26,19 @@ cc_library(
     name = "libjpeg",
     srcs = ["usr/lib/x86_64-linux-gnu/libjpeg.so"],
     hdrs = ["usr/include/jpeglib.h"],
+    includes = ["usr/include"],
+)
+
+cc_library(
+    name = "zmq",
+    srcs = ["usr/lib/x86_64-linux-gnu/libzmq.so"],
+    hdrs = ["usr/include/zmq.h"],
+    includes = ["usr/include"],
+)
+
+cc_library(
+    name = "mosquitto",
+    srcs = ["usr/lib/x86_64-linux-gnu/libmosquitto.so"],
+    hdrs = ["usr/include/mosquitto.h"],
     includes = ["usr/include"],
 )

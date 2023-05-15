@@ -33,11 +33,6 @@ alias(
 )
 
 alias(
-    name = "cppzmq",
-    actual = "@cppzmq//:cppzmq",
-)
-
-alias(
     name = "sdl2",
     actual = "@system//:libsdl2",
 )
@@ -51,6 +46,17 @@ alias(
     name = "libjpeg",
     actual = "@system//:libjpeg",
 )
+
+alias(
+    name = "cppzmq",
+    actual = "@cppzmq//:cppzmq",
+)
+
+alias(
+    name = "mosquitto",
+    actual = "@system//:mosquitto",
+)
+
 
 #-------------#
 # CMake repos #

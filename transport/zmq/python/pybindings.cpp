@@ -10,12 +10,10 @@
 #include "core/python/pybindings.h"
 #include "transport/zmq/zmq_nodes.h"
 
-
 namespace py = pybind11;
 
 using namespace roboflex;
 using namespace roboflex::transportzmq;
-
 
 PYBIND11_MODULE(roboflex_transport_zmq_ext, m) {
     m.doc() = "roboflex_transport_zmq_ext";

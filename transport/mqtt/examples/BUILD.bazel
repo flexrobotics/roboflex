@@ -1,0 +1,17 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_binary(
+    name = "pub_sub_0_cpp",
+    srcs = ["pub_sub_0_cpp.cpp"],
+    copts = ["-std=c++2a"],
+    deps = ["//transport/mqtt:mqtt"],
+)
+
+py_binary(
+    name = "pub_sub_0_py",
+    srcs = ["pub_sub_0_py.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//transport/mqtt/python:roboflex_transport_mqtt_python",
+    ],
+)

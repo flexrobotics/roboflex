@@ -4,7 +4,6 @@ cc_binary(
     name = "webcam_tv_cpp",
     srcs = ["webcam_tv_cpp.cpp"],
     copts = ["-std=c++2a"],
-    linkopts = ["-pthread"],
     deps = [
         "//core:roboflex_core",
         "//webcam_uvc:webcam_uvc",

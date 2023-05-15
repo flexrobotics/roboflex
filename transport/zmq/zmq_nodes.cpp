@@ -160,9 +160,6 @@ core::MessagePtr ZMQSubscriber::pull(int timeout_milliseconds)
             // only if we have any observers do we bother signalling.
             if (this->has_observers()) {
 
-                // // read the message header 'by hand' directly from the data
-                // MessageHeader header((const uint8_t*)z_message.data(), z_nbytes.value());
-
                 // get a payload object that will, ultimately, delete the body_message
                 auto payload = std::make_shared<MessageBackingStoreZMQ>(std::move(z_message));
 
