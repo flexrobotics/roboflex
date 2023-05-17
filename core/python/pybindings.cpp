@@ -278,6 +278,11 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             py::arg("name") = "MessagePrinter")
     ;
 
+    py::class_<LastOne, Node, std::shared_ptr<LastOne>>(m, "LastOne")
+        .def(py::init<const std::string &>(),
+            "Create a node that just remembers the last message, in a thread-safe way.",
+            py::arg("name") = "LastOne")
+    ;
 
     // ---------- FRP Utility nodes -----------
 

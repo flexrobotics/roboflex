@@ -27,6 +27,7 @@ cc_library(
         "core_nodes/callback_fun.h",
         "core_nodes/filter_fun.h",
         "core_nodes/frequency_generator.h",
+        "core_nodes/last_one.h",
         "core_nodes/map_fun.h",
         "core_nodes/message_printer.h",
     ],

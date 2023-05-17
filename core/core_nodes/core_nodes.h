@@ -6,6 +6,9 @@
 #include "core/core_nodes/callback_fun.h"
 #include "core/core_nodes/filter_fun.h"
 
+// queuing
+#include "core/cores_nodes/last_one.h"
+
 // various utilities
 #include "core/core_nodes/frequency_generator.h"
 #include "core/core_nodes/message_printer.h"
