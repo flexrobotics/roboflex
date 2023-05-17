@@ -282,7 +282,9 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
         .def(py::init<const std::string &>(),
             "Create a node that just remembers the last message, in a thread-safe way.",
             py::arg("name") = "LastOne")
+        .def_property_readonly("last_one", &LastOne::get_last_one)
     ;
+
 
     // ---------- FRP Utility nodes -----------
 
