@@ -1,4 +1,4 @@
-# robocore.dynamixel
+# roboflex.dynamixel
 
 You might benefit from the Robotis Dynamixel Wizard program - just google for it.
 
