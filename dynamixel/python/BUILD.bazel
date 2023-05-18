@@ -1,0 +1,16 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+pybind_extension(
+    name = "roboflex_dynamixel_ext",
+    srcs = ["pybindings.cpp"],
+    copts = ["-std=c++2a"],
+    visibility = ["//visibility:public"],
+    deps = ["//dynamixel"],
+)
+
+py_library(
+    name = "roboflex_dynamixel_python",
+    srcs = ["__init__.py"],
+    data = [":roboflex_dynamixel_ext.so"],
+    visibility = ["//visibility:public"],
+)

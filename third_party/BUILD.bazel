@@ -57,6 +57,11 @@ alias(
     actual = "@system//:mosquitto",
 )
 
+alias(
+    name = "dynamixel_sdk",
+    actual = "@dynamixel_sdk//:dynamixel_sdk",
+)
+
 
 #-------------#
 # CMake repos #

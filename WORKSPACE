@@ -129,6 +129,15 @@ http_archive(
   urls = ["https://github.com/pybind/pybind11/archive/v2.10.4.tar.gz"],
 )
 
+http_archive(
+    name = "dynamixel_sdk",
+    build_file = "//third_party:dynamixel_sdk/dynamixel_sdk.BUILD",
+    sha256 = "9d8d94ce8103533a3f9b5c70029cc182ccbdb0310ad4e48d74f7fd7075cf4582",
+    strip_prefix = "DynamixelSDK-3.7.21",
+    url = "https://github.com/ROBOTIS-GIT/DynamixelSDK/archive/3.7.21.zip",
+)
+
+
 # configure python for pybind11
 
 load("@pybind11_bazel//:python_configure.bzl", "python_configure")
