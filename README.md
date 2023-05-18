@@ -18,9 +18,23 @@ The core of roboflex is the message format. We believe that dynamic, self-descri
 
 See [BUILDING.md](BUILDING.md) for how to build parts or all of roboflex.
 
-## core vs other
+## Modules and Directory Structure
 
-Roboflex.core takes care of Message and Node classes, eigen/xtensor serialization, flexbuffer creation and reading, and python compatibility. Everything outside of roboflex.core is a sensor, actuator, robot, or utility node - roboflex aims to make it easy to create and support devices and tools.
+Roboflex.core takes care of Message and Node classes, eigen/xtensor serialization, flexbuffer creation and reading, and python compatibility. Everything outside of roboflex.core is a sensor, actuator, robot, or utility node - roboflex aims to make it easy to create and support devices and tools. These are the folders/modules under roboflex, and what they do:
+
+* [core](core/): Serialization, Node and Message based classes, etc.
+
+Utilities:
+* [transport](transport/): Folder containing sub-modules that perform wire transport, such as nodes using ZMQ and MQTT.
+* [visualization](visualization/): Various visualizers using Simple Directmedia Layer.
+
+Devices:
+* [dynamixel](dynamixel/): Support for dynamixel motors.
+* [webcam_uvc](webcam_uvc/): Support for usb-connect, uvc-compatible webcams.
+
+Compound examples:
+* [examples](examples/): Compound examples that use more than one module.
+
 
 ## Real quick
 
