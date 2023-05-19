@@ -25,15 +25,20 @@ Roboflex.core takes care of Message and Node classes, eigen/xtensor serializatio
 * [core](core/): Serialization, Node and Message based classes, etc.
 
 Utilities:
-* [transport](transport/): Folder containing sub-modules that perform wire transport, such as nodes using ZMQ and MQTT.
+* [transport](transport/): Folder containing sub-modules that perform wire transport.
+    * [transport/zmq](transport/zmq/): ZMQ-based transport. Thin wrapper around zero-mq. 
+    * [transport/mqtt](transport/mqtt/): MQTT-based transport. Thin wrapper around mosquitto.
 * [visualization](visualization/): Various visualizers using Simple Directmedia Layer.
+* More to come! Any requests?
 
 Devices:
 * [dynamixel](dynamixel/): Support for dynamixel motors.
-* [webcam_uvc](webcam_uvc/): Support for usb-connect, uvc-compatible webcams.
+* [webcam_uvc](webcam_uvc/): Support for usb-connected, uvc-compatible webcams.
+* More to come! Any requests?
 
-Compound examples:
-* [examples](examples/): Compound examples that use more than one module.
+Compound [examples](examples/): (Examples that use more than one module):
+* [examples/webcam_tv](examples/webcam_tv/): Webcam television! Run a webcam sensor, display the output.
+* [examples/webcam_tv_distributed](examples/webcam_tv_distributed/): Run a webcam sensor, broadcast over zmq, display the output.
 
 
 ## Real quick
