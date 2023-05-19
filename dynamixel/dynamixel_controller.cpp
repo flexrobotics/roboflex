@@ -11,17 +11,6 @@ using std::stringstream;
 
 // Some utility functions ...
 
-template <typename E>
-constexpr auto to_underlying(E e) noexcept
-{
-    return static_cast<std::underlying_type_t<E>>(e);
-}
-
-template <typename T>
-T vector_sum(const vector<T> &v) {
-    return std::accumulate(v.begin(), v.end(), 0);
-}
-
 
 namespace roboflex {
 namespace dynamixelgroup {
@@ -47,20 +36,27 @@ int get_highest_total_size(const DXLIdsToControlTableEntries &dxl_ids_to_values)
     return *std::max_element(total_sizes.begin(), total_sizes.end());
 }
 
+std::string control_table_entry_map_to_string(const DXLIdsToControlTableEntries& dxls_ids_to_values)
+{
+    stringstream sst;
+    sst << "{";
+    for (auto p: dxls_ids_to_values) {
+        sst << p.first << ": [";
+        for (auto c: p.second) {
+            sst << to_underlying(c) << "(" << ControlTableEntriesToNames.at(c) << "), ";
+        }
+        sst << "], ";
+    }
+    sst << "}";
+    return sst.str();
+}
+
 
 // -- DynamixelGroupState -- 
 
 void DynamixelGroupState::print_on(std::ostream& os) const
 {
-    for (DXLIdsToValues::value_type element: this->values) {
-        DXLId dxl_id = element.first;
-        os << dxl_id << ":{ ";
-        for (auto v: element.second) {
-            DXLControlTable control_table_key = v.first;
-            os << to_underlying(control_table_key) << "(" << ControlTableEntriesToNames.at(control_table_key) << "): " << v.second << ", ";
-        }
-        os << "}";
-    }
+    os << this->values;
     os << std::fixed << std::setprecision(3)
        << " t0: "  << this->timestamp.t0 
        << " t1: " << this->timestamp.t1;
@@ -79,15 +75,7 @@ string DynamixelGroupState::to_string() const {
 
 void DynamixelGroupCommand::print_on(std::ostream& os) const
 {
-    for (DXLIdsToValues::value_type element: this->values) {
-        DXLId dxl_id = element.first;
-        os << dxl_id << ":{";
-        for (auto v: element.second) {
-            DXLControlTable control_table_key = v.first;
-            os << to_underlying(control_table_key) << "(" << ControlTableEntriesToNames.at(control_table_key) << "): " << v.second << ", ";
-        }
-        os << "}";
-    }
+    os << this->values << " should_write: " << this->should_write;
     os << std::fixed << std::setprecision(3)
        << " t0: "  << this->timestamp.t0 
        << " t1: " << this->timestamp.t1;
@@ -123,6 +111,54 @@ DynamixelGroupController::DynamixelGroupController(
         throw DynamixelException("DynamixelGroup constructor: unable to set baud rate");
     }
 }
+
+DynamixelGroupController::DynamixelGroupController(
+    const string& device_name,
+    int baud_rate,
+    const vector<DXLId>& dxl_ids,
+    const vector<OperatingMode>& operating_modes,
+    const DXLIdsToControlTableEntries& read_control_map,
+    const DXLIdsToControlTableEntries& write_control_map):
+        DynamixelGroupController(device_name, baud_rate)
+{
+    set_operating_modes(dxl_ids, operating_modes);
+    set_sync_read(read_control_map);
+    set_sync_write(write_control_map);
+    enable_torque(dxl_ids);
+}
+
+/**
+ * Each key in the map is mapped to a copy of the same value.
+ */
+template <typename MapType, class Keytype, typename AllType>
+MapType map_each_to_all(
+    const Keytype& keys, 
+    const AllType& value)
+{
+    MapType result;
+    for (auto key: keys) {
+        result[key] = value;
+    }
+    return result;
+}
+
+DynamixelGroupController::DynamixelGroupController(
+    const string& device_name,
+    int baud_rate,
+    const vector<DXLId>& dxl_ids,
+    const OperatingMode operating_mode,
+    const vector<DXLControlTable>& read_control_list,
+    const vector<DXLControlTable>& write_control_list):
+        DynamixelGroupController(
+            device_name, 
+            baud_rate,
+            dxl_ids,
+            vector<OperatingMode>(dxl_ids.size(), operating_mode),
+            map_each_to_all<DXLIdsToControlTableEntries>(dxl_ids, read_control_list),
+            map_each_to_all<DXLIdsToControlTableEntries>(dxl_ids, write_control_list))
+{
+
+} 
 
 DynamixelGroupController::~DynamixelGroupController() 
 {
@@ -268,6 +304,12 @@ void DynamixelGroupController::set_operating_mode(DXLId dxl_id, OperatingMode op
 void DynamixelGroupController::set_operating_modes(const vector<DXLId> & dxl_ids, OperatingMode operating_mode) {
     for (DXLId dxl_id: dxl_ids) {
         set_operating_mode(dxl_id, operating_mode);
+    }
+}
+
+void DynamixelGroupController::set_operating_modes(const vector<DXLId> & dxl_ids, const vector<OperatingMode> & operating_modes) {
+    for (size_t i=0; i<dxl_ids.size(); i++) {
+        set_operating_mode(dxl_ids[i], operating_modes[i]);
     }
 }
 
@@ -433,7 +475,7 @@ void DynamixelGroupController::write(DynamixelGroupCommand &values_to_write)
         int buffer_size = sum_size_control_table_entries(sync_write_settings[dxl_id]);
         auto buffer = vector<uint8_t>(buffer_size, 0);
 
-        const map<DXLControlTable, int> &write_values = values_to_write.values.at(dxl_id);
+        const DeviceValues &write_values = values_to_write.values.at(dxl_id);
         const vector<DXLControlTable> &control_table_entries = sync_write_settings.at(dxl_id);
 
         int i = 0;
@@ -511,7 +553,7 @@ void DynamixelGroupController::run_readwrite_loop(ReadWriteLoopFunction f)
     while (should_continue) {
         auto state = this->read();
         should_continue = f(state, command);
-        if (should_continue) {
+        if (should_continue &&  command.should_write) {
             write(command);
         }
     }

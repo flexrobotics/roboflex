@@ -2,11 +2,19 @@ load("@rules_cc//cc:defs.bzl", "cc_binary")
 load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 
 py_binary(
-    name = "test_python",
-    srcs = ["test_python.py"],
+    name = "test_group_controller_py",
+    srcs = ["test_group_controller_py.py"],
     deps = [
         "//core/python:roboflex_core_python",
         "//dynamixel/python:roboflex_dynamixel_python",
-        #"//transport/zmq:robocore_zmq_python",
+    ],
+)
+
+py_binary(
+    name = "test_group_node_py",
+    srcs = ["test_group_node_py.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//dynamixel/python:roboflex_dynamixel_python",
     ],
 )

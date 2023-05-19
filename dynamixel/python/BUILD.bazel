@@ -5,7 +5,10 @@ pybind_extension(
     srcs = ["pybindings.cpp"],
     copts = ["-std=c++2a"],
     visibility = ["//visibility:public"],
-    deps = ["//dynamixel"],
+    deps = [
+        "//dynamixel",
+        "//core/python:roboflex_core_python_header",
+    ],
 )
 
 py_library(

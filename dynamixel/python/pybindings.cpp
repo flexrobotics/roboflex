@@ -7,14 +7,36 @@
 #include <pybind11/stl.h>
 #include <pybind11/stl_bind.h>
 #include "core/core.h"
+#include "core/python/pybindings.h"
 #include "dynamixel/dynamixel.h"
 #include "dynamixel/dynamixel_controller.h"
 
 namespace py = pybind11;
 
 using namespace roboflex;
+using namespace roboflex::core;
 using namespace roboflex::dynamixelgroup;
 using namespace roboflex::dynamixelnodes;
+
+template <class DynamixelRemoteControllerBase = DynamixelRemoteController> 
+class PyDynamixelRemoteController: public PyNode<DynamixelRemoteControllerBase> {
+public:
+    using PyNode<DynamixelRemoteControllerBase>::PyNode;
+
+    DXLIdsToValues readwrite_loop_function(const DynamixelGroupState& state) override {
+        PYBIND11_OVERRIDE_PURE(DXLIdsToValues, DynamixelRemoteControllerBase, readwrite_loop_function, state);
+    }
+};
+
+template <class DynamixelRemoteFrequencyControllerBase = DynamixelRemoteFrequencyController> 
+class PyDynamixelRemoteFrequencyController: public PyNode<DynamixelRemoteFrequencyControllerBase> {
+public:
+    using PyNode<DynamixelRemoteFrequencyControllerBase>::PyNode;
+
+    DXLIdsToValues readwrite_loop_function(const DynamixelGroupState& state) override {
+        PYBIND11_OVERRIDE_PURE(DXLIdsToValues, DynamixelRemoteFrequencyControllerBase, readwrite_loop_function, state);
+    }
+};
 
 PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
     m.doc() = "roboflex_dynamixel_ext";
@@ -33,8 +55,11 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
     ;
 
     py::class_<DynamixelGroupCommand>(m, "DynamixelGroupCommand")
+        .def(py::init([]() { return DynamixelGroupCommand{}; }),
+            "Construct a DynamixelGroupCommand.")
         .def_readonly("values", &DynamixelGroupCommand::values)
         .def_readonly("timestamp", &DynamixelGroupCommand::timestamp)
+        .def_readwrite("should_write", &DynamixelGroupCommand::should_write)
         .def("set", [](DynamixelGroupCommand& s, DXLId dxl_id, DXLControlTable key, int value){
             s.values[dxl_id][key] = value;
         })
@@ -49,6 +74,7 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
             return std::make_shared<DynamixelGroupStateMessage>(*o); }),
             "Construct a DynamixelGroupStateMessage from a core message",
             py::arg("other"))
+        .def_property_readonly_static("MessageName", [](py::object) { return DynamixelGroupStateMessage::MessageName; })
         .def_property_readonly("state", &DynamixelGroupStateMessage::get_state)
         .def("__repr__", &DynamixelGroupStateMessage::to_string)
     ;
@@ -61,8 +87,18 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
             return std::make_shared<DynamixelGroupCommandMessage>(*o); }),
             "Construct a DynamixelGroupCommandMessage from a core message",
             py::arg("other"))
+        .def_property_readonly_static("MessageName", [](py::object) { return DynamixelGroupCommandMessage::MessageName; })
         .def_property_readonly("command", &DynamixelGroupCommandMessage::get_command)
         .def("__repr__", &DynamixelGroupCommandMessage::to_string)
+    ;
+
+    py::enum_<OperatingMode>(m, "OperatingMode")
+        .value("CurrentControl"             , OperatingMode::CurrentControl)
+        .value("VelocityControl"            , OperatingMode::VelocityControl)
+        .value("PositionControl"            , OperatingMode::PositionControl)
+        .value("ExtendedPositionControl"    , OperatingMode::ExtendedPositionControl)
+        .value("PositionCurrentControl"     , OperatingMode::PositionCurrentControl)
+        .value("PWMControl"                 , OperatingMode::PWMControl)
     ;
 
     py::enum_<DXLControlTable>(m, "DXLControlTable")
@@ -112,6 +148,51 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
             "Create a Dynamixel group controller.",
             py::arg("device_name"),
             py::arg("baud_rate"))
+
+         .def(py::init<
+              const std::string&, 
+              int,
+              const std::vector<DXLId>& ,
+              const std::vector<OperatingMode>&,
+              const DXLIdsToControlTableEntries&,
+              const DXLIdsToControlTableEntries&>(),
+            "Create a Dynamixel group controller.",
+            py::arg("device_name"),
+            py::arg("baud_rate"),
+            py::arg("dxl_ids"),
+            py::arg("operating_modes"),
+            py::arg("read_control_map"),
+            py::arg("write_control_map"))
+
+         .def(py::init<
+              const std::string&, 
+              int,
+              const std::vector<DXLId>& ,
+              const OperatingMode,
+              const vector<DXLControlTable>&,
+              const vector<DXLControlTable>&>(),
+            "Create a Dynamixel group controller.",
+            py::arg("device_name"),
+            py::arg("baud_rate"),
+            py::arg("dxl_ids"),
+            py::arg("operating_mode"),
+            py::arg("read_control_list"),
+            py::arg("write_control_list"))
+
+        .def_static("PositionController", 
+            &DynamixelGroupController::PositionController,
+            "Create a DynamixelGroupController in all position control mode.",
+            py::arg("device_name"),
+            py::arg("baud_rate"),
+            py::arg("dxl_ids"))
+
+        .def_static("VelocityController", 
+            &DynamixelGroupController::VelocityController,
+            "Create a DynamixelGroupController in all velocity control mode.",
+            py::arg("device_name"),
+            py::arg("baud_rate"),
+            py::arg("dxl_ids"))
+
         .def("get_device_name", &DynamixelGroupController::get_device_name)
         .def("get_baud_rate", &DynamixelGroupController::get_baud_rate)
         .def("get_dynamixel_ids", &DynamixelGroupController::ping)
@@ -127,6 +208,8 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
         .def("get_operating_mode", &DynamixelGroupController::get_operating_mode)
         .def("set_sync_read", &DynamixelGroupController::set_sync_read)
         .def("set_sync_write", &DynamixelGroupController::set_sync_write)
+        .def_property_readonly("read_control_map", &DynamixelGroupController::get_read_control_map)
+        .def_property_readonly("write_control_map", &DynamixelGroupController::get_write_control_map)
         .def("read", &DynamixelGroupController::read)
         .def("write", &DynamixelGroupController::write)
         .def("reboot", &DynamixelGroupController::reboot)
@@ -148,12 +231,24 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
             py::arg("rwf"))
      ;
 
-    py::class_<DynamixelGroupNode, core::Node, std::shared_ptr<DynamixelGroupNode>>(m, "DynamixelGroupNode")
-         .def(py::init<const std::string&, int, const std::string&>(),
+    py::class_<DynamixelGroupNode, core::RunnableNode, std::shared_ptr<DynamixelGroupNode>>(m, "DynamixelGroupNode")
+        .def(py::init<std::shared_ptr<DynamixelGroupController>, const std::string&>(),
             "Create a DynamixelGroupNode.",
-            py::arg("device_name"),
-            py::arg("baud_rate"),
+            py::arg("controller"),
             py::arg("name") = "DynamixelGroupNode")
-        //.def("controller", &DynamixelGroupNode::controller)
+        .def_readonly("controller", &DynamixelGroupNode::controller)
+    ;
+
+    py::class_<DynamixelRemoteController, core::Node, PyDynamixelRemoteController<>, std::shared_ptr<DynamixelRemoteController>>(m, "DynamixelRemoteController")
+        .def(py::init<const std::string&>(),
+            "Create a DynamixelRemoteController.",
+            py::arg("name") = "DynamixelRemoteController")
+    ;
+
+    py::class_<DynamixelRemoteFrequencyController, nodes::FrequencyGenerator, PyDynamixelRemoteFrequencyController<>, std::shared_ptr<DynamixelRemoteFrequencyController>>(m, "DynamixelRemoteFrequencyController")
+        .def(py::init<const float, const std::string&>(),
+            "Create a DynamixelRemoteFrequencyController.",
+            py::arg("frequency_hz"),
+            py::arg("name") = "DynamixelRemoteController")
     ;
 }

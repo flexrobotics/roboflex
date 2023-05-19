@@ -4,6 +4,7 @@
 #include <atomic>
 #include <mutex>
 #include "core/core.h"
+#include "core/core_nodes/frequency_generator.h"
 #include "dynamixel_controller.h"
 
 using std::atomic, std::string, std::shared_ptr;
@@ -46,11 +47,10 @@ protected:
 class DynamixelGroupNode: public core::RunnableNode {
 public:
     DynamixelGroupNode(
-        const string& device_name,
-        int baud_rate,
+        DynamixelGroupController::Ptr controller,
         const string& name = "DynamixelGroup");
 
-    DynamixelGroupController controller;
+    DynamixelGroupController::Ptr controller;
 
     void receive(core::MessagePtr m) override;
 
@@ -65,6 +65,25 @@ protected:
 
     std::recursive_mutex last_command_message_mutex;
     shared_ptr<DynamixelGroupCommandMessage> last_command_message = nullptr;  
+};
+
+class DynamixelRemoteController: public core::Node {
+public:
+    DynamixelRemoteController(const string& name = "DynamixelRemoteController");
+    void receive(core::MessagePtr m) override;
+    virtual DXLIdsToValues readwrite_loop_function(const DynamixelGroupState& state) = 0;
+};
+
+class DynamixelRemoteFrequencyController: public nodes::FrequencyGenerator {
+public:
+    DynamixelRemoteFrequencyController(
+        const float frequency_hz,
+        const string& name = "DynamixelRemoteFrequencyController");
+    void receive(core::MessagePtr m) override;
+    void on_trigger(double wall_clock_time) override;
+    virtual DXLIdsToValues readwrite_loop_function(const DynamixelGroupState& state) = 0;
+protected:
+    DynamixelGroupState state;
 };
 
 } // dynamixelnodes

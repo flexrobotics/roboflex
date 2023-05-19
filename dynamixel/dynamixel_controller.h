@@ -2,9 +2,23 @@
 #define ROBOFLEX_DYNAMIXEL_CONTROLLER__H
 
 #include <functional>
+#include <memory>
 #include "dynamixel_sdk.h"
 
 using std::string, std::vector, std::map;
+
+
+template <typename E>
+constexpr auto to_underlying(E e) noexcept
+{
+    return static_cast<std::underlying_type_t<E>>(e);
+}
+
+template <typename T>
+T vector_sum(const vector<T> &v) {
+    return std::accumulate(v.begin(), v.end(), 0);
+}
+
 
 namespace roboflex {
 namespace dynamixelgroup {
@@ -173,6 +187,21 @@ typedef map<DXLControlTable, int> DeviceValues;
  */
 typedef map<DXLId, DeviceValues> DXLIdsToValues;
 
+inline std::ostream& operator << (std::ostream& os, const DXLIdsToValues& values)
+{
+    os << "{";
+    for (auto id_values : values) {
+        os << id_values.first << ": {";
+        for (auto entry_value : id_values.second) {
+            DXLControlTable control_table_key = entry_value.first;
+            os << to_underlying(control_table_key) << "(" << ControlTableEntriesToNames.at(control_table_key) << "): " << entry_value.second << ", ";
+        }
+        os << "}, ";
+    }
+    os << "}";
+    return os;
+}
+
 /**
  * When we read and write to device, we often take
  * get current times before and after the operation. 
@@ -213,6 +242,10 @@ struct DynamixelGroupCommand {
     // the last known write timestamps.
     TimestampPair timestamp = {0,0};
 
+    // Can be used to control whether the command will 
+    // be written to device at all.
+    bool should_write = true;
+
     void print_on(std::ostream& os) const;
     string to_string() const;
 };
@@ -229,9 +262,57 @@ struct DynamixelGroupCommand {
 class DynamixelGroupController {
 public:
 
+    using Ptr = std::shared_ptr<DynamixelGroupController>;
+
     DynamixelGroupController(
         const string& device_name,
         int baud_rate);
+
+    DynamixelGroupController(
+        const string& device_name,
+        int baud_rate,
+        const vector<DXLId>& dxl_ids,
+        const vector<OperatingMode>& operating_modes,
+        const DXLIdsToControlTableEntries& read_control_map,
+        const DXLIdsToControlTableEntries& write_control_map);
+
+    DynamixelGroupController(
+        const string& device_name,
+        int baud_rate,
+        const vector<DXLId>& dxl_ids,
+        const OperatingMode operating_mode,
+        const vector<DXLControlTable>& read_control_list,
+        const vector<DXLControlTable>& write_control_list);
+
+    static Ptr PositionController(
+        const string& device_name,
+        int baud_rate,
+        const vector<DXLId>& dxl_ids) {
+            auto k = new DynamixelGroupController(
+                device_name,
+                baud_rate,
+                dxl_ids,
+                OperatingMode::PositionControl,
+                {DXLControlTable::PresentPosition},
+                {DXLControlTable::GoalPosition}
+            );
+            return Ptr(k);
+        }
+
+    static Ptr VelocityController(
+        const string& device_name,
+        int baud_rate,
+        const vector<DXLId>& dxl_ids) {
+            auto k = new DynamixelGroupController(
+                device_name,
+                baud_rate,
+                dxl_ids,
+                OperatingMode::VelocityControl,
+                {DXLControlTable::PresentVelocity, DXLControlTable::PresentPosition},
+                {DXLControlTable::GoalVelocity}
+            );
+            return Ptr(k);
+        }
 
     virtual ~DynamixelGroupController();
 
@@ -269,6 +350,9 @@ public:
     void set_sync_read(const DXLIdsToControlTableEntries &dxl_ids_to_values);
     void set_sync_write(const DXLIdsToControlTableEntries &dxl_ids_to_values);
 
+    DXLIdsToControlTableEntries get_read_control_map() const { return sync_read_settings; }
+    DXLIdsToControlTableEntries get_write_control_map() const { return sync_write_settings; }
+
     // You can read and write directly if you want.
     DynamixelGroupState read();
     void write(DynamixelGroupCommand &values_to_write);
@@ -298,6 +382,7 @@ protected:
 
     void set_operating_mode(DXLId dxl_id, OperatingMode operating_mode);
     void set_operating_modes(const vector<DXLId> & dxl_ids, OperatingMode operating_mode);
+    void set_operating_modes(const vector<DXLId> & dxl_ids, const vector<OperatingMode> & operating_modes);
 
     string device_name;
     int baud_rate;
