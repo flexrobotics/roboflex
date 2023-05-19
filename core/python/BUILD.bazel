@@ -17,7 +17,6 @@ pybind_extension(
     visibility = ["//visibility:public"],
     deps = [
         ":roboflex_core_python_header",
-        "//core:roboflex_core",
         "//third_party:xtensor_python",
     ],
 )

@@ -21,66 +21,6 @@ using namespace roboflex::core;
 using namespace roboflex::nodes;
 
 
-// Allows inheritance in Python from Node
-// This is a bit complex: as described in 
-// https://pybind11.readthedocs.io/en/stable/advanced/classes.html#combining-virtual-functions-and-inheritance
-template <class NodeBase = Node> 
-class PyNode: public NodeBase {
-public:
-    using NodeBase::NodeBase;
-
-    /* Trampoline (need one for each virtual function) */
-    void receive(MessagePtr m) override {
-        // https://pybind11.readthedocs.io/en/stable/advanced/misc.html#global-interpreter-lock-gil
-        // py::gil_scoped_acquire acquire;
-        PYBIND11_OVERRIDE(
-            void,      /* Return type */
-            NodeBase,  /* Parent class */
-            receive,   /* Name of function in C++ (must match Python name) */
-            m          /* Argument(s) */
-        );
-    }
-
-    void receive_from(MessagePtr m, const Node& from) override {
-        PYBIND11_OVERRIDE(void, NodeBase, receive_from, m, from);
-    }
-
-    virtual NodePtr connect(NodePtr node) override {
-        PYBIND11_OVERRIDE(NodePtr, NodeBase, connect, node);
-    }
-
-    virtual void disconnect(NodePtr node) override {
-        PYBIND11_OVERRIDE(void, NodeBase, disconnect, node);
-    }
-
-    virtual string to_string() const override {
-        PYBIND11_OVERRIDE(string, NodeBase, to_string, );
-    }
-
-    MessagePtr handle_rpc(MessagePtr rpc_message) override {
-        PYBIND11_OVERRIDE(MessagePtr, NodeBase, handle_rpc, rpc_message);
-    }
-};
-
-// Allows inheritance in Python from RunnableNode
-template <class RunnableNodeBase = RunnableNode> 
-class PyRunnableNode: public PyNode<RunnableNodeBase> {
-public:
-    using PyNode<RunnableNodeBase>::PyNode;
-
-    void child_thread_fn() override {
-        PYBIND11_OVERRIDE(void, RunnableNodeBase, child_thread_fn, );
-    }
-
-    void start() override {
-        PYBIND11_OVERRIDE(void, RunnableNodeBase, start, );
-    }
-
-    void stop() override {
-        PYBIND11_OVERRIDE(void, RunnableNodeBase, stop, );
-    }
-};
-
 // A special case:
 // Allows inheritance in Python from FrequencyGenerator,
 // so that child nodes can just 'be' a frequency generator
