@@ -16,8 +16,7 @@ DynamixelGroupStateMessage::DynamixelGroupStateMessage(const DynamixelGroupState
             for (DXLIdsToValues::value_type element: state.values) {
                 DXLId dxl_id = element.first;
                 string dxl_id_string = std::to_string(dxl_id);
-                fbb.Key(dxl_id_string);
-                fbb.Map([&]() {
+                fbb.Map(dxl_id_string.c_str(), [&]() {
                     DeviceValues control_table_values = element.second;
                     for (DeviceValues::value_type control_table_entry: control_table_values) {
                         DXLControlTable control_table_key = control_table_entry.first;
@@ -95,8 +94,7 @@ DynamixelGroupCommandMessage::DynamixelGroupCommandMessage(const DynamixelGroupC
             for (DXLIdsToValues::value_type element: command.values) {
                 DXLId dxl_id = element.first;
                 string dxl_id_string = std::to_string(dxl_id);
-                fbb.Key(dxl_id_string);
-                fbb.Map([&]() {
+                fbb.Map(dxl_id_string.c_str(), [&]() {
                     DeviceValues control_table_values = element.second;
                     for (DeviceValues::value_type control_table_entry: control_table_values) {
                         DXLControlTable control_table_key = control_table_entry.first;

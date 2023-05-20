@@ -254,7 +254,7 @@ struct DynamixelGroupCommand {
 /**
  * A DynamixelGroupController is an abstraction over a
  * group of dynamixel motors chained together. It provides
- * a low-level but convenient interfact to run a synchronous
+ * a low-level but convenient interface to run a synchronous
  * read-write loop to read from the device, update whatever
  * state, compute a resulting command, and then write that command
  * to the device.

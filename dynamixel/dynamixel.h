@@ -17,6 +17,22 @@ constexpr char ModuleName[] = "dynamixel";
 
 // --- Messages ---
 
+/**
+ * @brief DynamixelGroupStateMessage is a message that contains a DynamixelGroupState.
+ * Here is an example. It describes the state of two dynamixel motors, with ids 5 and 6.
+ * For each motor, it contains the current velocity (128) and the current position (132).
+ * 
+ * "state": {
+ *   "5": {
+ *     "128": 3305,
+ *     "132": 2048,
+ *   },
+ *   "6": {
+ *     "128": 1053,
+ *     "132": 2056,
+ *   }
+ * } 
+ */
 class DynamixelGroupStateMessage: public core::Message {
 public:
     inline static const char MessageName[] = "DynamixelGroupStateMessage";
@@ -29,6 +45,20 @@ protected:
     mutable bool _state_initialized = false;
 };
 
+/**
+ * @brief DynamixelGroupStateMessage is a message that contains a DynamixelGroupCommand.
+ * Here is an example. It describes the desired command for two dynamixel motors, with 
+ * ids 5 and 6. It specifies the desired GoalPosition (116) for each motor.
+ * 
+ * "command": {
+ *   "5": {
+ *     "116": 3305,
+ *   },
+ *   "6": {
+ *     "116": 1053,
+ *   }
+ * } 
+ */
 class DynamixelGroupCommandMessage: public core::Message {
 public:
     inline static const char MessageName[] = "DynamixelGroupCommandMessage";
