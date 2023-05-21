@@ -239,7 +239,7 @@ struct DynamixelGroupCommand {
     DXLIdsToValues values;
     
     // Will NOT be used to write. Instead, will contain
-    // the last known write timestamps.
+    // the last known write timestamps, if they exist.
     TimestampPair timestamp = {0,0};
 
     // Can be used to control whether the command will 
