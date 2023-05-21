@@ -67,11 +67,28 @@ alias(
 # CMake repos #
 #-------------#
 
-# Cmake repos can be processed via `cmake`. They can be linked to as `//third_party:<name>`
+# Cmake repos can be processed via `cmake`. 
+# They can be linked to as `//third_party:<name>`
 
 cmake(
     name = "libuvc",
-    cache_entries = {"DCMAKE_BUILD_TYPE": "Release"},
+    cache_entries = {"CMAKE_BUILD_TYPE": "Release"},
     env = {"CFLAGS": "-fPIC"},
     lib_source = "@libuvc//:all",
+    visibility = ["//visibility:public"],
+)
+
+cmake(
+    name = "librealsense2",
+    cache_entries = {
+        "CMAKE_BUILD_TYPE": "Release",
+        "BUILD_EXAMPLES": "false",
+        "BUILD_GRAPHICAL_EXAMPLES": "false",
+    },
+    env = {"CFLAGS": "-fPIC"},
+    #install = False,
+    #lib_name = "librealsense2",
+    out_shared_libs = ["librealsense2.so.2.53"],
+    lib_source = "@librealsense2//:all",
+    visibility = ["//visibility:public"],
 )

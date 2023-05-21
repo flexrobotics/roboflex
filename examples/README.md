@@ -27,3 +27,16 @@ python: [webcam_tv_distributed/webcam_tv_distributed_zmq.py](webcam_tv_distribut
 
     $ bazel run -c opt //examples/webcam_tv_distributed:webcam_tv_distributed_mqtt -->
 
+
+## 3. **realsense_tv**
+
+Realsense television! If you have an intel realsense camera, and have installed the system dependencies for roboflex.visualization, then you should be able to run this. This script runs a realsense sensor and a visualizer.
+
+c++: [realsense_tv/realsense_tv_cpp.cpp](realsense_tv/realsense_tv_cpp.cpp)
+
+    $ bazel run -c opt //examples/realsense_tv:realsense_tv_cpp
+
+python: [realsense_tv/realsense_tv_py.py](realsense_tv/realsense_tv_py.py)
+
+    $ bazel run -c opt //examples/realsense_tv:realsense_tv_py
+

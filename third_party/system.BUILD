@@ -7,7 +7,6 @@ package(default_visibility = ["//visibility:public"])
 # Third party libraries installed on the system #
 #-----------------------------------------------#
 
-
 cc_library(
     name = "libsdl2",
     srcs = ["lib/x86_64-linux-gnu/libSDL2-2.0.so"],

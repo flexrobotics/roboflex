@@ -1,0 +1,17 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_binary(
+    name = "run_realsense_cpp",
+    srcs = ["run_realsense_cpp.cpp"],
+    copts = ["-std=c++2a"],
+    deps = ["//realsense:realsense"],
+)
+
+py_binary(
+    name = "run_realsense_py",
+    srcs = ["run_realsense_py.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//realsense:roboflex_realsense_python",
+    ],
+)

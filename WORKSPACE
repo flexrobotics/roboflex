@@ -138,6 +138,7 @@ http_archive(
 )
 
 
+
 # configure python for pybind11
 
 load("@pybind11_bazel//:python_configure.bzl", "python_configure")
@@ -152,4 +153,12 @@ http_archive(
     sha256 = "dec3f5ff83d7913fa93caac7113e8d6eb88ff186d3f9f609667fa50b14a3e1bd",
     strip_prefix = "libuvc-05e7ba682d5761b05a9b212ef84775068fbc94e3",
     url = "https://github.com/libuvc/libuvc/archive/05e7ba682d5761b05a9b212ef84775068fbc94e3.zip",
+)
+
+http_archive(
+    name = "librealsense2",
+    build_file_content = all_content,
+    sha256 = "c981e139d57146d381a45b7aea765fab574a3aeb010a26b7d9f5b2c490d6a1c4",
+    strip_prefix = "librealsense-2.53.1",
+    url = "https://github.com/IntelRealSense/librealsense/archive/refs/tags/v2.53.1.zip",
 )

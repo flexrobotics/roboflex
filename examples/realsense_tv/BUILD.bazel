@@ -1,0 +1,22 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_binary(
+    name = "realsense_tv_cpp",
+    srcs = ["realsense_tv_cpp.cpp"],
+    copts = ["-std=c++2a"],
+    deps = [
+        "//core:roboflex_core",
+        "//realsense:realsense",
+        "//visualization:visualization",
+    ],
+)
+
+py_binary(
+    name = "realsense_tv_py",
+    srcs = ["realsense_tv_py.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//realsense:roboflex_realsense_python",
+        "//visualization:roboflex_visualization_python",
+    ],
+)
