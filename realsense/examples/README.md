@@ -3,7 +3,7 @@
 
 ## 1. **run_realsense** 
 
-Constructs a RealsenseSensor, starts it, prints resulting messages. Doesn't display the result - see examples for a version of this program that also visualizes the output (coming soon).
+Constructs a RealsenseSensor, starts it, prints resulting messages. Doesn't display the result - see examples for a version of this program that also visualizes the output.
 
 c++: [run_realsense_cpp.cpp](run_realsense_cpp.cpp)
                 
