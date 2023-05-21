@@ -33,6 +33,7 @@ Utilities:
 
 Devices:
 * [dynamixel](dynamixel/): Support for dynamixel motors.
+* [realsense](realsense/): Support for Intel Realsense cameras (tested on 435).
 * [webcam_uvc](webcam_uvc/): Support for usb-connected, uvc-compatible webcams.
 * More to come! Any requests?
 
