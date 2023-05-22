@@ -10,7 +10,7 @@ config = rfr.Config(
 )
 sensor = rfr.RealsenseSensor("827112072758", config)
 
-viewer = rcv.RGBImageTV(
+rgb_viewer = rcv.RGBImageTV(
     frequency_hz=24.0, 
     width=640, 
     height=480, 
@@ -18,13 +18,25 @@ viewer = rcv.RGBImageTV(
     debug=False,
     mirror=True,
 )
+depth_viewer = rcv.DepthTV(
+    frequency_hz=24.0, 
+    width=640, 
+    height=480, 
+    image_key="depth",
+    initial_pos=(720, 0),
+    debug=False,
+    mirror=True,
+)
 
-sensor > viewer
+sensor > rgb_viewer
+sensor > depth_viewer
 
 sensor.start()
-viewer.start()
+rgb_viewer.start()
+depth_viewer.start()
 
 time.sleep(10)
 
 sensor.stop()
-viewer.stop()
+rgb_viewer.stop()
+depth_viewer.stop()

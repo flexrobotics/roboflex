@@ -1,4 +1,5 @@
 #include "visualization.h"
+#include <xtensor/xview.hpp>
 
 namespace roboflex {
 namespace visualization {
@@ -10,7 +11,10 @@ serialization::flextensor_adaptor<T> extract_tensor(core::MessagePtr m, const st
     return serialization::deserialize_flex_tensor<T, D>(m->get_root_as_map()[key], print_memory_address);
 }
 
-RGBImageTV::RGBImageTV(
+
+// -- Television --
+
+Television::Television(
     const float frequency_hz,
     const size_t width,
     const size_t height,
@@ -40,23 +44,33 @@ RGBImageTV::RGBImageTV(
         width, height, SDL_WINDOW_OPENGL);
 }
 
-RGBImageTV::~RGBImageTV()
+Television::~Television()
 {
     SDL_DestroyWindow(this->window);
     this->window = nullptr;
 }
 
-std::string RGBImageTV::to_string() const
+void Television::on_trigger(double t)
 {
-    return std::string("<RGBImageTV ") +
-        " width=" + std::to_string(width) + 
-        " height=" + std::to_string(height) + 
-        " image_key=\"" + image_key + "\""
-        " mirror=" + std::to_string(mirror) + 
-        " " + FrequencyGenerator::to_string() + ">";
+    draw_from_last_message();
 }
 
-void RGBImageTV::draw_from_last_message()
+void Television::receive(core::MessagePtr m)
+{
+    {
+        const lock_guard<mutex> lock(last_msg_mutex);
+        last_msg = m;
+    }
+
+    if (get_frequency() == 0) {
+        draw_from_last_message();
+    }
+
+    // propagate
+    this->signal(m);
+}
+
+void Television::draw_from_last_message()
 {
     // lock the last message
     core::MessagePtr m;
@@ -71,7 +85,8 @@ void RGBImageTV::draw_from_last_message()
     }
 
     // extract the rgb frame into an xtensor
-    auto rgb_frame = extract_tensor<uint8_t, 3>(m, image_key, this->debug);
+    get_rgb_image(m, rgb_frame);
+    
 
     // extract the 'raw data' pointer
     uint8_t * rgb_data = rgb_frame.data();
@@ -97,7 +112,7 @@ void RGBImageTV::draw_from_last_message()
         0x0000ff, 0x00ff00, 0xff0000, 0);
 
     if (rgb_surface == NULL) {
-        std::cerr << "SDL_CreateRGBSurfaceFrom returned NULL" << std::endl;
+        std::cerr << "SDL_CreateRGBSurfaceFrom returned NULL with error: " << SDL_GetError() << std::endl;
         return;
     }
 
@@ -110,24 +125,69 @@ void RGBImageTV::draw_from_last_message()
     SDL_FreeSurface(rgb_surface);
 }
 
-void RGBImageTV::on_trigger(double t)
+
+// --  RGBImageTV --
+
+std::string RGBImageTV::to_string() const
 {
-    draw_from_last_message();
+    return std::string("<RGBImageTV ") +
+        " width=" + std::to_string(width) + 
+        " height=" + std::to_string(height) + 
+        " image_key=\"" + image_key + "\""
+        " mirror=" + std::to_string(mirror) + 
+        " " + FrequencyGenerator::to_string() + ">";
 }
 
-void RGBImageTV::receive(core::MessagePtr m)
+void RGBImageTV::get_rgb_image(
+    MessagePtr m, 
+    xt::xtensor<uint8_t, 3>& into_rgb_tensor) const
 {
-    {
-        const lock_guard<mutex> lock(last_msg_mutex);
-        last_msg = m;
-    }
+    into_rgb_tensor = extract_tensor<uint8_t, 3>(m, image_key, this->debug);
+}
 
-    if (get_frequency() == 0) {
-        draw_from_last_message();
-    }
 
-    // propagate
-    this->signal(m);
+// -- DepthTV --
+
+std::string DepthTV::to_string() const
+{
+    return std::string("<DepthTV ") +
+        " width=" + std::to_string(width) + 
+        " height=" + std::to_string(height) + 
+        " image_key=\"" + image_key + "\""
+        " mirror=" + std::to_string(mirror) + 
+        " " + FrequencyGenerator::to_string() + ">";
+}
+
+void DepthTV::get_rgb_image(
+    MessagePtr m, 
+    xt::xtensor<uint8_t, 3>& into_rgb_tensor) const
+{
+    // extract the depth frame
+    auto depth_frame = extract_tensor<uint16_t, 2>(m, this->image_key, this->debug);
+    auto depth_frame_float = xt::cast<float>(depth_frame);
+
+    // calculate min/max
+    float orig_float_min = xt::amin(depth_frame_float, {0, 1})();
+    float orig_float_max = xt::amax(depth_frame_float, {0, 1})();
+    float depth_range = orig_float_max - orig_float_min;
+
+    if (depth_range == 0) {
+        return;
+    }
+    
+    // normalize depth
+    auto depth_normalized = (depth_frame_float - orig_float_min) / depth_range;
+
+    // calculate red, green, blue
+    auto red = xt::cast<uint8_t>(depth_normalized * 255.0);
+    auto green = xt::cast<uint8_t>(255.0 * xt::where(
+        depth_normalized < 0.5, 
+        depth_normalized * 2.0, 
+        (1.0 - depth_normalized) * 2.0));
+    auto blue = xt::cast<uint8_t>(255.0 - depth_normalized * 255.0);
+
+    // stack them, put into the rgb tensor
+    into_rgb_tensor = xt::stack(xt::xtuple(red, green, blue), 2);
 }
 
 }  // namespace visualization
