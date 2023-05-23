@@ -69,8 +69,8 @@ void serialize_flex_tensor(flexbuffers::Builder& fbb, const std::array<size_t, N
         fbb.Key(name);
     }
 
-    // write the shape, nullptr, and dtype into the map
-    // writing nullptr for the data will cause the Blob
+    // Write the shape, nullptr, and dtype into the map.
+    // Writing nullptr for the data will cause the Blob
     // to simply resize itself by num_bytes, and then
     // we can efficiently write an xtensor expression later
     // directly to the memory.
@@ -89,15 +89,15 @@ void serialize_flex_tensor(flexbuffers::Builder& fbb, const std::array<size_t, N
 // good to know).
 template <typename T>
 using flextensor_adaptor = xt::xarray_adaptor<
-        xt::xbuffer_adaptor<
-            T *&,
-            xt::no_ownership,
-            std::allocator<T>
-        >,
-        xt::layout_type::row_major,
-        std::vector<unsigned long, std::allocator<unsigned long>>,
-        xt::xtensor_expression_tag
-    >;
+    xt::xbuffer_adaptor<
+        T *&,
+        xt::no_ownership,
+        std::allocator<T>
+    >,
+    xt::layout_type::row_major,
+    std::vector<unsigned long, std::allocator<unsigned long>>,
+    xt::xtensor_expression_tag
+>;
 
 /**
  * Deserialize a flexbuffer Reference into an xtensor.
