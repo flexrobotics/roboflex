@@ -177,19 +177,27 @@ RunnableNode::~RunnableNode()
 
 void RunnableNode::start()
 {
+    // if (this->my_thread == nullptr) {
+    //     auto f = [](std::stop_token stoken, RunnableNode* self) {
+    //         self->stop_token = stoken;
+    //         self->child_thread_fn();
+    //     };
+    //     this->my_thread.reset(new std::jthread(f, this));
+    // }
     if (this->my_thread == nullptr) {
-        auto f = [](std::stop_token stoken, RunnableNode* self) {
-            self->stop_token = stoken;
+        auto f = [](RunnableNode* self) {
             self->child_thread_fn();
         };
-        this->my_thread.reset(new std::jthread(f, this));
+        this->stop_signal = false;
+        this->my_thread.reset(new std::thread(f, this));
     }
 }
 
 void RunnableNode::stop_and_join()
 {
     if (this->my_thread != nullptr) {
-        this->my_thread->request_stop();
+        //this->my_thread->request_stop();
+        this->request_stop();
         this->my_thread->join();
         this->my_thread.reset();
     }
@@ -198,11 +206,10 @@ void RunnableNode::stop_and_join()
 void RunnableNode::request_stop()
 {
     if (this->my_thread != nullptr) {
-        this->my_thread->request_stop();
+        //this->my_thread->request_stop();
+        this->stop_signal = true;
     }
 }
-
-
 
 // We switch the signal handler if run() is called. When run()
 // is called, we simply run start_thread_fn() inside the current
@@ -228,7 +235,11 @@ void RunnableNode::run()
             ::signal(SIGINT, previous_interrupt_signal_handler);
             previous_interrupt_signal_handler = 0;
         }
-        sighandler_t previous_interrupt_signal_handler;
+
+        // sighandler_t is GNU only I guess...
+        // typedef void (*sighandler_t)(int);
+        //sighandler_t previous_interrupt_signal_handler;
+        void (*previous_interrupt_signal_handler)(int);
     };
 
     // Set myself as the signal handler

@@ -109,7 +109,9 @@ public:
     virtual void stop_and_join();
     virtual void stop() { this->stop_and_join(); }
     virtual void request_stop();
-    bool stop_requested() const { return my_thread ? stop_token.stop_requested() : false; }
+    
+    //bool stop_requested() const { return my_thread ? stop_token.stop_requested() : false; }
+    bool stop_requested() const { return my_thread ? stop_signal.load() : false; }
 
     // Calls start_thread_fn in the current thread (does not launch
     // another thread).
@@ -119,8 +121,12 @@ public:
 
 protected:
 
-    std::unique_ptr<std::jthread> my_thread = nullptr;
-    std::stop_token stop_token;
+    // clang doesn't support jthread yet :(
+    // std::unique_ptr<std::jthread> my_thread = nullptr;
+    // std::stop_token stop_token;
+
+    std::unique_ptr<std::thread> my_thread = nullptr;
+    std::atomic<bool> stop_signal = {true};
 
     // Child classes should override this 
     // method to run in a thread.

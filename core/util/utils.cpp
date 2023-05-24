@@ -1,6 +1,6 @@
 #include <algorithm>
 #include <sys/time.h>
-#include <math.h>
+#include <cmath>
 #include <thread>
 #include "utils.h"
 
