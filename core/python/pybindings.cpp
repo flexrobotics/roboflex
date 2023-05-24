@@ -225,6 +225,66 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
     //     .def_property_readonly("last_one", &LastOne::get_last_one)
     // ;
 
+    // ---------- Metrics -----------
+
+    py::class_<MetricTracker, std::shared_ptr<MetricTracker>>(m, "MetricTracker")
+        .def(py::init<>(), "Creates a MetricsTracker object.")
+
+        .def("record_value", &MetricTracker::record_value)
+        .def("reset", &MetricTracker::reset)
+        .def("pretty_print", &MetricTracker::pretty_print)
+
+        .def_readonly("count", &MetricTracker::count)
+        .def_readonly("total", &MetricTracker::total)
+        .def_readonly("mean", &MetricTracker::mean_value)
+        .def_property_readonly("variance", &MetricTracker::variance_value)
+        .def_readonly("max", &MetricTracker::max_value)
+        .def_readonly("min", &MetricTracker::min_value)
+
+        .def("to_string", &MetricTracker::to_string)
+        .def("to_pretty_string", &MetricTracker::to_pretty_string)
+        .def("__repr__", &MetricTracker::to_string)
+    ;
+
+    py::class_<MetricsMessage, Message, std::shared_ptr<MetricsMessage>>(m, "MetricsMessage")
+        .def(py::init<Message&>())
+        .def_readonly("metrics", &MetricsMessage::metrics)
+        .def_property_readonly("parent_node_name", &MetricsMessage::parent_node_name)
+        .def_property_readonly("child_node_name", &MetricsMessage::child_node_name)
+        .def_property_readonly("parent_node_guid", &MetricsMessage::parent_node_guid)
+        .def_property_readonly("child_node_guid", &MetricsMessage::child_node_guid)
+        .def_property_readonly("current_mem_usage", &MetricsMessage::current_mem_usage)
+        .def_property_readonly("elapsed_time", &MetricsMessage::elapsed_time)
+        .def_property_readonly("host_name", &MetricsMessage::host_name)
+        .def("to_pretty_string", &MetricsMessage::to_pretty_string)
+        .def("pretty_print", &MetricsMessage::pretty_print)
+        .def("__repr__", &MetricsMessage::to_string)
+    ;
+
+    py::class_<MetricsPublisherNode, Node, std::shared_ptr<MetricsPublisherNode>>(m, "MetricsPublisherNode")
+        .def(py::init<const std::string &>(),
+            "Create a metrics publisher node",
+            py::arg("name") = "MetricsPublisherNode")
+        .def("publish_and_reset", &MetricsPublisherNode::publish_and_reset)
+        .def("record_metrics", &MetricsPublisherNode::record_metrics)
+    ;
+
+    py::class_<MetricsNode, Node, std::shared_ptr<MetricsNode>>(m, "MetricsNode")
+        .def(py::init<const std::string &, const float>(),
+            "Create a MetricsNode node.",
+            py::arg("name") = "MetricsNode",
+            py::arg("passive_frequency_hz") = 0)
+        .def(py::init<shared_ptr<Node>, const std::string &, const float>(),
+            "Create a MetricsNode node.",
+            py::arg("publisher_target_node"),
+            py::arg("name") = "MetricsNode",
+            py::arg("passive_frequency_hz") = 0)
+        .def("pretty_print", &MetricsNode::pretty_print)
+        .def("reset", &MetricsNode::reset)
+        .def_readonly("publisher_node", &MetricsNode::publisher_node)
+        .def_readonly("passive_frequency_hz", &MetricsNode::passive_frequency_hz)
+    ;
+
 
     // ---------- FRP Utility nodes -----------
 
