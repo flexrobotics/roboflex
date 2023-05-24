@@ -9,6 +9,10 @@
 #include "core/serialization/flex_utils.h"
 #include "metrics.h"
 
+#ifndef HOST_NAME_MAX
+#define HOST_NAME_MAX 64
+#endif
+
 namespace roboflex {
 namespace nodes {
 
