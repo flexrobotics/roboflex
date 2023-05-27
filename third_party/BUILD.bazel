@@ -62,6 +62,16 @@ alias(
     actual = "@dynamixel_sdk//:dynamixel_sdk",
 )
 
+alias(
+    name = "imgui",
+    actual = "@imgui//:imgui",
+)
+
+alias(
+    name = "implot",
+    actual = "@implot//:implot",
+)
+
 
 #-------------#
 # CMake repos #
@@ -85,7 +95,18 @@ cmake(
         "BUILD_EXAMPLES": "false",
         "BUILD_GRAPHICAL_EXAMPLES": "false",
     },
-    out_shared_libs = ["librealsense2.so.2.53"], # Don't like the .2.53 bit, but it seems to be needed...
+    out_shared_libs = ["librealsense2.so.2.53"],
     lib_source = "@librealsense2//:all",
+    visibility = ["//visibility:public"],
+)
+
+cmake(
+    name = "glew",
+    cache_entries = {
+        "CMAKE_BUILD_TYPE": "Release",
+    },
+    lib_source = "@glew//:all",
+    out_shared_libs = ["libGLEW.so.2.2.0"],
+    working_directory = "build/cmake",
     visibility = ["//visibility:public"],
 )

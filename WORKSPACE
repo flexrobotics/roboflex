@@ -137,15 +137,24 @@ http_archive(
     url = "https://github.com/ROBOTIS-GIT/DynamixelSDK/archive/3.7.21.zip",
 )
 
-
-
-# configure python for pybind11
-
-load("@pybind11_bazel//:python_configure.bzl", "python_configure")
-python_configure(
-    name = "local_config_python", 
-    python_version = "3",
+http_archive(
+    name = "imgui",
+    sha256 = "eab371005c86dd029523a0c4ba757840787163740d45c1f4e5a110eb21820546",
+    build_file = "//third_party:imgui.BUILD",
+    strip_prefix = 'imgui-1.89.5',
+    url = "https://github.com/ocornut/imgui/archive/refs/tags/v1.89.5.tar.gz",
 )
+
+http_archive(
+    name = "implot",
+    sha256 = "1613af3e6554c0a74de20c6e60e9bce5ce35c2d4f9e1aa5ff963f7fe2d48af88",
+    build_file = "//third_party:implot.BUILD",
+    strip_prefix = 'implot-0.14',
+    url = "https://github.com/epezent/implot/archive/refs/tags/v0.14.tar.gz",
+)
+
+
+# These get built with cmake - see BUILD.bazel
 
 http_archive(
     name = "libuvc",
@@ -162,3 +171,41 @@ http_archive(
     strip_prefix = "librealsense-2.53.1",
     url = "https://github.com/IntelRealSense/librealsense/archive/refs/tags/v2.53.1.zip",
 )
+
+http_archive(
+    name = "glew",
+    sha256 = "d4fc82893cfb00109578d0a1a2337fb8ca335b3ceccf97b97e5cc7f08e4353e1",
+    build_file_content = all_content,
+    strip_prefix = 'glew-2.2.0',
+    url = "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0.tgz",
+)
+
+
+# configure python for pybind11
+
+load("@pybind11_bazel//:python_configure.bzl", "python_configure")
+python_configure(
+    name = "local_config_python", 
+    python_version = "3",
+)
+
+
+#-------#
+# Boost #
+#-------#
+
+# Provide boost as a dependency via, for example, `@boost//:algorithm`
+
+http_archive(
+    name = "com_github_nelhage_rules_boost",
+    # sha256 = "ecbf73a3046f3d149cd28fd850a71513bcc19c64ea39ca89db037698c76bfa56",
+    # strip_prefix = "rules_boost-bd26aa66525e8b5d815a53e488194cfc8a41ea66",
+    # url = "https://github.com/nelhage/rules_boost/archive/bd26aa66525e8b5d815a53e488194cfc8a41ea66.zip",
+    sha256 = "68982b6b05fced9fcecfb0fc65b8016fcd11f695b41c55d90a3f00d912ddb1fa",
+    strip_prefix = "rules_boost-f1065639e6f33741abe2a6a78fa79dd1a07bbf5d",
+    url = "https://github.com/nelhage/rules_boost/archive/f1065639e6f33741abe2a6a78fa79dd1a07bbf5d.zip",
+)
+
+load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
+
+boost_deps()
