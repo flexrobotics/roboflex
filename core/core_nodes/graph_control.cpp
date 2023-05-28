@@ -7,32 +7,6 @@ using std::set;
 
 // -- some utility functions --
 
-void call_start_helper(NodePtr n)
-{
-    shared_ptr<RunnableNode> runnable_node = std::dynamic_pointer_cast<RunnableNode>(n);
-    if (runnable_node) {
-        runnable_node->start();
-    }
-
-    auto children = n->get_observers();
-    for (auto& child: children) {
-        call_start_helper(child);
-    }
-}
-
-void call_stop_helper(NodePtr n)
-{
-    shared_ptr<RunnableNode> runnable_node = std::dynamic_pointer_cast<RunnableNode>(n);
-    if (runnable_node) {
-        runnable_node->stop();
-    }
-
-    auto children = n->get_observers();
-    for (auto& child: children) {
-        call_stop_helper(child);
-    }
-}
-
 void step_nodes(GraphController::NodeWalkCallback node_fun, NodePtr node, set<NodePtr>& visited, bool forwards)
 {
     if (visited.find(node) != visited.end()) {
@@ -86,16 +60,22 @@ GraphController::GraphController(const string& name):
 
 void GraphController::start()
 {
-    for (auto& child: this->get_observers()) {
-        call_start_helper(child);
-    }
+    this->walk_nodes_backwards([](NodePtr node){
+        auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
+        if (rn) {
+            rn->start();
+        }
+    });
 }
 
 void GraphController::stop()
 {
-    for (auto& child: this->get_observers()) {
-        call_stop_helper(child);
-    }
+    this->walk_nodes_forwards([](NodePtr node){
+        auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
+        if (rn) {
+            rn->stop();
+        }
+    });
 }
 
 void GraphController::walk_nodes(NodeWalkCallback node_fun, bool forwards)

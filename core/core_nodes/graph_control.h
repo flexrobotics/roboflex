@@ -9,7 +9,13 @@ using namespace core;
 namespace nodes {
 
 /**
- *
+ * A node that can be placed at the root of a graph of nodes,
+ * and that provides useful functions over the graph.
+ * 
+ * It can start() all RunnableNodes in the graph, and stop() them.
+ * 
+ * It provides several methods to walk nodes, walk connections,
+ * and prune the graph.
  */
 class GraphController: public RunnableNode {
 public:

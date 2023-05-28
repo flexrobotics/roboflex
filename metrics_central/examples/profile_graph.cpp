@@ -8,7 +8,7 @@ using namespace roboflex;
 
 int main() 
 {
-    auto frequency_generator = nodes::FrequencyGenerator(100.0);
+    auto frequency_generator = nodes::FrequencyGenerator(3.0);
 
     auto tensor_creator = nodes::MapFun([](core::MessagePtr m) {
         xt::xtensor<double, 2> d = xt::ones<double>({100, 1000}) * m->message_counter();
@@ -31,7 +31,7 @@ int main()
 
     std::cout << "AFTER INSTRUMENTATION:\n" << profiler.graph_to_string() << std::endl;
 
-    sleep_ms(2000000);
+    sleep_ms(3000);
 
     profiler.stop();
 
