@@ -3,7 +3,7 @@ load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 cc_binary(
     name = "display_static_cpp",
     srcs = ["display_static_cpp.cpp"],
-    copts = ["-std=c++2a"],
+    copts = ["-std=c++20"],
     deps = ["//visualization:visualization"],
 )
 

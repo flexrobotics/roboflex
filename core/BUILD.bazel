@@ -38,7 +38,7 @@ cc_library(
         "core_nodes/metrics.h",
     ],
     data = ['__init__.py'], # yeah it's a python file, but it won't hurt to just have it there
-    copts = ["-std=c++2a"],
+    copts = ["-std=c++20"],
     include_prefix = "roboflex/core",
     visibility = ["//visibility:public"],
     deps = [
