@@ -2,6 +2,7 @@
 #include <sys/time.h>
 #include <cmath>
 #include <thread>
+#include <sstream>
 #include "utils.h"
 
 namespace roboflex::core {
@@ -11,6 +12,13 @@ std::string string_from_fixed(const char* s, int len)
     std::string r;
     r.assign(s, std::find(s, s+len, '\0'));
     return r;
+}
+
+std::string repeated_string(const std::string& input, size_t num)
+{
+    std::ostringstream os;
+    std::fill_n(std::ostream_iterator<std::string>(os), num, input);
+    return os.str();
 }
 
 std::string get_roboflex_core_version() 

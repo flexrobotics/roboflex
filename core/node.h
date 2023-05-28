@@ -25,6 +25,7 @@ public:
     virtual ~Node();
 
     virtual string to_string() const;
+    string graph_to_string(int level=0) const;
 
 
     // --- Node identification ---

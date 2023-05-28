@@ -13,5 +13,6 @@
 #include "core/core_nodes/frequency_generator.h"
 #include "core/core_nodes/message_printer.h"
 #include "core/core_nodes/metrics.h"
+#include "core/core_nodes/graph_control.h"
 
 #endif // ROBOFLEX_CORE_NODES__H

@@ -13,6 +13,11 @@ namespace roboflex::core {
 std::string string_from_fixed(const char* s, int len);
 
 /**
+ * Repeats the given string the given number of times.
+ */
+std::string repeated_string(const std::string& input, size_t num);
+
+/**
  * Gets the current roboflex version.
  */
 std::string get_roboflex_core_version();

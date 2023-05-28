@@ -1,6 +1,7 @@
 #include <sstream>
 #include <signal.h>
 #include "node.h"
+#include "core/util/utils.h"
 #include "core_messages/core_messages.h"
 
 namespace roboflex::core {
@@ -27,6 +28,15 @@ string Node::to_string() const
     return sst.str();
 }
 
+string Node::graph_to_string(int level) const
+{
+    string s = core::repeated_string("  ", level) + Node::to_string() + "\n";
+    for (auto& node: get_observers()) {
+        s += node->graph_to_string(level+1);
+    }
+    return s;
+}
+
 
 // --- Connection management ---
 
@@ -34,8 +44,8 @@ Node::NodePtr Node::connect(Node::NodePtr node)
 {
     const std::lock_guard<std::recursive_mutex> lock(observer_collection_mutex);
     observers.push_back(node);
-    node->on_connect(*this, true);
-    this->on_connect(*node, false);
+    node->on_connect(*this, false);
+    this->on_connect(*node, true);
     return node;
 }
 
@@ -49,8 +59,8 @@ Node& Node::connect(Node &node)
     // that want to create a node, connect it, and then forget it.
     auto sptr = Node::NodePtr(&node, [](Node *) {});
     observers.push_back(sptr);
-    node.on_connect(*this, true);
-    this->on_connect(node, false);
+    node.on_connect(*this, false);
+    this->on_connect(node, true);
     return node;
 }
 

@@ -1,0 +1,6 @@
+cc_binary(
+    name = "profile_graph",
+    srcs = ["profile_graph.cpp"],
+    copts = ["-std=c++2a"],
+    deps = ["//metrics_central:profiler"],
+)
