@@ -25,10 +25,12 @@ Roboflex.core takes care of Message and Node classes, eigen/xtensor serializatio
 * [core](core/): Serialization, Node and Message based classes, etc.
 
 Utilities:
+publish metrics for a graph.
 * [transport](transport/): Folder containing sub-modules that perform wire transport.
-    * [transport/zmq](transport/zmq/): ZMQ-based transport. Thin wrapper around zero-mq. 
     * [transport/mqtt](transport/mqtt/): MQTT-based transport. Thin wrapper around mosquitto.
+    * [transport/zmq](transport/zmq/): ZMQ-based transport. Thin wrapper around zero-mq. 
 * [visualization](visualization/): Various visualizers using Simple Directmedia Layer.
+* [metrics_central](metrics_central/): Visualizer for realtime graph performance measurements per node and connection, such as frequency, messaging latency, bytes/sec, etc. And a Profiler node that can publish to it. Requires transport/mqtt to publish graph metrics to.
 * More to come! Any requests?
 
 Devices:
