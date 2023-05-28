@@ -225,6 +225,13 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
     //     .def_property_readonly("last_one", &LastOne::get_last_one)
     // ;
 
+    py::class_<GraphController, RunnableNode, std::shared_ptr<GraphController>>(m, "GraphController")
+        .def(py::init<const std::string &>(),
+            "Creates a GraphController. This node is used to start and stop all runnable nodes in graph.",
+            py::arg("name") = "GraphController")
+    ;
+
+
     // ---------- Metrics -----------
 
     py::class_<MetricTracker, std::shared_ptr<MetricTracker>>(m, "MetricTracker")
