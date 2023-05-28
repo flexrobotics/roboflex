@@ -25,7 +25,7 @@ public:
     }
 
     const string message() const {
-        return get_root_as_map()["msg"].AsString().str();
+        return root_map()["msg"].AsString().str();
     }
 
     void print_on(ostream& os) const override {

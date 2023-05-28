@@ -43,7 +43,7 @@ DynamixelGroupState DynamixelGroupStateMessage::get_state() const
 
         // read the state values map
         DXLIdsToValues values;
-        auto control_map = get_root_as_map()["state"].AsMap();
+        auto control_map = root_map()["state"].AsMap();
         auto control_map_keys = control_map.Keys();
         for (size_t i=0; i<control_map_keys.size(); i++) {
             string dxl_id_string = control_map_keys[i].AsString().str();
@@ -60,8 +60,8 @@ DynamixelGroupState DynamixelGroupStateMessage::get_state() const
         }
 
         // read the timestamp pair
-        double t0 = get_root_as_map()["t0"].AsDouble();
-        double t1 = get_root_as_map()["t1"].AsDouble();
+        double t0 = root_map()["t0"].AsDouble();
+        double t1 = root_map()["t1"].AsDouble();
 
         // initialize the cached state
         _state = DynamixelGroupState{values, TimestampPair{t0, t1}};
@@ -117,7 +117,7 @@ DynamixelGroupCommand DynamixelGroupCommandMessage::get_command() const
 
         // read the command values map
         DXLIdsToValues values;
-        auto control_map = get_root_as_map()["command"].AsMap();
+        auto control_map = root_map()["command"].AsMap();
         auto control_map_keys = control_map.Keys();
         for (size_t i=0; i<control_map_keys.size(); i++) {
             string dxl_id_string = control_map_keys[i].AsString().str();

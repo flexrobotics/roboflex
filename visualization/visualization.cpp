@@ -8,7 +8,7 @@ namespace visualization {
 template <typename T, size_t D>
 serialization::flextensor_adaptor<T> extract_tensor(core::MessagePtr m, const std::string& key, bool print_memory_address=false)
 {
-    return serialization::deserialize_flex_tensor<T, D>(m->get_root_as_map()[key], print_memory_address);
+    return serialization::deserialize_flex_tensor<T, D>(m->root_map()[key], print_memory_address);
 }
 
 

@@ -35,43 +35,43 @@ public:
         const CameraK& camera_k_depth);
 
     double get_t0() const {
-        return get_root_as_map()["t0"].AsDouble();
+        return root_map()["t0"].AsDouble();
     }
 
     double get_t1() const {
-        return get_root_as_map()["t1"].AsDouble();
+        return root_map()["t1"].AsDouble();
     }
 
     const serialization::flextensor_adaptor<uint8_t> get_rgb() const {
-        return serialization::deserialize_flex_tensor<uint8_t, 3>(get_root_as_map()["rgb"]);
+        return serialization::deserialize_flex_tensor<uint8_t, 3>(root_map()["rgb"]);
     }
 
     const serialization::flextensor_adaptor<uint16_t> get_depth() const {
-        return serialization::deserialize_flex_tensor<uint16_t, 2>(get_root_as_map()["depth"]);
+        return serialization::deserialize_flex_tensor<uint16_t, 2>(root_map()["depth"]);
     }
 
     double get_timestamp() const {
-        return get_root_as_map()["t"].AsDouble();
+        return root_map()["t"].AsDouble();
     }
 
     uint64_t get_frame_number() const {
-        return get_root_as_map()["n"].AsUInt64();
+        return root_map()["n"].AsUInt64();
     }
 
     string get_serial_number() const {
-        return get_root_as_map()["serial_number"].AsString().str();
+        return root_map()["serial_number"].AsString().str();
     }
 
     CameraK get_camera_k_rgb() const {
-        return serialization::deserialize_flex_tensor<float, 2>(get_root_as_map()["camera_k_rgb"]);
+        return serialization::deserialize_flex_tensor<float, 2>(root_map()["camera_k_rgb"]);
     }
 
     CameraK get_camera_k_depth() const {
-        return serialization::deserialize_flex_tensor<float, 2>(get_root_as_map()["camera_k_depth"]);
+        return serialization::deserialize_flex_tensor<float, 2>(root_map()["camera_k_depth"]);
     }
 
     CameraType get_aligned_to() const {
-        uint8_t at =  get_root_as_map()["aligned_to"].AsUInt8();
+        uint8_t at =  root_map()["aligned_to"].AsUInt8();
         return static_cast<CameraType>(at);
     }
 

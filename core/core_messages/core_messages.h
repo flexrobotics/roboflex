@@ -55,7 +55,7 @@ public:
     }
 
     const string message() const {
-        return get_root_as_map()["s"].AsString().str();
+        return root_map()["s"].AsString().str();
     }
 
     void print_on(ostream& os) const override {
@@ -82,7 +82,7 @@ public:
     }
 
     const float value() const {
-        return get_root_as_map()["v"].AsFloat();
+        return root_map()["v"].AsFloat();
     }
 
     void print_on(ostream& os) const override {
@@ -109,7 +109,7 @@ public:
     }
 
     const float value() const {
-        return get_root_as_map()["v"].AsDouble();
+        return root_map()["v"].AsDouble();
     }
 
     void print_on(ostream& os) const override {
@@ -163,7 +163,7 @@ public:
     }
 
     void print_on(ostream& os) const override {
-        auto root = get_root_as_map()[this->key].AsMap();
+        auto root = root_map()[this->key].AsMap();
         auto dtype = root["dtype"].AsInt8();
         os << "<TensorMessage" << " key:" << this->key 
            << " shape:" << xt::adapt(this->value().shape()) 
@@ -174,7 +174,7 @@ public:
     }
 
     const serialization::flextensor_adaptor<T> value() const {
-        auto root = get_root_as_map()[this->key];
+        auto root = root_map()[this->key];
         return serialization::deserialize_flex_tensor<T, Rank>(root);
     }
 
@@ -182,7 +182,7 @@ public:
     void set_value(const xt::xtensor<T, Rank>& x) {
 
         // my root must be a map that obeys our tensor format
-        auto root = get_root_as_map()[this->key].AsMap();
+        auto root = root_map()[this->key].AsMap();
 
         // get, ultimately, a pointer to the data that backs the tensor
         auto tensor_data_portion = root["data"].AsBlob();
@@ -203,7 +203,7 @@ public:
     void set_value(const xt::xfunction<whatever...>& f) {
 
         // my root must be a map that obeys our tensor format
-        auto root = get_root_as_map()[this->key].AsMap();
+        auto root = root_map()[this->key].AsMap();
 
         // get, ultimately, a pointer to the data that backs the tensor
         auto tensor_data_portion = root["data"].AsBlob();

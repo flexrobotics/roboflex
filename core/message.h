@@ -54,7 +54,7 @@ public:
         return payload()->get_size() == 0 ? flexbuffers::Reference() : flexbuffers::GetRoot(payload()->get_data(), payload()->get_size());
     }
 
-    flexbuffers::Map get_root_as_map() const {
+    flexbuffers::Map root_map() const {
         return get_flex_root().AsMap();
     }
 
@@ -64,7 +64,7 @@ public:
     // the timestamp, message counter, source node info,
     // and so on...
     flexbuffers::Vector get_meta() const {
-        return get_root_as_map()["_meta"].AsVector();
+        return root_map()["_meta"].AsVector();
     }
 
     // Position 0: timestamp

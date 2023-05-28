@@ -124,7 +124,7 @@ MetricsMessage::MetricsMessage(Message& other):
     Message(other)
 {
     // just deserialize the whole map now....
-    auto root = get_root_as_map();
+    auto root = root_map();
     //elapsed_time = root["elapsed_time"].AsDouble();
     //current_mem_usage = root["current_mem_usage"].AsUInt64();
     auto keys = root.Keys();

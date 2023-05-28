@@ -53,42 +53,42 @@ struct WebcamDataRaw : public core::Message {
     WebcamDataRaw(uvc_frame_t* frame, double t0, double t1);
 
     double get_t0() const {
-        return get_root_as_map()["t0"].AsDouble();
+        return root_map()["t0"].AsDouble();
     }
 
     double get_t1() const {
-        return get_root_as_map()["t1"].AsDouble();
+        return root_map()["t1"].AsDouble();
     }
 
     double get_capture_time() const {
-        return get_root_as_map()["t"].AsDouble();
+        return root_map()["t"].AsDouble();
     }
 
     uvc_frame_format get_uvc_frame_format() const {
-        auto r = get_root_as_map()["f"].AsUInt32();
+        auto r = root_map()["f"].AsUInt32();
         return uvc_frame_format(r);
     }
 
     uint32_t get_width() const {
-        return get_root_as_map()["w"].AsUInt32();
+        return root_map()["w"].AsUInt32();
     }
 
     uint32_t get_height() const {
-        return get_root_as_map()["h"].AsUInt32();
+        return root_map()["h"].AsUInt32();
     }
 
     uint32_t get_sequence() const {
-        return get_root_as_map()["s"].AsUInt32();
+        return root_map()["s"].AsUInt32();
     }
 
     const uint8_t* get_data() const {
-        auto data_portion = get_root_as_map()["data"].AsBlob();
+        auto data_portion = root_map()["data"].AsBlob();
         const uint8_t* const_data = data_portion.data();
         return const_data;
     }
 
     size_t get_data_size_bytes() const {
-        auto data_portion = get_root_as_map()["data"].AsBlob();
+        auto data_portion = root_map()["data"].AsBlob();
         return data_portion.size();
     }
 
@@ -108,23 +108,23 @@ struct WebcamDataRGB : public core::Message {
     WebcamDataRGB(uvc_frame_t* frame, double t0, double t1);
 
     double get_t0() const {
-        return get_root_as_map()["t0"].AsDouble();
+        return root_map()["t0"].AsDouble();
     }
 
     double get_t1() const {
-        return get_root_as_map()["t1"].AsDouble();
+        return root_map()["t1"].AsDouble();
     }
 
     double get_capture_time() const {
-        return get_root_as_map()["t"].AsDouble();
+        return root_map()["t"].AsDouble();
     }
 
     uint32_t get_sequence() const {
-        return get_root_as_map()["s"].AsUInt32();
+        return root_map()["s"].AsUInt32();
     }
 
     WebcamFrame get_rgb() const {
-        return serialization::deserialize_flex_tensor<uint8_t, 3>(get_root_as_map()["rgb"]);
+        return serialization::deserialize_flex_tensor<uint8_t, 3>(root_map()["rgb"]);
     }
 
     void print_on(ostream& os) const override;

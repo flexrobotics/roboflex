@@ -65,37 +65,37 @@ struct MetricsMessage: public core::Message {
     map<string, MetricTracker> metrics;
 
     const double elapsed_time() const {
-        return get_root_as_map()["elapsed_time"].AsDouble();
+        return root_map()["elapsed_time"].AsDouble();
     }
 
     const double time() const {
-        return get_root_as_map()["time"].AsDouble();
+        return root_map()["time"].AsDouble();
     }
 
     const uint64_t current_mem_usage() const {
-        return get_root_as_map()["current_mem_usage"].AsUInt64();
+        return root_map()["current_mem_usage"].AsUInt64();
     }
 
     const string parent_node_name() const {
-        return get_root_as_map()["parent_node_name"].AsString().str();
+        return root_map()["parent_node_name"].AsString().str();
     }
 
     const string child_node_name() const {
-        return get_root_as_map()["child_node_name"].AsString().str();
+        return root_map()["child_node_name"].AsString().str();
     }
 
     const uuid parent_node_guid() const {
-        auto blob = get_root_as_map()["parent_node_guid"].AsBlob();
+        auto blob = root_map()["parent_node_guid"].AsBlob();
         return serialization::deserialize_uuid(blob);
     }
 
     const uuid child_node_guid() const {
-        auto blob = get_root_as_map()["child_node_guid"].AsBlob();
+        auto blob = root_map()["child_node_guid"].AsBlob();
         return serialization::deserialize_uuid(blob);
     }
 
     const string host_name() const {
-        return get_root_as_map()["host_name"].AsString().str();
+        return root_map()["host_name"].AsString().str();
     }
 };
 
