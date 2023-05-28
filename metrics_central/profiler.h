@@ -46,7 +46,7 @@ public:
         const string& name = "Profiler");
 
     Profiler(
-        shared_ptr<Node> metrics_publisher,
+        NodePtr metrics_publisher,
         const float metrics_publishing_frequency_hz = 1.0,
         const string& name = "Profiler");
 
