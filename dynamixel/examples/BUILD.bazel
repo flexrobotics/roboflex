@@ -1,6 +1,3 @@
-load("@rules_cc//cc:defs.bzl", "cc_binary")
-load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
-
 py_binary(
     name = "test_group_controller_py",
     srcs = ["test_group_controller_py.py"],

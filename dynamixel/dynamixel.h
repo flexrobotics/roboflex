@@ -46,7 +46,7 @@ protected:
 };
 
 /**
- * @brief DynamixelGroupStateMessage is a message that contains a DynamixelGroupCommand.
+ * @brief DynamixelGroupCommandMessage is a message that contains a DynamixelGroupCommand.
  * Here is an example. It describes the desired command for two dynamixel motors, with 
  * ids 5 and 6. It specifies the desired GoalPosition (116) for each motor.
  * 

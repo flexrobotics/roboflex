@@ -1,5 +1,3 @@
-load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
-
 py_binary(
     name = "webcam_tv_distributed_zmq",
     srcs = ["webcam_tv_distributed_zmq.py"],

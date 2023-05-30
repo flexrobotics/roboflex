@@ -1,5 +1,3 @@
-load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
-
 cc_binary(
     name = "run_webcam_cpp",
     srcs = ["run_webcam_cpp.cpp"],
