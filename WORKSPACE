@@ -198,9 +198,6 @@ python_configure(
 
 http_archive(
     name = "com_github_nelhage_rules_boost",
-    # sha256 = "ecbf73a3046f3d149cd28fd850a71513bcc19c64ea39ca89db037698c76bfa56",
-    # strip_prefix = "rules_boost-bd26aa66525e8b5d815a53e488194cfc8a41ea66",
-    # url = "https://github.com/nelhage/rules_boost/archive/bd26aa66525e8b5d815a53e488194cfc8a41ea66.zip",
     sha256 = "68982b6b05fced9fcecfb0fc65b8016fcd11f695b41c55d90a3f00d912ddb1fa",
     strip_prefix = "rules_boost-f1065639e6f33741abe2a6a78fa79dd1a07bbf5d",
     url = "https://github.com/nelhage/rules_boost/archive/f1065639e6f33741abe2a6a78fa79dd1a07bbf5d.zip",
