@@ -1,5 +1,7 @@
 # roboflex
 
+![](roboflex_graph_illustration_1.png)
+
 Roboflex is a c++/python library for distributed robotics. Roboflex is designed for:
 
 1. Trivial installation: the core library has no dependencies other than c++ 20.
