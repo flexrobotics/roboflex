@@ -6,6 +6,8 @@ At its core, roboflex is a library to make Nodes that create, signal, and receiv
 
 Roboflex.core defines what a Message is and what a Node is. It provides serialization services for eigen and xtensor. It provides a small library of core message types and useful Node sub-classes. The core only supports sending messages via direct function call to other nodes; the nodes in transport/ (zmq and mqtt so far) support sending messages from one thread to another, from one process to another, and from one computer to another via multiple methods.
 
+One node may connect to multiple downstream nodes, supporting the pub-sub pattern.
+
 ## Basic Types
 
 ### Message
