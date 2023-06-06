@@ -1,3 +1,5 @@
 bazel-**
 .vscode
 build
+pyvenv
+__pycache__
