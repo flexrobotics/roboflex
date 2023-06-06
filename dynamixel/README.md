@@ -27,6 +27,12 @@ This layer defines additional functionality to integrate with roboflex-style mes
 
 ![](roboflex_dynamixel.png)
 
+We also provided DynamixelRemoteController. This is an abstract base class that requires implementation of the 'readwrite_loop_function' virtual method. Here is where your custom control logic would go. The benefit of this approach is that the DynamixelGroupNode can run in its own thread, and keep up with the motors. This node, then, can be run from anywhere, and using transport classes, the controller can even run on a totally separate computer.
+
+We also provide DynamixelRemoteFrequencyController, which is exactly the same, but is driven at some frequency from a thread via inheritance from FrequencyGenerator.
+
+![](dynamixel_remote_controller.png)
+
 ## Troubleshooting
 
 You might benefit from the Robotis Dynamixel Wizard program - just google for it.
