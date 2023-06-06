@@ -31,7 +31,9 @@ constexpr char ModuleName[] = "dynamixel";
  *     "128": 1053,
  *     "132": 2056,
  *   }
- * } 
+ * },
+ * "t0": 1623498723.023,
+ * "t0": 1623498723.023,
  */
 class DynamixelGroupStateMessage: public core::Message {
 public:
@@ -74,6 +76,19 @@ protected:
 
 // --- Nodes ---
 
+/**
+ * A RunnableNode subclass that controls a DynamixelGroupController.
+ * It receives DynamixelGroupCommandMessage from some remote source,
+ * and signals DynamixelGroupStateMessages. Internally, in its 
+ * child_thread_fn, it runs the run_readwrite_loop of the controller, 
+ * passing in its own readwrite_loop_function. This function
+ * simply writes whatever the last command received was to the dynamixel,
+ * and signals the received dynamixel state, encoded into a 
+ * DynamixelGroupStateMessage.
+ * 
+ * As such, this class can be used as a 'remote controlled' Node for 
+ * dynamixel motors.
+ */
 class DynamixelGroupNode: public core::RunnableNode {
 public:
     DynamixelGroupNode(
@@ -84,9 +99,9 @@ public:
 
     void receive(core::MessagePtr m) override;
 
-    bool readwrite_loop_function(const DynamixelGroupState& state, DynamixelGroupCommand& command);
-
 protected:
+
+    bool readwrite_loop_function(const DynamixelGroupState& state, DynamixelGroupCommand& command);
 
     void child_thread_fn() override;
 
@@ -97,6 +112,9 @@ protected:
     shared_ptr<DynamixelGroupCommandMessage> last_command_message = nullptr;  
 };
 
+/**
+ * A counterpart to the above DynamixelGroupNode
+ */
 class DynamixelRemoteController: public core::Node {
 public:
     DynamixelRemoteController(const string& name = "DynamixelRemoteController");
@@ -104,6 +122,11 @@ public:
     virtual DXLIdsToValues readwrite_loop_function(const DynamixelGroupState& state) = 0;
 };
 
+/**
+ * Exactly like DynamixelRemoteController, except that communication with
+ * the controller happens at some given frequency using the last known
+ * group state.
+ */
 class DynamixelRemoteFrequencyController: public nodes::FrequencyGenerator {
 public:
     DynamixelRemoteFrequencyController(

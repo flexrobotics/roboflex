@@ -63,7 +63,8 @@ class MyDynamixelRemoteFrequencyController(rfd.DynamixelRemoteFrequencyControlle
         dt = state.timestamp.t0 - self.t0
         new_pos = int(self.p0 + 500 * math.sin(dt))
         return {5: {rfd.DXLControlTable.GoalPosition: new_pos}}
-    
+
+
 class MyDynamixelRemoteController(rfd.DynamixelRemoteController):
     def __init__(self):
         super().__init__()

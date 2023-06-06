@@ -36,7 +36,7 @@ int get_highest_total_size(const DXLIdsToControlTableEntries &dxl_ids_to_values)
     return *std::max_element(total_sizes.begin(), total_sizes.end());
 }
 
-std::string control_table_entry_map_to_string(const DXLIdsToControlTableEntries& dxls_ids_to_values)
+string control_table_entry_map_to_string(const DXLIdsToControlTableEntries& dxls_ids_to_values)
 {
     stringstream sst;
     sst << "{";
@@ -275,11 +275,9 @@ void DynamixelGroupController::write_directly(DXLId dxl_id, DXLControlTable cont
         case 1:
             write_1byte_txrx(dxl_id, v, value);
             break;
-
         case 2:
             write_2byte_txrx(dxl_id, v, value);
             break;
-
         case 4:
             write_4byte_txrx(dxl_id, v, value);
             break;

@@ -12,6 +12,7 @@ DynamixelGroupStateMessage::DynamixelGroupStateMessage(const DynamixelGroupState
     flexbuffers::Builder fbb = get_builder();
     WriteMapRoot(fbb, [&]() {
 
+        // Write the state values map.
         fbb.Map("state", [&]() {
             for (DXLIdsToValues::value_type element: state.values) {
                 DXLId dxl_id = element.first;
@@ -29,7 +30,7 @@ DynamixelGroupStateMessage::DynamixelGroupStateMessage(const DynamixelGroupState
             }
         });
         
-        // Write the timestamp pair...
+        // Write the timestamp pair.
         fbb.Double("t0", state.timestamp.t0);
         fbb.Double("t1", state.timestamp.t1);
     });
@@ -41,7 +42,7 @@ DynamixelGroupState DynamixelGroupStateMessage::get_state() const
 {
     if (!_state_initialized) {
 
-        // read the state values map
+        // Read the state values map.
         DXLIdsToValues values;
         auto control_map = root_map()["state"].AsMap();
         auto control_map_keys = control_map.Keys();
@@ -59,11 +60,11 @@ DynamixelGroupState DynamixelGroupStateMessage::get_state() const
             }
         }
 
-        // read the timestamp pair
+        // Read the timestamp pair.
         double t0 = root_map()["t0"].AsDouble();
         double t1 = root_map()["t1"].AsDouble();
 
-        // initialize the cached state
+        // Initialize the cached state.
         _state = DynamixelGroupState{values, TimestampPair{t0, t1}};
 
         _state_initialized = true;
@@ -90,6 +91,8 @@ DynamixelGroupCommandMessage::DynamixelGroupCommandMessage(const DynamixelGroupC
 {
     flexbuffers::Builder fbb = get_builder();
     WriteMapRoot(fbb, [&]() {
+        
+        // Write the command values map.
         fbb.Map("command", [&]() {
             for (DXLIdsToValues::value_type element: command.values) {
                 DXLId dxl_id = element.first;
@@ -115,7 +118,7 @@ DynamixelGroupCommand DynamixelGroupCommandMessage::get_command() const
 {
     if (!_command_initialized) {
 
-        // read the command values map
+        // Read the command values map.
         DXLIdsToValues values;
         auto control_map = root_map()["command"].AsMap();
         auto control_map_keys = control_map.Keys();
@@ -133,7 +136,7 @@ DynamixelGroupCommand DynamixelGroupCommandMessage::get_command() const
             }
         }
 
-        // initialize the cached state
+        // Initialize the cached state.
         _command = DynamixelGroupCommand{values, TimestampPair{0.0, 0.0}};
 
         _command_initialized = true;
@@ -202,6 +205,7 @@ void DynamixelGroupNode::child_thread_fn()
     auto f = [this](const DynamixelGroupState& state, DynamixelGroupCommand& command) {
         return this->readwrite_loop_function(state, command);
     };
+
     this->controller->run_readwrite_loop(f);
 }
 

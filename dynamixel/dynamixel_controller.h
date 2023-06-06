@@ -39,7 +39,6 @@ enum class OperatingMode: int {
 
 enum class DXLControlTable: int {
     OperatingMode       = 11,
-
     TemperatureLimit    = 31,
     MaxVoltage          = 32,
     MinVoltage          = 34,
@@ -48,7 +47,6 @@ enum class DXLControlTable: int {
     MaxVelocity         = 44,
     MaxPosition         = 48,
     MinPosition         = 52,
-
     TorqueEnable        = 64,
     LED                 = 65,
     StatusReturnLevel   = 68,
@@ -173,17 +171,43 @@ typedef int DXLId;
 /**
  * We sometimes set and update lists of control table entries
  * for each dynamixel in the group. Each can be configured individually.
+ * 
+ * Here is an example:
+ * 
+ * {
+ *  "5": [128, 132],    // PresentVelocity, PresentPosition
+ *  "6": [128, 132],
+ * }
  */
 typedef map<DXLId, vector<DXLControlTable>> DXLIdsToControlTableEntries;
 
 /**
  * A dynamixel motor in the group is configured to
  * read and write values for a subset of the control table. 
+ * 
+ * Here is an example:
+ * 
+ *  {
+ *     "128": 3305,     // PresentVelocity
+ *     "132": 2048,     // PresentPosition
+ *  },
  */
 typedef map<DXLControlTable, int> DeviceValues;
 
 /**
  * Each dynamixel motor in the group has such a map.
+ * 
+ * Here is an example:
+ * {
+ *   "5": {
+ *     "128": 3305,     // PresentVelocity
+ *     "132": 2048,     // PresentPosition
+ *   },
+ *   "6": {
+ *     "128": 1053,
+ *     "132": 2056,
+ *   }
+ * }
  */
 typedef map<DXLId, DeviceValues> DXLIdsToValues;
 
@@ -203,8 +227,8 @@ inline std::ostream& operator << (std::ostream& os, const DXLIdsToValues& values
 }
 
 /**
- * When we read and write to device, we often take
- * get current times before and after the operation. 
+ * When we read and write to device, we often get
+ * current times before and after the operation. 
  */
 struct TimestampPair {
     double t0;
