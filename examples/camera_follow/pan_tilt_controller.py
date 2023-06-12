@@ -5,7 +5,7 @@ import roboflex.dynamixel as rcd
 
 
 class PanTiltController(rcd.DynamixelRemoteController):
-    def __init__(self, z, pantilt_speed = 50.0):
+    def __init__(self, pantilt_speed = 50.0):
         super().__init__("pan_tilt_controller")
 
         self.pantilt_speed = pantilt_speed
@@ -23,7 +23,6 @@ class PanTiltController(rcd.DynamixelRemoteController):
 
         self.target_x = -1.0
         self.target_y = -1.0
-
 
     def receive(self, m):
         if 'x' in m.keys() and 'y' in m.keys():

@@ -36,21 +36,23 @@ viewer = rcv.RGBImageTV(
     mirror=True,
 )
 
-zmq_context = rcz.ZMQContext()
-
-pan_tilt_controller = PanTiltController(zmq_context)
+pan_tilt_controller = PanTiltController()
 
 PUB_ADDRESS = "ipc://mycam"
+zmq_context = rcz.ZMQContext()
 pub = rcz.ZMQPublisher(zmq_context, PUB_ADDRESS, max_queued_msgs=1)
 sub1 = rcz.ZMQSubscriber(zmq_context, PUB_ADDRESS, max_queued_msgs=1)
 
+# connect the graph
 webcam > pub
 sub1 > face_detector > viewer > pan_tilt_controller
 
+# connect all root nodes to the profiler
 profiler > pan_tilt_controller
 profiler > webcam
 profiler > sub1
 
+# start the profiler, which will start all runnable nodes in the graph
 profiler.start(profile=True)
 
 try:

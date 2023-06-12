@@ -3,6 +3,7 @@ from yoloface.face_detector import YoloDetector
 
 # uses https://github.com/elyha7/yoloface, cloned into yoloface
 
+# Really just a wrapper around the YoloDetector class.
 class DetectorYoloFace:
 
     def __init__(self, height, width):
@@ -32,12 +33,16 @@ class DetectorYoloFace:
             rgb[y1:y2,x1:x1+w] = color
             rgb[y1:y2,x2:x2+w] = color
 
+            # return the center x and y, and the new rgb-with-green-rect image
             return x, y, rgb
 
         else:
             return -1.0, -1.0, rgb
 
-
+# This is a node that wraps the DetectorYoloFace class.
+# All it really does is receive an rgb image, call the
+# DetectorYoloFace class, and then signal the x, y, and
+# rgb values.
 class DetectorYoloFaceNode(rcc.Node):
 
     def __init__(self, height, width):

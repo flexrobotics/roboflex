@@ -40,3 +40,9 @@ python: [realsense_tv/realsense_tv_py.py](realsense_tv/realsense_tv_py.py)
 
     $ bazel run -c opt //examples/realsense_tv:realsense_tv_py
 
+
+## 4. **camera_follow**
+
+Face-following pan-tilt camera using dynamixel, webcam_uvc, transport/mqtt, and metrics_central. See the documentation in that directory.
+python: [camera_follow/README.md](camera_follow/README.md)
+
