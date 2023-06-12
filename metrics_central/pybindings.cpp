@@ -7,7 +7,7 @@ using namespace roboflex::profiling;
 
 PYBIND11_MODULE(roboflex_profiler_ext, m) {
 
-    py::class_<Profiler, roboflex::nodes::GraphController, std::shared_ptr<Profiler>>(m, "Profiler")
+    py::class_<Profiler, roboflex::core::RunnableNode, std::shared_ptr<Profiler>>(m, "Profiler")
         .def(py::init<const std::string&, const int, const std::string&, const float, const std::string&>(),
             "Create a Profiler that publishes metrics to an mqtt broker.",
             py::arg("mqtt_broker_address") = "127.0.0.1",
@@ -20,6 +20,7 @@ PYBIND11_MODULE(roboflex_profiler_ext, m) {
             py::arg("metrics_publisher"),
             py::arg("metrics_publishing_frequency_hz") = 1.0,
             py::arg("name") = "Profiler")
-        .def("start", &Profiler::start)
+        .def("start", &Profiler::start,
+            py::arg("profile"))
     ;
 }

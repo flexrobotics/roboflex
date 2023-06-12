@@ -103,7 +103,6 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
 
     py::enum_<DXLControlTable>(m, "DXLControlTable")
         .value("OperatingMode"       , DXLControlTable::OperatingMode)
-
         .value("TemperatureLimit"    , DXLControlTable::TemperatureLimit)
         .value("MaxVoltage"          , DXLControlTable::MaxVoltage)
         .value("MinVoltage"          , DXLControlTable::MinVoltage)
@@ -112,7 +111,6 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
         .value("MaxVelocity"         , DXLControlTable::MaxVelocity)
         .value("MaxPosition"         , DXLControlTable::MaxPosition)
         .value("MinPosition"         , DXLControlTable::MinPosition)
-
         .value("TorqueEnable"        , DXLControlTable::TorqueEnable)
         .value("LED"                 , DXLControlTable::LED)
         .value("StatusReturnLevel"   , DXLControlTable::StatusReturnLevel)
@@ -229,6 +227,7 @@ PYBIND11_MODULE(roboflex_dynamixel_ext, m) {
             d.run_readwrite_loop(rwf_local);
         },
             py::arg("rwf"))
+        .def("freeze", &DynamixelGroupController::freeze)
      ;
 
     py::class_<DynamixelGroupNode, core::RunnableNode, std::shared_ptr<DynamixelGroupNode>>(m, "DynamixelGroupNode")

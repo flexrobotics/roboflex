@@ -207,6 +207,7 @@ void DynamixelGroupNode::child_thread_fn()
     };
 
     this->controller->run_readwrite_loop(f);
+    this->controller->freeze();
 }
 
 

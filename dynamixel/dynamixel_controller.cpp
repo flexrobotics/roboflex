@@ -557,5 +557,20 @@ void DynamixelGroupController::run_readwrite_loop(ReadWriteLoopFunction f)
     }
 }
 
+void DynamixelGroupController::freeze()
+{
+    DynamixelGroupCommand cmd;
+
+    for (auto [dxl_id, control_table]: sync_write_settings) {
+        for (auto control_table_entry: control_table) {
+            if (control_table_entry == DXLControlTable::GoalCurrent || control_table_entry == DXLControlTable::GoalVelocity) {
+                cmd.values[dxl_id][control_table_entry] = 0;
+            }
+        }
+    }
+
+    write(cmd);
+}
+
 } // namespace dynamixelgroup
 } // namespace roboflex

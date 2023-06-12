@@ -23,18 +23,26 @@ string Node::to_string() const
     std::stringstream sst;
     sst << "<Node"
         << " name: \"" << get_name() << "\""
-        << " guid: " << get_guid() 
-        << ">";
+        << " guid: " << get_guid();
+    if (has_observers()) {
+        sst << " children(" << observers.size() << "): [";
+        for (auto n: observers) {
+            sst << " \"" << n->get_name() << "\"";
+        }
+        sst << "]";
+    }
+    sst << ">";
     return sst.str();
 }
 
 string Node::graph_to_string(int level) const
 {
-    string s = core::repeated_string("  ", level) + Node::to_string() + "\n";
-    for (auto& node: get_observers()) {
-        s += node->graph_to_string(level+1);
-    }
-    return s;
+    int init_level = level;
+    std::stringstream sst;
+    this->walk_nodes_forwards([init_level, &sst](NodePtr node, int level) {
+        sst << repeated_string("  ", init_level+level)  << node->to_string() << std::endl;
+    });
+    return sst.str();
 }
 
 
@@ -101,6 +109,132 @@ Node& Node::operator > (Node& other)
 Node::NodePtr Node::operator > (Node::NodePtr other) 
 {
     return this->connect(other);
+}
+
+
+// -- some utility functions --
+
+/**
+ * Walks the graph of nodes, starting at node, and calling node_fun on each node.
+ */
+void step_nodes(Node::NodeWalkCallback node_fun, NodePtr node, set<NodePtr>& visited, bool forwards, int level=0)
+{
+    if (visited.find(node) != visited.end()) {
+        return;
+    }
+
+    visited.insert(node);
+
+    auto children = node->get_observers();
+    if (forwards) {
+        node_fun(node, level);
+        for (auto& child: children) {
+            step_nodes(node_fun, child, visited, true, level+1);
+        }
+    } else {
+        for (auto& child: children) {
+            step_nodes(node_fun, child, visited, false, level+1);
+        }
+        node_fun(node, level);
+    }
+}
+
+/**
+ * Walks the graph of connections, starting at node, and calling connection_fun 
+ * on each pair of connected nodes connection.
+ */
+void step_connections(Node::ConnectionWalkCallback connection_fun, NodePtr node, set<NodePtr>& visited, bool forwards, int level=0)
+{
+    if (visited.find(node) != visited.end()) {
+        return;
+    }
+
+    visited.insert(node);
+
+    auto children = node->get_observers();
+    for (auto& child: children) {
+        if (forwards) {
+            connection_fun(node, child, level);
+            step_connections(connection_fun, child, visited, true, level+1);
+        } else {
+            step_connections(connection_fun, child, visited, false, level+1);
+            connection_fun(node, child, level);
+        }
+    }
+}
+
+/**
+ * Prunes the graph of nodes, starting at node, and calling filter_fun 
+ * on each node to determine whether to keep that node. The graph is pruned.
+ */
+void filter(Node::NodeFilterCallback filter_fun, Node* parent, NodePtr child, set<NodePtr>& visited, int level=0)
+{
+    if (visited.find(child) != visited.end()) {
+        return;
+    }
+
+    visited.insert(child);
+
+    bool keep_node = filter_fun(child, level);
+    auto grand_children = child->get_observers();
+
+    if (!keep_node) {
+        parent->disconnect(child);
+        for (auto& grand_child: grand_children) {
+            parent->connect(grand_child);
+        }
+    } 
+
+    for (auto& grand_child: grand_children) {
+        filter(filter_fun, child.get(), grand_child, visited, level+1);
+    }
+}
+
+void Node::walk_nodes(NodeWalkCallback node_fun, bool forwards) const
+{
+    set<NodePtr> visited;
+    auto children = this->get_observers();
+    for (auto& child: children) {
+        step_nodes(node_fun, child, visited, forwards);
+    }
+}
+
+void Node::walk_nodes_forwards(NodeWalkCallback node_fun) const
+{
+    walk_nodes(node_fun, true);
+}
+
+void Node::walk_nodes_backwards(NodeWalkCallback node_fun) const
+{
+    walk_nodes(node_fun, false);
+}
+
+void Node::walk_connections(ConnectionWalkCallback connection_fun, bool forwards) const
+{
+    set<NodePtr> visited;
+    auto children = this->get_observers();
+    for (auto& child: children) {
+        step_connections(connection_fun, child, visited, forwards);
+    }
+}
+
+void Node::walk_connections_forwards(ConnectionWalkCallback connection_fun) const
+{
+    walk_connections(connection_fun, true);
+}
+    
+void Node::walk_connections_backwards(ConnectionWalkCallback connection_fun) const
+{
+    walk_connections(connection_fun, false);
+}
+
+void Node::filter_nodes(NodeFilterCallback filter_fun)
+{
+    set<NodePtr> visited;
+    auto children = this->get_observers();
+    for (auto& child: children) {
+        filter(filter_fun, this, child, visited);
+    }
 }
 
 

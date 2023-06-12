@@ -108,6 +108,16 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
 
         .def_property_readonly("guid", [](std::shared_ptr<Node> n){ return n->get_guid().str(); })
         .def_property_readonly("name", &Node::get_name)
+        .def("graph_to_string", &Node::graph_to_string,
+            py::arg("level")=0)
+
+        .def("walk_nodes", &Node::walk_nodes)
+        .def("walk_nodes_forwards", &Node::walk_nodes_forwards)
+        .def("walk_nodes_backwards", &Node::walk_nodes_backwards)
+        .def("walk_connections", &Node::walk_connections)
+        .def("walk_connections_forwards", &Node::walk_connections_forwards)
+        .def("walk_connections_backwards", &Node::walk_connections_backwards)
+        .def("filter_nodes", &Node::filter_nodes)
 
         .def("connect", (std::shared_ptr<Node> (Node::*) (std::shared_ptr<Node>)) &Node::connect, py::keep_alive<1, 2>(), py::call_guard<py::gil_scoped_release>())
         .def("disconnect", (void (Node::*) (std::shared_ptr<Node>)) &Node::disconnect, py::call_guard<py::gil_scoped_release>())
@@ -224,12 +234,6 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
     //         py::arg("name") = "LastOne")
     //     .def_property_readonly("last_one", &LastOne::get_last_one)
     // ;
-
-    py::class_<GraphController, RunnableNode, std::shared_ptr<GraphController>>(m, "GraphController")
-        .def(py::init<const std::string &>(),
-            "Creates a GraphController. This node is used to start and stop all runnable nodes in graph.",
-            py::arg("name") = "GraphController")
-    ;
 
 
     // ---------- Metrics -----------

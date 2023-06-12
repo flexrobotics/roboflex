@@ -391,6 +391,8 @@ public:
     const string & get_device_name() const { return device_name; }
     int get_baud_rate() const { return baud_rate; }
 
+    void freeze();
+
 protected:
 
     void check_write_txrx(const string & name, DXLId dxl_id, int value, int control_table_index, int result, uint8_t dxl_error);

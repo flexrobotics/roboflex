@@ -354,7 +354,7 @@ void MetricsPublisherNode::pretty_print(const std::string& title, bool compact) 
 
 MetricsNode::MetricsNode(const std::string& name, const float passive_frequency_hz):
     Node(name),
-    publisher_node(std::make_shared<MetricsPublisherNode>(name+"Pub")),
+    publisher_node(std::make_shared<MetricsPublisherNode>(name.substr(0, 28)+"_Pub")),
     last_receive_time(-1),
     passive_frequency_hz(passive_frequency_hz),
     last_passive_publish_time(0)
@@ -364,7 +364,7 @@ MetricsNode::MetricsNode(const std::string& name, const float passive_frequency_
 
 MetricsNode::MetricsNode(Node& publisher_target_node, const string& name, const float passive_frequency_hz):
     Node(name),
-    publisher_node(std::make_shared<MetricsPublisherNode>(name+"Pub")),
+    publisher_node(std::make_shared<MetricsPublisherNode>(name.substr(0, 28)+"_Pub")),
     last_receive_time(-1),
     passive_frequency_hz(passive_frequency_hz),
     last_passive_publish_time(0)
@@ -374,7 +374,7 @@ MetricsNode::MetricsNode(Node& publisher_target_node, const string& name, const 
 
 MetricsNode::MetricsNode(shared_ptr<Node> publisher_target_node, const string& name, const float passive_frequency_hz):
     Node(name),
-    publisher_node(std::make_shared<MetricsPublisherNode>(name+"Pub")),
+    publisher_node(std::make_shared<MetricsPublisherNode>(name.substr(0, 28)+"_Pub")),
     last_receive_time(-1),
     passive_frequency_hz(passive_frequency_hz),
     last_passive_publish_time(0)

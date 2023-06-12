@@ -3,7 +3,7 @@
 
 #include "core/node.h"
 #include "core/core_nodes/frequency_generator.h"
-#include "core/core_nodes/graph_control.h"
+//#include "core/core_nodes/graph_control.h"
 
 namespace roboflex {
 using namespace core;
@@ -35,7 +35,7 @@ using std::string, std::set;
  * 
  * Alternatively, a Profiler can be configured with a custom publisher. 
  */
-class Profiler: public nodes::GraphController {
+class Profiler: public RunnableNode {
 public:
 
     Profiler(

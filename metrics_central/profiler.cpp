@@ -12,7 +12,7 @@ Profiler::Profiler(
     shared_ptr<Node> metrics_publisher,
     const float metrics_publishing_frequency_hz,
     const string& name):
-        nodes::GraphController(name),
+        RunnableNode(name),
         metrics_instrumented(false),
         metrics_publishing_frequency_hz(metrics_publishing_frequency_hz),
         metrics_publisher(metrics_publisher)
@@ -45,12 +45,22 @@ void Profiler::start(bool profile)
         this->metrics_trigger->start();
     }
 
-    nodes::GraphController::start();
+    this->walk_nodes_backwards([](NodePtr node, int depth){
+        auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
+        if (rn) {
+            rn->start();
+        }
+    });
 }
 
 void Profiler::stop()
 {
-    nodes::GraphController::stop();
+    this->walk_nodes_forwards([](NodePtr node, int depth){
+        auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
+        if (rn) {
+            rn->stop();
+        }
+    });
 
     if (this->is_metrics_instrumented()) {
         this->metrics_trigger->stop();
@@ -102,7 +112,7 @@ void Profiler::instrument_metrics()
     }
 
     // Insert metrics nodes on each connection.
-    this->walk_connections_backwards([this](NodePtr n1, NodePtr n2){
+    this->walk_connections_backwards([this](NodePtr n1, NodePtr n2, int depth){
         this->insert_metrics_between(n1, n2);
     });
 
@@ -116,7 +126,7 @@ void Profiler::deinstrument_metrics()
     }
 
     // Remove all Metrics Nodes
-    this->filter_nodes([this](NodePtr n){
+    this->filter_nodes([this](NodePtr n, int depth){
         return this->test_and_remove_metrics_node(n);
     });
 

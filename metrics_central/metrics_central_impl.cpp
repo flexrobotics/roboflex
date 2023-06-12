@@ -11,9 +11,7 @@
 #include <GL/glew.h>
 #include "core/core_nodes/core_nodes.h"
 #include "core/util/utils.h"
-
 #include "metrics_central_impl.h"
-
 
 struct MetricSeries {
     // A single metric time series.
@@ -116,12 +114,12 @@ void display_metric_series(const MetricSeries& ms, const std::string& name, doub
             ImPlot::PushStyleColor(ImPlotCol_Fill, color);
             ImPlot::PushStyleColor(ImPlotCol_Line, color);
             if (should_shade) {
-                ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.3f);
+                ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.2f);
                 ImPlot::PlotShaded("##noid", ms.times.data(), v.data(), ms.size());
                 ImPlot::PopStyleVar();
             }
             ImPlot::PushStyleVar(ImPlotStyleVar_LineWeight, 1);
-            ImPlot::PushStyleVar(ImPlotStyleVar_MarkerSize, 2);
+            ImPlot::PushStyleVar(ImPlotStyleVar_MarkerSize, 1);
             ImPlot::SetNextMarkerStyle(ImPlotMarker_Circle);
 
             ImPlot::PlotLine("##noid", ms.times.data(), v.data(), ms.size());
@@ -263,7 +261,6 @@ public:
                 row++;
             }
 
-
             ImGui::EndTable();
         }
     }
@@ -303,8 +300,15 @@ protected:
         const NodeGuid& from_guid,
         const AdjacencyMap& adjacency_map,
         const LinksToMetrics& l2m,
-        std::vector<GuidToGuid>& into)
+        std::vector<GuidToGuid>& into,
+        std::set<NodeGuid>& visited)
     {
+        if (visited.find(from_guid) != visited.end()) {
+            return;
+        }
+
+        visited.insert(from_guid);
+
         if (adjacency_map.count(from_guid) > 0) {
             const AdjacencyItem& adjacency_item = adjacency_map.at(from_guid);
             const Adjacencies& adjacencies = adjacency_item.second;
@@ -327,7 +331,7 @@ protected:
 
             for (auto to_guid: to_guids_sorted_by_node_name) {
                 into.push_back(GuidToGuid(from_guid, to_guid));
-                topological_sort_helper(to_guid, adjacency_map, l2m, into);
+                topological_sort_helper(to_guid, adjacency_map, l2m, into, visited);
             }
         }
     }
@@ -351,13 +355,26 @@ protected:
             }
         }
 
+        std::set<NodeGuid> visited;
+
         std::vector<GuidToGuid> sorted_keys;
         for (auto root_node_guid: root_nodes) {
             sorted_keys.push_back(GuidToGuid());
-            topological_sort_helper(root_node_guid, adjacency_map, this->links_to_metrics, sorted_keys);
+            topological_sort_helper(root_node_guid, adjacency_map, this->links_to_metrics, sorted_keys, visited);
         }
 
         return sorted_keys;
+    }
+
+    std::string links_to_metrics_to_string(const LinksToMetrics& metrics)
+    {
+        std::stringstream sst;
+        for (auto [guid_to_guid, metrics_row]: metrics) {
+            auto [from_guid, to_guid] = guid_to_guid;
+            auto [from_node_name, to_node_name, host_name, metrics_collection] = metrics_row;
+            sst << from_node_name << " -> " << to_node_name << std::endl;
+        }
+        return sst.str();
     }
 
     std::vector<GuidToGuid> sorted_metrics(const LinksToMetrics& metrics)

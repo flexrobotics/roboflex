@@ -11,7 +11,7 @@
 
 namespace roboflex::core {
 
-using std::string, std::shared_ptr, std::ostream, std::list, sole::uuid;
+using std::string, std::shared_ptr, std::ostream, std::list, std::set, sole::uuid;
 
 /**
  * A Node is a basic unit of computation. It can be connected to other nodes,
@@ -48,6 +48,24 @@ public:
     // Sugar for .connect
     Node& operator > (Node& other);
     NodePtr operator > (NodePtr other);
+
+    // Various ways to walk nodes and connections. Callbacks
+    // are called with the node and the depth from this node.
+    using NodeWalkCallback = std::function<void(NodePtr, int)>;
+    void walk_nodes(NodeWalkCallback node_fun, bool forwards) const;
+    void walk_nodes_forwards(NodeWalkCallback node_fun) const;
+    void walk_nodes_backwards(NodeWalkCallback node_fun) const;
+
+    // Callback is called with parent node, child node, depth of parent.
+    using ConnectionWalkCallback = std::function<void(NodePtr, NodePtr, int)>;
+    void walk_connections(ConnectionWalkCallback connection_fun, bool forwards) const;
+    void walk_connections_forwards(ConnectionWalkCallback connection_fun) const;
+    void walk_connections_backwards(ConnectionWalkCallback connection_fun) const;
+
+    // Graph is pruned according to filter predicate. Predicate
+    // callback is called with each node and its depth.
+    using NodeFilterCallback = std::function<bool(NodePtr, int)>;
+    void filter_nodes(NodeFilterCallback filter_fun);
 
 
     // --- Signal and receive methods. ---
