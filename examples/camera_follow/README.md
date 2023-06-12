@@ -20,3 +20,6 @@ To run:
 The code will automatically publish profiling information through an MQTT broker, which you must be running. To visualize it, simultaneously run:
 
     bazel run -c opt //metrics_central:metrics_central
+
+
+<video src='camera_follow_in_action.mp4' width=644/>
