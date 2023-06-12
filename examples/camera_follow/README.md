@@ -22,7 +22,7 @@ The code will automatically publish profiling information through an MQTT broker
     bazel run -c opt //metrics_central:metrics_central
 
 
-<video src='camera_follow_in_action.mp4' width=644/>
+<video src='https://github.com/flexrobotics/roboflex/assets/132782/406861d0-bbd5-47ae-b10e-8b04270e153b' width=644/>
 
-https://github.com/flexrobotics/roboflex/assets/132782/406861d0-bbd5-47ae-b10e-8b04270e153b
+
 
