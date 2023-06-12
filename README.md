@@ -44,6 +44,7 @@ Compound [examples](examples/): (Examples that use more than one module):
 * [examples/webcam_tv](examples/webcam_tv/): Webcam television! Run a webcam sensor, display the output.
 * [examples/webcam_tv_distributed](examples/webcam_tv_distributed/): Run a webcam sensor, broadcast over zmq, display the output.
 * [examples/realsense_tv](examples/realsense_tv/): Realsense television! Run a realsense sensor, display the output.
+* [examples/camera_follow](examples/camera_follow/): Pan-tilt camera that follows your face.
 
 
 ## Real quick
