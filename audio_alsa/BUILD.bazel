@@ -1,0 +1,30 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_library(
+    name = "audio_alsa",
+    srcs = ["audio_alsa.cpp"],
+    hdrs = ["audio_alsa.h" ],
+    copts = ["-std=c++20"],
+    include_prefix = "roboflex/audio_alsa",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//core:roboflex_core",
+        "//third_party:alsa",
+    ],
+)
+
+pybind_extension(
+    name = "roboflex_audio_alsa_ext",
+    srcs = ["pybindings.cpp"],
+    copts = ["-std=c++20"],
+    visibility = ["//visibility:public"],
+    deps = ["//audio_alsa"],
+)
+
+py_library(
+    name = "roboflex_audio_alsa_python",
+    srcs = ["__init__.py"],
+    data = [":roboflex_audio_alsa_ext.so"],
+    visibility = ["//visibility:public"],
+)

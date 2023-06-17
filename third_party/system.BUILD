@@ -41,3 +41,10 @@ cc_library(
     hdrs = ["usr/include/mosquitto.h"],
     includes = ["usr/include"],
 )
+
+cc_library(
+    name = "alsa",
+    srcs = ["usr/lib/x86_64-linux-gnu/libasound.so"],
+    hdrs = ["usr/include/alsa/asoundlib.h"],
+    includes = ["usr/include"],
+)

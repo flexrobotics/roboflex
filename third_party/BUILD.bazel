@@ -72,6 +72,11 @@ alias(
     actual = "@implot//:implot",
 )
 
+alias(
+    name = "alsa",
+    actual = "@system//:alsa",
+)
+
 
 #-------------#
 # CMake repos #
