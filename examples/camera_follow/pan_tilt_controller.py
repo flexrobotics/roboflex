@@ -36,8 +36,19 @@ class PanTiltController(rcd.DynamixelRemoteController):
         )
 
         # Circularity is fine, I'm sure...
-        self > self.dynamixel_node
+
+        # My superclass, DynamixelRemoteController, requires
+        # to receive messages from the DynamixelNode. When it 
+        # does, it calls the readwrite_loop_function() method,
+        # which I override below, and signals a new command.
+
+        # DynamixelNode sends DynamixelGroupStateMessage to me,
+        # handled by superclass.
         self.dynamixel_node > self
+
+        # I send DynamixelGroupCommandMessage to the dynamixel node,
+        # handled by superclass.
+        self > self.dynamixel_node
 
         self.target_x = -1.0
         self.target_y = -1.0
@@ -55,7 +66,7 @@ class PanTiltController(rcd.DynamixelRemoteController):
         """
         This is the function that gets called in a loop by the
         controller, remotely linked to the dynamixel group.
-        Usually about 60hz.
+        Usually about 60hz. In my case, I will ignore the state.
         """
         if self.target_x < 0:
             vel_x = 0
