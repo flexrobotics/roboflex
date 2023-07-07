@@ -321,6 +321,7 @@ RunnableNode::~RunnableNode()
 
 void RunnableNode::start()
 {
+    // Once we get jthreads in clang:
     // if (this->my_thread == nullptr) {
     //     auto f = [](std::stop_token stoken, RunnableNode* self) {
     //         self->stop_token = stoken;
