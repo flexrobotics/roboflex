@@ -22,14 +22,14 @@ This examples has these system dependencies:
 
 1. webcam_uvc:
 
-    apt-get install libusb-1.0-0-dev
-    apt-get install libjpeg-dev
+        apt-get install libusb-1.0-0-dev
+        apt-get install libjpeg-dev
 
 2. visualization
 
-    sudo apt-get install libsdl2-dev
+        apt-get install libsdl2-dev
 
 3. mqtt
 
-    apt-get install mosquitto
-    apt-get install libmosquitto-dev
+        apt-get install mosquitto
+        apt-get install libmosquitto-dev
