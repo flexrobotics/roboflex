@@ -1,0 +1,3 @@
+[submodule "examples/webcam_fastsam/submodules/FastSAM"]
+	path = examples/webcam_fastsam/submodules/FastSAM
+	url = git@github.com:CASIA-IVA-Lab/FastSAM.git
