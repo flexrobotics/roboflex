@@ -18,3 +18,15 @@ py_binary(
         "//visualization:roboflex_visualization_python",
     ],
 )
+
+py_binary(
+    name = "realsense_tv_with_profile_py",
+    srcs = ["realsense_tv_with_profile_py.py"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        "//realsense:roboflex_realsense_python",
+        "//visualization:roboflex_visualization_python",
+        "//transport/zmq/python:roboflex_transport_zmq_python",
+        "//metrics_central:roboflex_profiler_python",
+    ],
+)
