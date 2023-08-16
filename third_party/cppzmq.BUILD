@@ -5,5 +5,5 @@ cc_library(
     hdrs = ["zmq.hpp"],
     includes = [""],
     visibility = ["//visibility:public"],
-    deps = ["@system//:zmq"],
+    deps = ["@roboflex//third_party:zeromq"],
 )

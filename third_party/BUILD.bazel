@@ -86,6 +86,15 @@ alias(
 # They can be linked to as `//third_party:<name>`
 
 cmake(
+    name = "zeromq",
+    cache_entries = {"CMAKE_BUILD_TYPE": "Release"},
+    env = {"CFLAGS": "-fPIC"},
+    lib_source = "@zeromq//:all",
+    out_shared_libs = ["libzmq.so"],
+    visibility = ["//visibility:public"],
+)
+
+cmake(
     name = "libuvc",
     cache_entries = {"CMAKE_BUILD_TYPE": "Release"},
     env = {"CFLAGS": "-fPIC"},

@@ -157,6 +157,14 @@ http_archive(
 # These get built with cmake - see BUILD.bazel
 
 http_archive(
+    name = "zeromq",
+    build_file_content = all_content,
+    sha256 = "c593001a89f5a85dd2ddf564805deb860e02471171b3f204944857336295c3e5",
+    strip_prefix = "zeromq-4.3.4",
+    url = "https://github.com/zeromq/libzmq/releases/download/v4.3.4/zeromq-4.3.4.tar.gz",
+)
+
+http_archive(
     name = "libuvc",
     build_file_content = all_content,
     sha256 = "dec3f5ff83d7913fa93caac7113e8d6eb88ff186d3f9f609667fa50b14a3e1bd",

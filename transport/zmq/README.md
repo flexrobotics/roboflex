@@ -15,7 +15,7 @@ Using ZMQ, nodes can connect to other nodes, running in different threads, diffe
 
 ## System Dependencies
 
-    apt-get install libzmq3-dev
+    None! We build libzmq from source...
 
 ## Build
 

@@ -29,13 +29,6 @@ cc_library(
 )
 
 cc_library(
-    name = "zmq",
-    srcs = ["usr/lib/x86_64-linux-gnu/libzmq.so"],
-    hdrs = ["usr/include/zmq.h"],
-    includes = ["usr/include"],
-)
-
-cc_library(
     name = "mosquitto",
     srcs = ["usr/lib/x86_64-linux-gnu/libmosquitto.so"],
     hdrs = ["usr/include/mosquitto.h"],
