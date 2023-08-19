@@ -77,6 +77,11 @@ alias(
     actual = "@system//:alsa",
 )
 
+alias(
+    name = "jpeg-compressor",
+    actual = "@jpeg-compressor//:jpeg-compressor",
+)
+
 
 #-------------#
 # CMake repos #

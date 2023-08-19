@@ -3,17 +3,21 @@ import roboflex.core as rcc
 import roboflex.webcam_uvc as rcw
 import roboflex.visualization as rcv
 import roboflex.transport.zmq as rcz
+import roboflex.metrics_central as rfm
+import roboflex.util.jpeg as ruj
 
 print('DEVICES:', rcw.get_device_list())
 
-WIDTH=800
-HEIGHT=600
-FPS=60
-FORMAT=rcw.uvc_frame_format.UVC_FRAME_FORMAT_MJPEG
 # WIDTH=800
 # HEIGHT=600
-# FPS=20
-# FORMAT=rcw.uvc_frame_format.UVC_FRAME_FORMAT_ANY
+# FPS=60
+# FORMAT=rcw.uvc_frame_format.UVC_FRAME_FORMAT_MJPEG
+WIDTH=640
+HEIGHT=480
+FPS=120
+FORMAT=rcw.uvc_frame_format.UVC_FRAME_FORMAT_MJPEG
+
+profiler = rfm.Profiler()
 
 zmq_context = rcz.ZMQContext()
 
@@ -32,25 +36,35 @@ viewer = rcv.RGBImageTV(
     height=HEIGHT, 
     image_key="rgb",
     debug=False,
-    mirror=True,
+    mirror=False,
 )
 
 # pub = rcz.ZMQPublisher(zmq_context, "inproc://mycam")
 # sub = rcz.ZMQSubscriber(zmq_context, "inproc://mycam")
 # pub = rcz.ZMQPublisher(zmq_context, "ipc://mycam")
 # sub = rcz.ZMQSubscriber(zmq_context, "ipc://mycam")
-pub = rcz.ZMQPublisher(zmq_context, "tcp://*:4567", max_queued_msgs=1)
-sub = rcz.ZMQSubscriber(zmq_context, "tcp://127.0.0.1:4567", max_queued_msgs=1)
+pub = rcz.ZMQPublisher(zmq_context, "tcp://*:4567", max_queued_msgs=2)
+sub = rcz.ZMQSubscriber(zmq_context, "tcp://127.0.0.1:4567", max_queued_msgs=2)
 
-sensor > pub
-sub > viewer
+#jpeg_compressor = ruj.JPEGCompressor(image_key="rgb", filename_prefix="./image_", debug=True)
+jpeg_compressor = ruj.JPEGCompressor(image_key="rgb", output_key="jpeg", debug=False)
+jpeg_decompressor = ruj.JPEGDecompressor(input_key="jpeg", output_key="rgb", debug=False)
 
-sensor.start()
-sub.start()
-viewer.start()
+# sensor > pub
+# sub > viewer
 
-time.sleep(10)
+profiler > sensor > jpeg_compressor > pub
+profiler > sub > jpeg_decompressor > viewer
 
-sensor.stop()
-sub.stop()
-viewer.stop()
+# sensor.start()
+# sub.start()
+# viewer.start()
+profiler.start(profile=True)
+
+time.sleep(10000)
+
+# sensor.stop()
+# sub.stop()
+# viewer.stop()
+
+profiler.stop()

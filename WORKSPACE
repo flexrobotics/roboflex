@@ -153,6 +153,14 @@ http_archive(
     url = "https://github.com/epezent/implot/archive/refs/tags/v0.14.tar.gz",
 )
 
+http_archive(
+    name = "jpeg-compressor",
+    build_file = "//third_party:jpeg-compressor.BUILD",
+    sha256 = "696735dc7e4ca88bf7bd00b96290d9de56d03691e690297b201e0f5baee13371",
+    strip_prefix = "jpeg-compressor-104",
+    url = "https://github.com/richgel999/jpeg-compressor/archive/refs/tags/v104.tar.gz",
+)
+
 
 # These get built with cmake - see BUILD.bazel
 
