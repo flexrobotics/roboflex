@@ -43,6 +43,13 @@ public:
         const Message& take_header_from,
         std::function<void(flexbuffers::Builder&)> payload_function);
 
+    Message(
+        const string& module_name,
+        const string& message_name,
+        const Message& copy_from,
+        const std::set<string>& omit_keys,
+        std::function<void(flexbuffers::Builder&)> payload_function);
+
     virtual ~Message() {}
 
     virtual void print_on(ostream& os) const;
@@ -163,21 +170,24 @@ protected:
     template <typename F>
     void WriteMapRoot(
         flexbuffers::Builder& fbb,
-        F f)
+        F f,
+        bool create_meta = true)
     {
         char empty_name[33] = {};
         char empty_guid[16] = {};
 
         fbb.Map([&]() {
 
-            fbb.Vector("_meta", [&]() {
-                fbb.Double(get_current_time());
-                fbb.UInt(std::numeric_limits<uint64_t>::max());
-                fbb.Blob(empty_guid, 16);
-                fbb.String(empty_name, 32);
-                fbb.String(_module_name);
-                fbb.String(_message_name);
-            });
+            if (create_meta) {
+                fbb.Vector("_meta", [&]() {
+                    fbb.Double(get_current_time());
+                    fbb.UInt(std::numeric_limits<uint64_t>::max());
+                    fbb.Blob(empty_guid, 16);
+                    fbb.String(empty_name, 32);
+                    fbb.String(_module_name);
+                    fbb.String(_message_name);
+                });
+            }
 
             // write the payload via the provided function
             f();
