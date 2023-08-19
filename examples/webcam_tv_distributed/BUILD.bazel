@@ -6,6 +6,8 @@ py_binary(
         "//webcam_uvc:roboflex_webcam_uvc_python",
         "//visualization:roboflex_visualization_python",
         "//transport/zmq/python:roboflex_transport_zmq_python",
+        "//metrics_central:roboflex_profiler_python",
+        "//util/jpeg/python:roboflex_util_jpeg_python",
     ],
 )
 
