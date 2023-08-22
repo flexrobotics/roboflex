@@ -82,6 +82,11 @@ alias(
     actual = "@jpeg-compressor//:jpeg-compressor",
 )
 
+alias(
+    name = "lodepng",
+    actual = "@lodepng//:lodepng",
+)
+
 
 #-------------#
 # CMake repos #

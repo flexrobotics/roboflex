@@ -8,6 +8,7 @@ py_binary(
         "//transport/zmq/python:roboflex_transport_zmq_python",
         "//metrics_central:roboflex_profiler_python",
         "//util/jpeg/python:roboflex_util_jpeg_python",
+        "//util/png/python:roboflex_util_png_python",
     ],
 )
 

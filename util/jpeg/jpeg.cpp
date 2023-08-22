@@ -1,7 +1,7 @@
 #include "jpeg.h"
 #include "roboflex/core/core_messages/core_messages.h"
-#include "jpeg-compressor/jpge.h" // from jpeg-compressor
-#include "jpeg-compressor/jpgd.h" // from jpeg-compressor
+#include "jpeg-compressor/jpge.h"
+#include "jpeg-compressor/jpgd.h"
 
 namespace roboflex {
 namespace utiljpeg {
@@ -176,7 +176,7 @@ void JPEGDecompressor::receive(core::MessagePtr m) {
         auto tensor = xt::adapt(rgb_data, total_bytes, xt::no_ownership(), vshape);
         
         // Get a copy of the original message, omit the jpeg key/value, and insert the rgb
-        auto o = std::make_shared<core::Message>("util_jpeg", "RGBImage", *m, std::set{this->input_key}, [&](flexbuffers::Builder& fbb) {
+        auto o = std::make_shared<core::Message>(ModuleName, "RGBImage", *m, std::set{this->input_key}, [&](flexbuffers::Builder& fbb) {
             serialization::serialize_flex_tensor<uint8_t, 3>(fbb, tensor, this->output_key);
         });
 

@@ -161,6 +161,14 @@ http_archive(
     url = "https://github.com/richgel999/jpeg-compressor/archive/refs/tags/v104.tar.gz",
 )
 
+http_archive(
+    name = "lodepng",
+    build_file = "//third_party:lodepng.BUILD",
+    sha256 = "915d1bf834e67632b87bd18c932e6041ed0ca46a7e3493f5e3290980092cf2d9",
+    strip_prefix = "lodepng-c18b949b71f45e78b1f9a28c5d458bce0da505d6",
+    url = "https://github.com/lvandeve/lodepng/archive/c18b949b71f45e78b1f9a28c5d458bce0da505d6.tar.gz",
+)
+
 
 # These get built with cmake - see BUILD.bazel
 

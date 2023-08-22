@@ -102,6 +102,7 @@ void display_metric_series(const MetricSeries& ms, const std::string& name, doub
 
         auto last = v.size() > 0 ? v[v.size()-1] : 0;
         std::stringstream s;
+        s.imbue(std::locale(""));
         s << std::fixed << std::setprecision(3) << last;
         const std::string last_string = s.str();
 

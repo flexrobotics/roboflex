@@ -1,0 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "png",
+    srcs = ["png.cpp"],
+    hdrs = ["png.h"],
+    copts = ["-std=c++20"],
+    data = ['__init__.py'],
+    visibility = ["//visibility:public"],
+    include_prefix = "roboflex/util/png",
+    deps = [
+        "//core:roboflex_core",
+        "//third_party:lodepng",
+    ],
+)
