@@ -250,9 +250,6 @@ void Message::set_sender_info(const std::string& name, const sole::uuid& guid, u
 
     if (source_node_guid().ab == 0 && source_node_guid().cd == 0) {
         set_source_node_guid(guid);
-    }
-
-    if (source_node_name().empty()) {
         set_source_node_name(name);
     }
 }
