@@ -1,0 +1,15 @@
+py_library(
+    name = "roboflex_adafruit_imu_bno055_python",
+    srcs = ["imu_bno055.py"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//core/python:roboflex_core_python",
+        #requirement("numpy"),
+    ],
+)
+
+py_binary(
+    name = "run_imu_node",
+    srcs = ["run_imu_node.py"],
+    deps = [":roboflex_adafruit_imu_bno055_python"],
+)

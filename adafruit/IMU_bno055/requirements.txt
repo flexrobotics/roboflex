@@ -1,0 +1,2 @@
+numpy
+adafruit-circuitpython_bno055
