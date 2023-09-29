@@ -1,0 +1,47 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_library(
+    name = "profiler",
+    srcs = ["profiler.cpp"],
+    hdrs = ["profiler.h"],
+    copts = ["-std=c++20"],
+    include_prefix = "roboflex/metrics_central",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//roboflex/core:roboflex_core",
+        "//roboflex/transport/mqtt:mqtt",
+    ],
+)
+
+cc_binary(
+    name = "metrics_central",
+    srcs = [
+        "metrics_central_impl.h",
+        "metrics_central_impl.cpp",
+        "metrics_central.cpp",
+    ],
+    copts = ["-std=c++20"],
+    deps = [
+        "//third_party:imgui",
+        "//third_party:implot",
+        "//roboflex/core:roboflex_core",
+        "//roboflex/transport/mqtt:mqtt",
+        "@boost//:program_options",
+    ],
+)
+
+pybind_extension(
+    name = "roboflex_profiler_ext",
+    srcs = ["pybindings.cpp"],
+    copts = ["-std=c++20"],
+    visibility = ["//visibility:public"],
+    deps = [":profiler"],
+)
+
+py_library(
+    name = "roboflex_profiler_python",
+    srcs = ["__init__.py"],
+    data = [":roboflex_profiler_ext.so"],
+    visibility = ["//visibility:public"],
+)

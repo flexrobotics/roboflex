@@ -10,7 +10,7 @@ If you have all system dependencies installed, you can build the world like this
 
 We recommend building by component. For example:
 
-    bazel build -c opt //core/...
+    bazel build -c opt //roboflex/core/...
 
 Each component will have documentation describing any system dependencies, how to build, and how to run tests.
 
@@ -27,8 +27,8 @@ Each component will have documentation describing any system dependencies, how t
 
 Perhaps nicest, it provides `bazel run`, which can run both c++ and python programs, and build-afresh any changed input artifacts or libraries that it depends on. We rely on this extensively.
 
-    bazel run -c opt //core/examples/cpp:tensors_0
-    bazel run -c opt //core/examples/python:tensors_0
+    bazel run -c opt //roboflex/core/examples/cpp:tensors_0
+    bazel run -c opt //roboflex/core/examples/python:tensors_0
 
 
 ### Bazel also has certain problems: 

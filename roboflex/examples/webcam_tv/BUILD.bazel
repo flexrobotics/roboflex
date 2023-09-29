@@ -1,0 +1,20 @@
+cc_binary(
+    name = "webcam_tv_cpp",
+    srcs = ["webcam_tv_cpp.cpp"],
+    copts = ["-std=c++20"],
+    deps = [
+        "//roboflex/core:roboflex_core",
+        "//roboflex/webcam_uvc:webcam_uvc",
+        "//roboflex/visualization:visualization",
+    ],
+)
+
+py_binary(
+    name = "webcam_tv_py",
+    srcs = ["webcam_tv_py.py"],
+    deps = [
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/webcam_uvc:roboflex_webcam_uvc_python",
+        "//roboflex/visualization:roboflex_visualization_python",
+     ],
+)

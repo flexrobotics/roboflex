@@ -1,0 +1,33 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_library(
+    name = "realsense",
+    srcs = ["realsense.cpp"],
+    hdrs = ["realsense.h"],
+    copts = ["-std=c++20"],
+    include_prefix = "roboflex/realsense",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//roboflex/core:roboflex_core",
+        "//third_party:librealsense2",
+    ],
+)
+
+pybind_extension(
+    name = "roboflex_realsense_ext",
+    srcs = ["pybindings.cpp"],
+    copts = ["-std=c++20"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":realsense",
+        "//third_party:xtensor_python",
+    ],
+)
+
+py_library(
+    name = "roboflex_realsense_python",
+    srcs = ["__init__.py"],
+    data = [":roboflex_realsense_ext.so"],
+    visibility = ["//visibility:public"],
+)

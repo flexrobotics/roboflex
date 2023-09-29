@@ -1,0 +1,17 @@
+py_binary(
+    name = "test_group_controller_py",
+    srcs = ["test_group_controller_py.py"],
+    deps = [
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/dynamixel/python:roboflex_dynamixel_python",
+    ],
+)
+
+py_binary(
+    name = "test_group_node_py",
+    srcs = ["test_group_node_py.py"],
+    deps = [
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/dynamixel/python:roboflex_dynamixel_python",
+    ],
+)

@@ -1,0 +1,59 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+load("@rules_python//python:packaging.bzl", "py_wheel")
+
+cc_library(
+    name = "roboflex_core_python_header",
+    hdrs = ["pybindings.h"],
+    copts = ["-std=c++20"],
+    include_prefix = "roboflex/core",
+    visibility = ["//visibility:public"],
+    deps = ["//roboflex/core:roboflex_core"],
+)
+
+pybind_extension(
+    name = "roboflex_core_python_ext",
+    srcs = [ "pybindings.cpp" ],
+    copts = ["-std=c++20"],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":roboflex_core_python_header",
+        "//third_party:xtensor_python",
+    ],
+)
+
+py_library(
+    name = "roboflex_core_python",
+    srcs = [
+        "__init__.py",
+        "flexbuffers.py",
+        "flextensors.py",
+        "dynoflex.py",
+    ],
+    data = ["//roboflex/core/python:roboflex_core_python_ext.so"],
+    visibility = ["//visibility:public"],
+)
+
+# py_wheel(
+#     name = "roboflex_core_python_wheel",
+#     version = "0.1.0",
+#     author = "Colin Prepscius",
+#     author_email = "colinprepscius@gmail.com",
+#     distribution = "roboflex_core",
+#     classifiers = [],
+#     #keywords = [],
+#     #description = "Roboflex Core",
+#     license = "",
+#     #long_description = "Very long description.",
+#     python_tag = "py310",
+#     abi = "none",
+#     platform = "linux_x86_64",
+#     deps = [
+#         ":roboflex_core_python",
+#         ":roboflex_core_python_ext.so",
+#     ],
+#     strip_path_prefixes = ["core"],
+#     # install_requires=[
+#     #     'numpy',  # xtensor uses numpy
+#     # ],
+# )

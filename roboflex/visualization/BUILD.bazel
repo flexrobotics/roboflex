@@ -1,0 +1,30 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+cc_library(
+    name = "visualization",
+    srcs = ["visualization.cpp"],
+    hdrs = ["visualization.h"],
+    copts = ["-std=c++20"],
+    include_prefix = "roboflex/visualization",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//roboflex/core:roboflex_core",
+        "//third_party:sdl2",
+    ],
+)
+
+pybind_extension(
+    name = "roboflex_visualization_ext",
+    srcs = ["pybindings.cpp"],
+    copts = ["-std=c++20"],
+    visibility = ["//visibility:public"],
+    deps = ["//roboflex/visualization"],
+)
+
+py_library(
+    name = "roboflex_visualization_python",
+    srcs = ["__init__.py"],
+    data = [":roboflex_visualization_ext.so"],
+    visibility = ["//visibility:public"],
+)

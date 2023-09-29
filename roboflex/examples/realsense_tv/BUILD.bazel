@@ -1,0 +1,32 @@
+cc_binary(
+    name = "realsense_tv_cpp",
+    srcs = ["realsense_tv_cpp.cpp"],
+    copts = ["-std=c++20"],
+    deps = [
+        "//roboflex/core:roboflex_core",
+        "//roboflex/realsense:realsense",
+        "//roboflex/visualization:visualization",
+    ],
+)
+
+py_binary(
+    name = "realsense_tv_py",
+    srcs = ["realsense_tv_py.py"],
+    deps = [
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/realsense:roboflex_realsense_python",
+        "//roboflex/visualization:roboflex_visualization_python",
+    ],
+)
+
+py_binary(
+    name = "realsense_tv_with_profile_py",
+    srcs = ["realsense_tv_with_profile_py.py"],
+    deps = [
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/realsense:roboflex_realsense_python",
+        "//roboflex/visualization:roboflex_visualization_python",
+        "//roboflex/transport/zmq/python:roboflex_transport_zmq_python",
+        "//roboflex/metrics_central:roboflex_profiler_python",
+    ],
+)

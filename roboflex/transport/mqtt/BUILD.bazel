@@ -1,0 +1,15 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_binary")
+
+cc_library(
+    name = "mqtt",
+    srcs = ["mqtt_nodes.cpp"],
+    hdrs = ["mqtt_nodes.h"],
+    copts = ["-std=c++20"],
+    data = ['__init__.py'],
+    visibility = ["//visibility:public"],
+    include_prefix = "roboflex/transport/mqtt",
+    deps = [
+        "//roboflex/core:roboflex_core",
+        "//third_party:mosquitto",
+    ]
+)

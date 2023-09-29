@@ -1,0 +1,18 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+py_binary(
+    name = "webcam_fastsam",
+    srcs = glob([
+        "webcam_fastsam.py", 
+        "facedetect.py", 
+        "submodules/FastSAM/fastsam/*.py",
+    ]),
+    data = glob(["models/*.pt"]),
+    deps = [
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/webcam_uvc:roboflex_webcam_uvc_python",
+        "//roboflex/visualization:roboflex_visualization_python",
+        "//roboflex/transport/tq/python:roboflex_transport_tq_python",
+        "//roboflex/metrics_central:roboflex_profiler_python",
+    ],
+)

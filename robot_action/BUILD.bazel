@@ -1,0 +1,14 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "robot_action",
+    srcs = ["robot_action.cpp"],
+    hdrs = ["robot_action.h"],
+    copts = ["-std=c++20"],
+    include_prefix = "robot_action",
+    visibility = ["//visibility:public"],
+    #deps = [
+        #"//roboflex/core:roboflex_core",
+        #"//third_party:dynamixel_sdk",
+    #],
+)

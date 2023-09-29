@@ -1,0 +1,15 @@
+cc_binary(
+    name = "pub_sub_0_cpp",
+    srcs = ["pub_sub_0_cpp.cpp"],
+    copts = ["-std=c++20"],
+    deps = ["//roboflex/transport/zmq:zmq"],
+)
+
+py_binary(
+    name = "pub_sub_0_py",
+    srcs = ["pub_sub_0_py.py"],
+    deps = [
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/transport/zmq/python:roboflex_transport_zmq_python",
+    ],
+)

@@ -1,0 +1,125 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_python//python:packaging.bzl", "py_wheel")
+
+cc_library(
+    name = "roboflex_core",
+    srcs = [
+        "message.cpp",
+        "message_backing_store.cpp",
+        "node.cpp",
+        "serialization/flex_utils.cpp",
+        "serialization/flex_tensor_format.cpp",
+        "util/get_process_memory_usage.cpp",
+        "util/utils.cpp",
+        "core_nodes/frequency_generator.cpp",
+        "core_nodes/metrics.cpp",
+    ],
+    hdrs = [
+        "core.h",
+        "message.h",
+        "message_backing_store.h",
+        "node.h",
+        "util/get_process_memory_usage.h",
+        "util/uuid.h",
+        "util/utils.h",
+        "serialization/flex_utils.h",
+        "serialization/flex_eigen.h",
+        "serialization/flex_xtensor.h",
+        "serialization/flex_tensor_format.h",
+        "core_messages/core_messages.h",
+        "core_nodes/core_nodes.h",
+        "core_nodes/callback_fun.h",
+        "core_nodes/filter_fun.h",
+        "core_nodes/frequency_generator.h",
+        "core_nodes/last_one.h",
+        "core_nodes/map_fun.h",
+        "core_nodes/message_printer.h",
+        "core_nodes/metrics.h",
+    ],
+    data = ['__init__.py'], # yeah it's a python file, but it won't hurt to just have it there
+    copts = ["-std=c++20"],
+    linkopts = ["-lpthread"],
+    include_prefix = "roboflex/core",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//third_party:flatbuffers",
+        "//third_party:xtensor",
+        "//third_party:eigen",
+    ]
+)
+
+# cc_binary(
+
+#     # name = "tensors_0",
+#     # srcs = ["tensors_0.cpp"],
+#     # copts = ["-std=c++20"],
+#     # deps
+#     name = "roboflex_serialization",
+#     srcs = [
+#         "serialization/serialization.h",
+#         "serialization/serialization.cpp",
+#     ],
+
+#     copts = ["-std=c++20"],
+#     deps = [
+#         # "//third_party:flatbuffers",
+#         # "//third_party:xtensor",
+#         # "//third_party:eigen",
+#     ]
+# )
+
+
+# py_wheel(
+#     name = "roboflex_core_python_wheel",
+#     version = "0.1.0",
+#     author = "Colin Prepscius",
+#     author_email = "colinprepscius@gmail.com",
+#     distribution = "roboflex_core",
+#     classifiers = [],
+#     #keywords = [],
+#     #description = "Roboflex Core",
+#     license = "",
+#     #long_description = "Very long description.",
+#     python_tag = "py310",
+#     abi = "none",
+#     platform = "linux_x86_64",
+#     deps = [
+#         "//roboflex/core/python:roboflex_core_python",
+#         "//roboflex/core/python:roboflex_core_python_ext.so",
+#     ],
+#     strip_path_prefixes = ["python"],
+#     # install_requires=[
+#     #     'numpy',  # xtensor uses numpy
+#     # ],
+# )
+
+filegroup(
+    name = "local_python_init",
+    srcs = ["__init__.py"],
+    visibility = ["//visibility:public"],
+)
+
+py_wheel(
+    name = "roboflex_core_python_wheel_base",
+    version = "0.1.0",
+    author = "Colin Prepscius",
+    author_email = "colinprepscius@gmail.com",
+    distribution = "roboflex_core",
+    classifiers = [],
+    #keywords = [],
+    #description = "Roboflex Core",
+    license = "",
+    #long_description = "Very long description.",
+    python_tag = "py310",
+    abi = "none",
+    platform = "linux_x86_64",
+    deps = [
+        ":local_python_init",
+        "//roboflex/core/python:roboflex_core_python",
+        "//roboflex/core/python:roboflex_core_python_ext.so",
+    ],
+    #strip_path_prefixes = ["core/"],
+    # install_requires=[
+    #     'numpy',  # xtensor uses numpy
+    # ],
+)
