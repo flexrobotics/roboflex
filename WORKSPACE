@@ -177,10 +177,13 @@ http_archive(
 
 http_archive(
     name = "zeromq",
+
+    # somewhere in 4.3.5, not yet released as package
+    url = "https://github.com/zeromq/libzmq/archive/de5ee18203f4ba472812fd08665603cd3f88955d.tar.gz", 
     build_file_content = all_content,
     sha256 = "dd169287c55dc092011e1920dbc4158d6563d7e7d850296de74ad8c0ea4b11e0",
     strip_prefix = "libzmq-de5ee18203f4ba472812fd08665603cd3f88955d",
-    url = "https://github.com/zeromq/libzmq/archive/de5ee18203f4ba472812fd08665603cd3f88955d.tar.gz",
+    
     # 4.3.4 doesn't seem to build on mac... urg!
     # sha256 = "c593001a89f5a85dd2ddf564805deb860e02471171b3f204944857336295c3e5",
     # strip_prefix = "zeromq-4.3.4",
