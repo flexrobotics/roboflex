@@ -26,31 +26,39 @@ See [BUILDING.md](BUILDING.md) for how to build parts or all of roboflex.
 
 Roboflex.core takes care of Message and Node classes, eigen/xtensor serialization, flexbuffer creation and reading, and python compatibility. Everything outside of roboflex.core is a sensor, actuator, robot, or utility node - roboflex aims to make it easy to create and support devices and tools. These are the folders/modules under roboflex, and what they do:
 
-* [core](core/): Serialization, Node and Message based classes, etc.
+* [core](roboflex/core/): Serialization, Node and Message based classes, etc.
 
 Utilities:
-* [transport](transport/): Folder containing sub-modules that perform wire transport.
-    * [transport/mqtt](transport/mqtt/): MQTT-based transport. Thin wrapper around mosquitto.
-    * [transport/zmq](transport/zmq/): ZMQ-based transport. Thin wrapper around zero-mq. 
-* [visualization](visualization/): Various visualizers using Simple Directmedia Layer.
-* [metrics_central](metrics_central/): Visualizer for realtime graph performance measurements per node and connection, such as frequency, messaging latency, bytes/sec, etc. And a Profiler node that can publish to it. Requires transport/mqtt to publish graph metrics to.
+* [transport](roboflex/transport/): Folder containing sub-modules that perform wire transport.
+    * [transport/mqtt](roboflex/transport/mqtt/): MQTT-based transport. Thin wrapper around mosquitto.
+    * [transport/zmq](roboflex/transport/zmq/): ZMQ-based transport. Thin wrapper around zero-mq. 
+* [visualization](roboflex/visualization/): Various visualizers using Simple Directmedia Layer.
+* [metrics_central](roboflex/metrics_central/): Visualizer for realtime graph performance measurements per node and connection, such as frequency, messaging latency, bytes/sec, etc. And a Profiler node that can publish to it. Requires transport/mqtt to publish graph metrics to.
+* [util](roboflex/util/): Various other utilities
+    * [jpeg](roboflex/util/jpeg): JPEG to and from (H,W,3) rgb tensors.
+    * [png](roboflex/util/png): PNG to and from (H,W,3) rgb tensors.
 * More to come! Any requests?
 
 Devices:
-* [dynamixel](dynamixel/): Support for dynamixel motors.
-* [realsense](realsense/): Support for Intel Realsense cameras (tested on 435).
-* [webcam_uvc](webcam_uvc/): Support for usb-connected, uvc-compatible webcams.
+* [dynamixel](roboflex/dynamixel/): Support for dynamixel motors.
+* [realsense](roboflex/realsense/): Support for Intel Realsense cameras (tested on 435).
+* [webcam_uvc](roboflex/webcam_uvc/): Support for usb-connected, uvc-compatible webcams.
 * More to come! Any requests?
 
-Compound [examples](examples/): (Examples that use more than one module):
-* [examples/webcam_tv](examples/webcam_tv/): Webcam television! Run a webcam sensor, display the output.
-* [examples/webcam_tv_distributed](examples/webcam_tv_distributed/): Run a webcam sensor, broadcast over zmq, display the output.
-* [examples/realsense_tv](examples/realsense_tv/): Realsense television! Run a realsense sensor, display the output.
-* [examples/camera_follow](examples/camera_follow/): Pan-tilt camera that follows your face.
+Compound [examples](roboflex/examples/): (Examples that use more than one module):
+* [examples/webcam_tv](roboflex/examples/webcam_tv/): Webcam television! Run a webcam sensor, display the output.
+* [examples/webcam_tv_distributed](roboflex/examples/webcam_tv_distributed/): Run a webcam sensor, broadcast over zmq, display the output.
+* [examples/realsense_tv](roboflex/examples/realsense_tv/): Realsense television! Run a realsense sensor, display the output.
+* [examples/camera_follow](roboflex/examples/camera_follow/): Pan-tilt camera that follows your face.
+
+
+## Writing code using roboflex:
+
+See [core](roboflex/core/README.md).
 
 
 ## Real quick
 
-Run [core/examples/cpp/tensors_0.cpp](core/examples/cpp/tensors_0.cpp) to see a quick example, in c++, of running a producer sending xtensor messages to a consumer in a single thread.
+Run [roboflex/core/examples/cpp/tensors_0.cpp](roboflex/core/examples/cpp/tensors_0.cpp) to see a quick example, in c++, of running a producer sending xtensor messages to a consumer in a single thread.
 
     bazel run -c opt //roboflex/core/examples/cpp:tensors_0
