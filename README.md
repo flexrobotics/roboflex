@@ -54,7 +54,7 @@ Compound [examples](roboflex/examples/): (Examples that use more than one module
 
 ## Writing code using roboflex:
 
-See [core](roboflex/core/README.md).
+See [roboflex/core](roboflex/core/README.md).
 
 
 ## Real quick

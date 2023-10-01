@@ -1,6 +1,6 @@
 # roboflex.core
 
-At its core, roboflex is a library to make `Node`s that create, signal, and receive Messages to and from other nodes, in a distributed manner.
+At its core, roboflex is a library to make `Node`s that create, signal, and receive `Message`s to and from other nodes, in a distributed manner.
 
 ![](roboflex_nodes_messages_2.png)
 
