@@ -6,8 +6,8 @@ Roboflex is a c++/python library for distributed robotics. Roboflex is designed 
 
 1. Trivial installation: the core library has no dependencies other than c++ 20.
 2. Ease of use: no non-programming-language files and configurations.
-3. Performance: supports 0-copy xtensors and eigen in c++.
-4. Python interaction: easily scriptable with python. Still performant.
+3. Performance: supports 0-copy xtensor and eigen messaging in c++.
+4. Python interaction: easily scriptable with python. Numpy works seamlessly with messaging.
 5. You control main(): Roboflex is a library, not a framework.
 
 Roboflex supports any wire transport, starting with ZMQ and MQTT.
@@ -18,7 +18,7 @@ The core of roboflex is the message format. We believe that dynamic, self-descri
 
 ## Building
 
-In brief: we use `bazel` (for now) to build roboflex. We currently support only linux x86 and arm. Mac support in the works.
+In brief: we use `bazel` (for now) to build roboflex. We currently support only linux x86 and arm (currently tested on raspberry pi). Mac support in the works.
 
 See [BUILDING.md](BUILDING.md) for how to build parts or all of roboflex.
 
