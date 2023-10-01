@@ -18,6 +18,8 @@ The core of roboflex is the message format. We believe that dynamic, self-descri
 
 ## Building
 
+In brief: we use `bazel` (for now) to build roboflex. We currently support only linux x86 and arm. Mac support in the works.
+
 See [BUILDING.md](BUILDING.md) for how to build parts or all of roboflex.
 
 ## Modules and Directory Structure
