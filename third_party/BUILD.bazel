@@ -2,6 +2,16 @@ load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake", "make", "configure_make"
 
 package(default_visibility = ["//visibility:public"])
 
+config_setting(
+    name = "macos",
+    constraint_values = ["@platforms//os:osx"],
+)
+
+config_setting(
+    name = "linux",
+    constraint_values = ["@platforms//os:linux"],
+)
+
 alias(
     name = "flatbuffers",
     actual = "@com_github_google_flatbuffers//:flatbuffers",
@@ -100,7 +110,10 @@ cmake(
     cache_entries = {"CMAKE_BUILD_TYPE": "Release"},
     env = {"CFLAGS": "-fPIC"},
     lib_source = "@zeromq//:all",
-    out_shared_libs = ["libzmq.so"],
+    out_shared_libs = select({
+        ":macos": ["libzmq.5.dylib"],
+        ":linux": ["libzmq.so"],
+    }),
     visibility = ["//visibility:public"],
 )
 
