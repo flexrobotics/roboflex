@@ -5,5 +5,8 @@ pybind_library(
     hdrs = glob(["include/xtensor-python/*.hpp"]),
     includes = ["include"],
     visibility = ["//visibility:public"],
-    deps = ["@xtensor"],
+    deps = [
+        "@xtensor",
+        "@numpy_headers_local//:numpy_headers",
+    ],
 )
