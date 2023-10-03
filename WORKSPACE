@@ -242,14 +242,14 @@ load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
 boost_deps()
 
 
-new_local_repository(
-    name = "numpy_headers_local",
-    path = "/opt/homebrew/lib/python3.11/site-packages/numpy/core/include",
-    build_file_content = """
-package(default_visibility = ["//visibility:public"])
-cc_library(
-    name = "numpy_headers",
-    srcs = glob(["numpy/*.h"]),
-)
-"""
-)
+# new_local_repository(
+#     name = "numpy_headers_local",
+#     path = "/opt/homebrew/lib/python3.11/site-packages/numpy/core/include",
+#     build_file_content = """
+# package(default_visibility = ["//visibility:public"])
+# cc_library(
+#     name = "numpy_headers",
+#     srcs = glob(["numpy/*.h"]),
+# )
+# """
+# )
