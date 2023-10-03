@@ -42,20 +42,10 @@ cc_library(
     includes = ["usr/include"],
 )
 
-# new_local_repository(
-#     name = "numpy_headers_local",
-#     path = "/opt/homebrew/lib/python3.11/site-packages/numpy/core/include",
-#     build_file_content = """
-# package(default_visibility = ["//visibility:public"])
-# cc_library(
-#     name = "numpy_headers",
-#     srcs = glob(["numpy/*.h"]),
-# )
-# """
-# )
-
+# This is only used on the mac. For now, on linux, it doesn't 
+# seem to be required. I'm not sure why, tbh.
 cc_library(
     name = "numpy_headers",
-    hdrs = glob(["opt/homebrew/lib/python3.11/site-packages/numpy/core/include"]),
+    srcs = glob(["opt/homebrew/lib/python3.11/site-packages/numpy/core/include/numpy/*.h"]),
     includes = ["opt/homebrew/lib/python3.11/site-packages/numpy/core/include"],
 )
