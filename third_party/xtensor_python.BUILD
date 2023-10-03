@@ -7,6 +7,7 @@ pybind_library(
     visibility = ["//visibility:public"],
     deps = [
         "@xtensor",
-        "@numpy_headers_local//:numpy_headers",
+        #"@numpy_headers_local//:numpy_headers",
+        "@system//:numpy_headers",
     ],
 )
