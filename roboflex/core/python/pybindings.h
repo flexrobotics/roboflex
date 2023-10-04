@@ -55,8 +55,23 @@ inline object get_dynoflex_class()
 // that can be used to later construct DynoFlex objects.
 inline object get_dynoflex_construction_method(const std::string& method_name)
 {
-    return get_dynoflex_class().attr(method_name.c_str());
+    object m = get_dynoflex_class().attr(method_name.c_str());
+
+    // CHEAP HACK!!! This method will only ever be called by two other places,
+    // all in this file. Normally: when a program ends, and the python interpreter
+    // gets unloaded, it destructs all extant pybind::objects. However, below
+    // you can see that we use static variables inside functions to cache these
+    // construction functions (they are expensive to extract). And so when the 
+    // c++-level 'module' (or tpu or shared object or whatever) gets unloaded,
+    // the destructors will be called again, resulting in an annoying (but harmless)
+    // SegmentationFault. But if we do this, it's all ok - basically, that object
+    // will never get destructed. A trifle unclean, but maybe slightly less unclean 
+    // than before...
+    m.inc_ref();
+
+    return m;
 }
+
 
 void initialize_module_loading()
 {
@@ -114,7 +129,7 @@ struct type_caster<std::shared_ptr<Message>> {
         //pybind11::gil_scoped_acquire gil;
 
         // initialize the dynoflex constructor
-        static object dynoflex_constructor_from_msg = py::detail::get_dynoflex_construction_method("from_msg");
+        static auto dynoflex_constructor_from_msg = py::detail::get_dynoflex_construction_method("from_msg");
 
         // cast the message to a python object
         handle base_object = BaseCaster::cast(base, rvp, h);
@@ -145,6 +160,7 @@ inline MessagePtr dynoflex_from_object(py::object m)
     static auto dynoflex_constructor_from_data = py::detail::get_dynoflex_construction_method("from_data");
 
     // crashes! pybind11::gil_scoped_release gil;
+
     auto dynoflex_object = dynoflex_constructor_from_data(m);
 
     // it is unclear exactly when we should release the gil.
