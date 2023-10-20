@@ -42,10 +42,10 @@ cc_library(
     includes = ["usr/include"],
 )
 
-# This is only used on the mac. For now, on linux, it doesn't 
-# seem to be required. I'm not sure why, tbh.
-cc_library(
-    name = "numpy_headers",
-    srcs = glob(["opt/homebrew/lib/python3.11/site-packages/numpy/core/include/numpy/*.h"]),
-    includes = ["opt/homebrew/lib/python3.11/site-packages/numpy/core/include"],
-)
+# # This is only used on the mac. For now, on linux, it doesn't 
+# # seem to be required. I'm not sure why, tbh.
+# cc_library(
+#     name = "numpy_headers",
+#     srcs = glob(["opt/homebrew/lib/python3.11/site-packages/numpy/core/include/numpy/*.h"]),
+#     includes = ["opt/homebrew/lib/python3.11/site-packages/numpy/core/include"],
+# )

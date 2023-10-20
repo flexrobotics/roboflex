@@ -1,0 +1,16 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
+
+pybind_extension(
+    name = "roboflex_webcam_uvc_ext",
+    srcs = ["pybindings.cpp"],
+    copts = ["-std=c++20"],
+    visibility = ["//visibility:public"],
+    deps = [":webcam_uvc"],
+)
+
+py_library(
+    name = "roboflex_webcam_uvc_python",
+    srcs = ["__init__.py"],
+    data = [":roboflex_webcam_uvc_ext.so"],
+    visibility = ["//visibility:public"],
+)

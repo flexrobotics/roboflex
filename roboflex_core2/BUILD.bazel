@@ -69,37 +69,37 @@ cc_library(
 #     ]
 # )
 
-filegroup(
-    name = "local_python_init",
-    srcs = ["__init__.py"],
-    visibility = ["//visibility:public"],
-)
+# filegroup(
+#     name = "local_python_init",
+#     srcs = ["__init__.py"],
+#     visibility = ["//visibility:public"],
+# )
 
-py_wheel(
-    name = "roboflex_core_python_wheel",
-    version = "0.1.0",
-    author = "Colin Prepscius",
-    author_email = "colinprepscius@gmail.com",
-    distribution = "roboflex_core",
-    classifiers = [
-        "Framework :: Robot Framework", 
-        "Framework :: Robot Framework :: Library",
-    ],
-    summary = "Performant, ergonomic, and flexible robotics framework.",
-    # description_file = "README.md",
-    license = "MIT",
-    python_tag = "py310",
-    abi = "none",
-    # platform = "linux_x86_64",
-    # platform = select({     
-    #     "//my_platforms:linux_x86": "linux_x86_64",
-    #     "//my_platforms:linux_arm64": "linux_aarch64", 
-    # }),
-    platform = "manylinux2014",
-    deps = [
-        ":local_python_init",
-        "//roboflex/core/python:roboflex_core_python",
-        "//roboflex/core/python:roboflex_core_python_ext.so",
-    ],
-    requires = ['numpy'],
-)
+# py_wheel(
+#     name = "roboflex_core_python_wheel",
+#     version = "0.1.0",
+#     author = "Colin Prepscius",
+#     author_email = "colinprepscius@gmail.com",
+#     distribution = "roboflex_core",
+#     classifiers = [
+#         "Framework :: Robot Framework", 
+#         "Framework :: Robot Framework :: Library",
+#     ],
+#     summary = "Performant, ergonomic, and flexible robotics framework.",
+#     # description_file = "README.md",
+#     license = "MIT",
+#     python_tag = "py310",
+#     abi = "none",
+#     # platform = "linux_x86_64",
+#     # platform = select({     
+#     #     "//my_platforms:linux_x86": "linux_x86_64",
+#     #     "//my_platforms:linux_arm64": "linux_aarch64", 
+#     # }),
+#     platform = "manylinux2014",
+#     deps = [
+#         ":local_python_init",
+#         "//roboflex/core/python:roboflex_core_python",
+#         "//roboflex/core/python:roboflex_core_python_ext.so",
+#     ],
+#     requires = ['numpy'],
+# )

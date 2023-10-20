@@ -1,0 +1,21 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "cmake", "make", "configure_make")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "usb-1.0",
+    actual = "@system//:usb-1.0",
+)
+
+alias(
+    name = "libjpeg",
+    actual = "@system//:libjpeg",
+)
+
+cmake(
+    name = "libuvc",
+    cache_entries = {"CMAKE_BUILD_TYPE": "Release"},
+    env = {"CFLAGS": "-fPIC"},
+    lib_source = "@libuvc//:all",
+    visibility = ["//visibility:public"],
+)

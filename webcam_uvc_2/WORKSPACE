@@ -1,0 +1,80 @@
+#load("@bazel_tools//tools/build_defs/repo:local.bzl", "local_repository")
+
+workspace(name = "roboflex_webcamuvc")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+#------------------#
+# System workspace #
+#------------------#
+
+# Hack to allow access to system libraries
+new_local_repository(
+    name = "system",
+    build_file = "third_party/system.BUILD",
+    path = "/",
+)
+
+#---------------#
+# CMake Support #
+#---------------#
+
+http_archive(
+    name = "rules_foreign_cc",
+    sha256 = "2a4d07cd64b0719b39a7c12218a3e507672b82a97b98c6a89d38565894cf7c51",
+    strip_prefix = "rules_foreign_cc-0.9.0",
+    url = "https://github.com/bazelbuild/rules_foreign_cc/archive/0.9.0.tar.gz",
+)
+
+load("@rules_foreign_cc//foreign_cc:repositories.bzl", "rules_foreign_cc_dependencies")
+
+# This sets up some common toolchains for building targets. For more details, please see
+# https://github.com/bazelbuild/rules_foreign_cc/tree/main/docs#rules_foreign_cc_dependencies
+rules_foreign_cc_dependencies()
+
+
+# Group the sources of the library so that CMake rule have access to it
+all_content = """
+filegroup(
+    name = "all",
+    srcs = glob(["**"]),
+    visibility = ["//visibility:public"],
+)
+"""
+
+local_repository(
+    name = "roboflex_core",
+    path = "../roboflex_core2",
+)
+
+load("@roboflex_core//:rc2.bzl", "core_common_deps")
+
+core_common_deps()
+
+
+
+# http_archive(
+#     name = "pybind11_bazel",
+#     strip_prefix = "pybind11_bazel-fc56ce8a8b51e3dd941139d329b63ccfea1d304b",
+#     sha256 = "6426567481ee345eb48661e7db86adc053881cb4dd39fbf527c8986316b682b9",
+#     urls = ["https://github.com/pybind/pybind11_bazel/archive/fc56ce8a8b51e3dd941139d329b63ccfea1d304b.zip"],
+# )
+
+http_archive(
+    name = "libuvc",
+    build_file_content = all_content,
+    sha256 = "dec3f5ff83d7913fa93caac7113e8d6eb88ff186d3f9f609667fa50b14a3e1bd",
+    strip_prefix = "libuvc-05e7ba682d5761b05a9b212ef84775068fbc94e3",
+    url = "https://github.com/libuvc/libuvc/archive/05e7ba682d5761b05a9b212ef84775068fbc94e3.zip",
+)
+
+
+
+
+# http_archive(
+#     name = "xtensor",
+#     build_file = "//third_party:xtensor.BUILD",
+#     sha256 = "8cd062cfefce0f5bff8961e0c42b3636d5e7eddbe33e5c3167e3fb6d8380f50e",
+#     strip_prefix = "xtensor-0.24.6",
+#     url = "https://github.com/xtensor-stack/xtensor/archive/0.24.6.zip",
+# )

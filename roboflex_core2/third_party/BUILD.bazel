@@ -1,0 +1,33 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+alias(
+    name = "xtl",
+    actual = "@xtl//:xtl",
+)
+
+alias(
+    name = "xsimd",
+    actual = "@xsimd//:xsimd",
+)
+
+alias(
+    name = "flatbuffers",
+    actual = "@com_github_google_flatbuffers//:flatbuffers",
+)
+
+alias(
+    name = "eigen",
+    actual = "@eigen//:eigen",
+)
+
+alias(
+    name = "xtensor",
+    actual = "@xtensor//:xtensor",
+)
+
+alias(
+    name = "xtensor_python",
+    actual = "@xtensor_python//:xtensor_python",
+)
