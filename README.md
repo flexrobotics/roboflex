@@ -66,7 +66,8 @@ A roboflex Node represents a basic unit of computation. Nodes can connect to oth
 
 ## Install for python
 
-    pip install roboflex
+    #pip install roboflex
+    COMING SOON!!!
 
 
 ## Just Show Me The Code Example (in python):
