@@ -1,7 +1,7 @@
 # python/CMakeLists.txt
 cmake_minimum_required(VERSION 3.25)
 
-project(roboflex_core_python VERSION 0.1.1 DESCRIPTION "roboflex core python wrapping")
+project(roboflex_core_python VERSION 0.1.2 DESCRIPTION "roboflex core python wrapping")
 
 # If you don't do this, then the pybind11_add_module will think it's
 # standalone and will not link correctly.
@@ -11,6 +11,9 @@ set(PYBIND11_CPP_STANDARD -std=c++20)
 # -------------------- 
 # Get the dependencies
 
+find_package(Python REQUIRED COMPONENTS Interpreter Development NumPy)
+
+
 include(FetchContent)
 
 # download and build pybind11
@@ -19,14 +22,14 @@ FetchContent_Declare(pybind11
     GIT_TAG        v2.8.1
 )
 FetchContent_MakeAvailable(pybind11)
-# Apparently we dont' need: add_subdirectory(pybind11)
+# Apparently we don't need: add_subdirectory(pybind11)
 
 # download and build xtensor_python
-FetchContent_Declare(xtensor_python
+FetchContent_Declare(xtensor-python
     GIT_REPOSITORY https://github.com/xtensor-stack/xtensor-python.git
     GIT_TAG        0.26.1
 )
-FetchContent_MakeAvailable(xtensor_python)
+FetchContent_MakeAvailable(xtensor-python)
 
 
 # -------------------- 
@@ -38,7 +41,10 @@ pybind11_add_module(roboflex_core_python_ext
 )
 
 # Link against your core library and any necessary dependencies
-target_link_libraries(roboflex_core_python_ext PRIVATE roboflex_core flatbuffers_util xtensor-python xtensor xtl xsimd eigen)
+target_link_libraries(roboflex_core_python_ext PUBLIC 
+    roboflex_core 
+    xtensor-python 
+)
 
 # If you have specific compile definitions or options for just the Python module
 # target_compile_definitions(pyroboflex PRIVATE SOME_DEFINITION)

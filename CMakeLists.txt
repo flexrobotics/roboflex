@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(roboflex_core VERSION 0.1.1 DESCRIPTION "roboflex core")
+project(roboflex_core VERSION 0.1.2 DESCRIPTION "roboflex core")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -113,8 +113,12 @@ target_include_directories(roboflex_core PUBLIC
     $<INSTALL_INTERFACE:include/eigen3>
 )
 
-target_link_libraries(roboflex_core PRIVATE 
-    flatbuffers_util xtensor xsimd xtl Eigen3::Eigen 
+target_link_libraries(roboflex_core PUBLIC 
+    flatbuffers_util 
+    xtensor 
+    xsimd 
+    xtl 
+    Eigen3::Eigen 
 )
 
 set_property(TARGET roboflex_core PROPERTY 

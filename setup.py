@@ -47,7 +47,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name='roboflex',
-    version='0.1.1',
+    version='0.1.2',
     description='Roboflex Core Library',
     url="https://github.com/flexrobotics/roboflex",
     author='Colin Prepscius',
