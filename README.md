@@ -25,13 +25,13 @@ A roboflex Node represents a basic unit of computation. Nodes can connect to oth
 
 #### Nodes are designed for sub-classing, in python:
 
-    class MyNode(roboflex.core.Node):
+    class MyNode(roboflex.Node):
         def receive(self, msg):
             signal(somenewmsg)
     
     # or, to make a runnable (root) node that runs in a thread:
 
-    class MyRunnable(roboflex.core.RunnableNode):
+    class MyRunnable(roboflex.RunnableNode):
         def child_thread_fn(self):
             do whatever
         def start(self):
@@ -56,7 +56,8 @@ A roboflex Node represents a basic unit of computation. Nodes can connect to oth
 
     // The examples in roboflex/core/core_nodes explore subclassing further.
 
-## Building
+
+## Building (Only if you're doing c++)
 
     mkdir build && cd build
     cmake ..
@@ -66,9 +67,8 @@ A roboflex Node represents a basic unit of computation. Nodes can connect to oth
 
 ## Install for python
 
-    #pip install roboflex
-    COMING SOON!!!
-
+    pip install roboflex
+    
 
 ## Just Show Me The Code Example (in python):
 

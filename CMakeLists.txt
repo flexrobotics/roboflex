@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.25)
 
-project(roboflex_core VERSION 0.1.2 DESCRIPTION "roboflex core")
+option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
+
+project(roboflex_core VERSION 0.1.5 DESCRIPTION "roboflex core")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -202,6 +204,9 @@ install(TARGETS tensors_0_cpp basic_0_cpp
 
 
 # --------------------
-# build python bindings
+# build python bindings, only if we're building the core library.
 
-add_subdirectory(python)
+if(BUILD_ROBOFLEX_PYTHON_EXT)
+    message(">>>>>>>>>>>>> BUILDING ROBOFLEX CORE PYTHON BINDINGS <<<<<<<<<<<<<<<<<<<")
+    add_subdirectory(python)
+endif()
