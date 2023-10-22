@@ -46,7 +46,8 @@ FetchContent_Declare(eigen
     # URL_HASH SHA256=1ccaabbfe870f60af3d6a519c53e09f3dcf630207321dffa553564a8e75c4fc8
     # DOWNLOAD_NO_PROGRESS ON
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG        origin/master
+    #GIT_TAG        origin/master
+    GIT_TAG        877c2d1e9b08b9630a924ee2e06469048b124e2d 
     DOWNLOAD_NO_PROGRESS ON
 )
 FetchContent_MakeAvailable(eigen)
