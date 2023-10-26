@@ -1,7 +1,7 @@
 # python/CMakeLists.txt
 cmake_minimum_required(VERSION 3.25)
 
-project(roboflex_core_python VERSION 0.1.5 DESCRIPTION "roboflex core python wrapping")
+project(roboflex_core_python VERSION 0.1.6 DESCRIPTION "roboflex core python wrapping")
 
 # If you don't do this, then the pybind11_add_module will think it's
 # standalone and will not link correctly.
@@ -19,7 +19,6 @@ include(FetchContent)
 # download and build pybind11
 FetchContent_Declare(pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11.git
-    #GIT_TAG        v2.8.1
     GIT_TAG        v2.11.1
 )
 FetchContent_MakeAvailable(pybind11)

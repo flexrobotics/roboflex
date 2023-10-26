@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.25)
 
 option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
 
-project(roboflex_core VERSION 0.1.5 DESCRIPTION "roboflex core")
+project(roboflex_core VERSION 0.1.6 DESCRIPTION "roboflex core")
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
