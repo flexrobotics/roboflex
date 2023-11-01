@@ -16,7 +16,14 @@ namespace serialization {
 
 /**
  * Serialize an xtensor into a flexbuffer Builder as a map with the given name
- * at the root of the tree, with keys "shape", "data", and "dtype".
+ * at the root of the tree, with keys "shape", "dtype", and "data":
+ * 
+ * example:
+ * {
+ *    "shape": [3, 480, 640],
+ *    "dtype": 5,
+ *    "data": <blob>,
+ * }
  */
 template <typename T, size_t NDimensions>
 void serialize_flex_tensor(flexbuffers::Builder& fbb, const xt::xtensor<T, NDimensions>& tensor, const std::string& name="")
@@ -50,6 +57,13 @@ void serialize_flex_tensor(flexbuffers::Builder& fbb, const xt::xtensor<T, NDime
  * This version takes not an xtensor, but a shape. It writes a special Blob into the map 
  * under "data" that is basically uninitialized data of the correct size. Later, the 
  * tensor can be written directly into that memory.
+ * 
+ * example:
+ * {
+ *    "shape": [3, 480, 640],
+ *    "dtype": 5,
+ *    "data": <blob>,
+ * }
  */
 template <typename T, size_t NDimensions>
 void serialize_flex_tensor(flexbuffers::Builder& fbb, const std::array<size_t, NDimensions>& tensor_shape, const std::string& name="")
@@ -148,6 +162,7 @@ flextensor_adaptor<T> deserialize_flex_tensor(flexbuffers::Reference r, bool pri
     }
 
     // return a NO-OWNERSHIP adapter into the raw data
+    // This means the adapter will not destruct memory.
     // This achieves 0-copy!
     return xt::adapt(
         data_typed,
@@ -195,6 +210,7 @@ flextensor_adaptor<T> deserialize_flex_tensor_no_dim_check(flexbuffers::Referenc
     T* data_typed = const_cast<T*>(data_typed_const);
 
     // return a NO-OWNERSHIP adapter into the raw data
+    // This means the adapter will not destruct memory.
     return xt::adapt(
         data_typed,
         blob.size() / sizeof(T),

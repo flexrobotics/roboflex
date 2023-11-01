@@ -56,10 +56,6 @@
 namespace roboflex {
 namespace serialization {
 
-// extern const std::string DataKey;   // "data"
-// extern const std::string ShapeKey;  // "shape"
-// extern const std::string DTypeKey;  // "dtype"
-
 constexpr char DataKey[] = "data";
 constexpr char ShapeKey[] = "shape";
 constexpr char DTypeKey[] = "dtype";

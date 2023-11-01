@@ -39,5 +39,19 @@ const sole::uuid deserialize_uuid(flexbuffers::Blob& blob)
     return sole::rebuild(ab, cd);
 }
 
+std::string shape_to_string(const std::vector<size_t>& shape)
+{
+    std::stringstream ss;
+    ss << "(";
+    for (size_t i = 0; i < shape.size(); i++) {
+        ss << shape[i];
+        if (i < shape.size()-1) {
+            ss << ", ";
+        }
+    }
+    ss << ")";
+    return ss.str();
+}
+
 } // namespace serialization
 } // namespace roboflex

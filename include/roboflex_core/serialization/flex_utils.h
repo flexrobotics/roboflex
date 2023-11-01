@@ -17,6 +17,10 @@ void serialize_uuid(sole::uuid id, const std::string& key, flexbuffers::Builder&
  */
 const sole::uuid deserialize_uuid(flexbuffers::Blob& blob);
 
+/**
+ * Constructs a string from a vector representing a shape.
+ */
+std::string shape_to_string(const std::vector<size_t>& shape);
 
 } // namespace serialization
 } // namespace roboflex
