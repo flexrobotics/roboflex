@@ -7,7 +7,7 @@
  * So this is a big hack.
  */
 namespace flatbuffers {
-#if defined(__APPLE__) && define (__MACH__)
+#if defined(__APPLE__) && defined(__MACH__)
     // apparently we don't need to do it on mac...
 #else
     #ifdef _MSC_VER

@@ -1,7 +1,7 @@
 # python/CMakeLists.txt
 cmake_minimum_required(VERSION 3.24)
 
-project(roboflex_core_python VERSION 0.1.7 DESCRIPTION "roboflex core python wrapping")
+project(roboflex_core_python VERSION 0.1.8 DESCRIPTION "roboflex core python wrapping")
 
 # If you don't do this, then the pybind11_add_module will think it's
 # standalone and will not link correctly.
