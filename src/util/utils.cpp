@@ -23,7 +23,7 @@ std::string repeated_string(const std::string& input, size_t num)
 
 std::string get_roboflex_core_version() 
 {
-    return std::string("0.1.6");
+    return std::string("0.1.7");
 }
 
 double get_current_time() 

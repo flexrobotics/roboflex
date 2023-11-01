@@ -7,6 +7,9 @@
  * So this is a big hack.
  */
 namespace flatbuffers {
+#if defined(__APPLE__) && define (__MACH__)
+    // apparently we don't need to do it on mac...
+#else
     #ifdef _MSC_VER
     ClassicLocale::ClassicLocale()
         : locale_(_create_locale(LC_ALL, "C")) {}
@@ -17,6 +20,7 @@ namespace flatbuffers {
     ClassicLocale::~ClassicLocale() { freelocale(locale_); }
     #endif
     ClassicLocale ClassicLocale::instance_;
+#endif
 }
 
 namespace roboflex {
