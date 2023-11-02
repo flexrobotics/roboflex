@@ -77,8 +77,7 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             auto v = std::make_shared<MessageBackingStoreVector>(data, length);
             v->blit_header();
             return v;
-        //})
-        }, py::call_guard<py::gil_scoped_acquire>())
+        }, py::call_guard<py::gil_scoped_acquire>()) // we must have it to copy the buffer
     ;
 
     py::class_<Message, PyMessage, MessagePtr>(m, "Message")
