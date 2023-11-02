@@ -159,13 +159,12 @@ inline MessagePtr dynoflex_from_object(py::object m)
     // so make it static.
     static auto dynoflex_constructor_from_data = py::detail::get_dynoflex_construction_method("from_data");
 
-    // crashes! pybind11::gil_scoped_release gil;
-
     auto dynoflex_object = dynoflex_constructor_from_data(m);
 
     // it is unclear exactly when we should release the gil.
     // I'll assume that earlier is better: here seems to work.
-    pybind11::gil_scoped_release gil2;
+    // UPDATE: NO, NOT HERE! typer.load seems to need the gil
+    // pybind11::gil_scoped_release gil2;
 
     // This CANNOT BE STATIC! The typer object retains the value,
     // and that will cause a leak of the last object. Safer
@@ -175,6 +174,11 @@ inline MessagePtr dynoflex_from_object(py::object m)
     // Use the typer to convert the 'pure python dynoflex object'
     // to a MessagePtr.
     bool cast_succeeded = typer.load(dynoflex_object, false);
+
+    // it is unclear exactly when we should release the gil.
+    // I'll assume that earlier is better: here seems to work.
+    pybind11::gil_scoped_release gil2;
+
     if (!cast_succeeded) {
         throw std::runtime_error("Cast of python object to dynoflex failed!");
     }
