@@ -107,6 +107,7 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             py::arg("name") = "Node")
 
         .def_property_readonly("guid", [](std::shared_ptr<Node> n){ return n->get_guid().str(); })
+
         .def_property_readonly("name", &Node::get_name)
         .def("graph_to_string", &Node::graph_to_string,
             py::arg("level")=0)
@@ -173,7 +174,7 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
         .def("start", &RunnableNode::start, py::call_guard<py::gil_scoped_release>())
         .def("stop", &RunnableNode::stop, py::call_guard<py::gil_scoped_release>())
         .def("request_stop", &RunnableNode::request_stop, py::call_guard<py::gil_scoped_release>())
-        .def("stop_requested", &RunnableNode::stop_requested)       .def_property_readonly("guid", [](std::shared_ptr<Node> n){ return n->get_guid().str(); })
+        .def("stop_requested", &RunnableNode::stop_requested)       
         .def("run", &RunnableNode::run, py::call_guard<py::gil_scoped_release>())
     ;
 
