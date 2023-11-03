@@ -1,5 +1,5 @@
 # python/CMakeLists.txt
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.18)
 
 project(roboflex_core_python VERSION 0.1.10 DESCRIPTION "roboflex core python wrapping")
 
