@@ -229,12 +229,60 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             py::arg("name") = "MessagePrinter")
     ;
 
+    py::class_<UniversalDataSaver, Node, std::shared_ptr<UniversalDataSaver>>(m, "UniversalDataSaver")
+        .def(py::init<const std::string &, bool, const std::string &>(),
+            "Create a universal data saver node. Just connect it to something.",
+            py::arg("file_path"),
+            py::arg("append") = true,
+            py::arg("name") = "UniversalDataSaver")
+        .def("file_path", &UniversalDataSaver::get_file_path)
+        .def("set_file_path", &UniversalDataSaver::set_file_path)
+        .def("flush", &UniversalDataSaver::flush)
+        .def("record_message", &UniversalDataSaver::record_message)
+    ;
+
+    py::class_<UniversalDataPlayer, RunnableNode, std::shared_ptr<UniversalDataPlayer>>(m, "UniversalDataPlayer")
+        .def(py::init<const std::string &, const std::string &, bool, bool, bool, bool>(),
+            "Create a universal data player node. Instantiate this and call start.",
+            py::arg("file_path"),
+            py::arg("name") = "UniversalDataPlayer",
+            py::arg("forever") = false,
+            py::arg("realtime") = false,
+            py::arg("rewrite_timestamps") = false,
+            py::arg("verbose") = true)
+        .def("produce", &UniversalDataPlayer::produce)
+        .def("produce_all_once", &UniversalDataPlayer::produce_all_once)
+        .def("file_path", &UniversalDataPlayer::get_file_path)
+        .def("forever", &UniversalDataPlayer::get_forever)
+        .def("realtime", &UniversalDataPlayer::get_realtime)
+        .def("rewrite_timestamps", &UniversalDataPlayer::get_rewrite_timestamps)
+        .def("verbose", &UniversalDataPlayer::get_verbose)
+    ;
+
     // py::class_<LastOne, Node, std::shared_ptr<LastOne>>(m, "LastOne")
     //     .def(py::init<const std::string &>(),
     //         "Create a node that just remembers the last message, in a thread-safe way.",
     //         py::arg("name") = "LastOne")
     //     .def_property_readonly("last_one", &LastOne::get_last_one)
     // ;
+
+
+    // ---------- FRP-style helper functions -----------
+
+    m.def("take", [](size_t n, std::shared_ptr<Node> from, int timeout_milliseconds=0) {
+        return take(n, from, timeout_milliseconds);
+    }, "Takes n messages from the given Node's output.",
+        py::call_guard<py::gil_scoped_release>(),
+        py::arg("n"),
+        py::arg("from"),
+        py::arg("timeout_milliseconds")=0);
+
+    m.def("take1", [](std::shared_ptr<Node> from, int timeout_milliseconds=0) {
+        return take1(from, timeout_milliseconds);
+    }, "Takes 1 message from the given Node's output.",
+        py::call_guard<py::gil_scoped_release>(),
+        py::arg("from"),
+        py::arg("timeout_milliseconds")=0);
 
 
     // ---------- Metrics -----------
