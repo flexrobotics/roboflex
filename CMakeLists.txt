@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
 
-project(roboflex_core VERSION 0.1.12)
+project(roboflex_core VERSION 0.1.13)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -79,6 +79,7 @@ target_include_directories(flatbuffers_util INTERFACE
 add_library(roboflex_core STATIC
 
     # Source files
+    src/core_nodes/graph_root.cpp
     src/core_nodes/frequency_generator.cpp
     src/core_nodes/metrics.cpp
     src/message_backing_store.cpp
@@ -97,6 +98,7 @@ add_library(roboflex_core STATIC
     include/roboflex_core/core_nodes/core_nodes.h
     include/roboflex_core/core_nodes/filter_fun.h
     include/roboflex_core/core_nodes/frequency_generator.h
+    include/roboflex_core/core_nodes/graph_root.h
     include/roboflex_core/core_nodes/last_one.h
     include/roboflex_core/core_nodes/map_fun.h
     include/roboflex_core/core_nodes/message_printer.h

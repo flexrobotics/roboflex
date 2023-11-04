@@ -14,4 +14,7 @@
 #include "roboflex_core/core_nodes/message_printer.h"
 #include "roboflex_core/core_nodes/metrics.h"
 
+// super useful - can perform profiling, graph re-writing, more.
+#include "roboflex_core/core_nodes/graph_root.h"
+
 #endif // ROBOFLEX_CORE_NODES__H

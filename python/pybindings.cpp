@@ -357,6 +357,18 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
 
     // ------------ utilities ------------
 
+    py::class_<GraphRoot, roboflex::core::RunnableNode, std::shared_ptr<GraphRoot>>(m, "GraphRoot")
+        .def(py::init<const std::string&>(), "Create a GraphRoot.", py::arg("name"))
+        .def(py::init<roboflex::core::NodePtr, const float, const std::string&>(),
+            "Create a GraphRoot with a custom metrics publisher.",
+            py::arg("metrics_publisher"),
+            py::arg("metrics_publishing_frequency_hz") = 1.0,
+            py::arg("name") = "GraphRoot")
+        .def("start", &GraphRoot::start, py::arg("profile"))
+    ;
+
+    // ------------ utilities ------------
+
     m.def("get_current_time", &get_current_time, "Gets the current time the same way that everything else in roboflex does.");
     m.def("get_roboflex_core_version", &get_roboflex_core_version, "Gets the current roboflex version.");
     //m.def("initialize_module_loading", &pybind11::detail::initialize_module_loading, "Initializes module loading. Must be called from the main thread.");
