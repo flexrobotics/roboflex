@@ -65,6 +65,14 @@ public:
         return get_flex_root().AsMap();
     }
 
+    flexbuffers::Reference root_val(const string& key) const {
+        // Hey, should we throw an exception if the key doesn't exist?
+        // It wouldn't be very flexbuffer-like, but it would be more
+        // informative to the user if something were to go wrong, such
+        // as trying to deserialize a key that doesn't exist.
+        return root_map()[key];
+    }
+
     // Meta information is a vector off of the root
     // map under the key "_meta". The value is a
     // vector of values of different types, containing
