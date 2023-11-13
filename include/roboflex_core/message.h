@@ -83,7 +83,7 @@ public:
     }
 
     // Position 0: timestamp
-    const double timestamp() const {
+    double timestamp() const {
         return get_meta()[0].AsDouble();
     }
 
@@ -92,7 +92,7 @@ public:
     }
     
     // Position 1: message counter
-    const uint64_t message_counter() const {
+    uint64_t message_counter() const {
         return get_meta()[1].AsUInt64();
     }
 
@@ -165,7 +165,7 @@ public:
     std::string_view message_announce() const { return payload()->message_announce(); }
     // The message size is the size of the message, including the header, encoded in 
     // the next four bytes. It should be == to get_raw_size()
-    const uint32_t message_size() const { return payload()->message_size(); }
+    uint32_t message_size() const { return payload()->message_size(); }
     // ... after that, all data is encoded in Flexbuffers.
 
 protected:
