@@ -61,7 +61,7 @@ struct MessageBackingStore
 
     // The size of the total message as encoded in the next 4 bytes,
     // which should be == the size of the data + 8.
-    const uint32_t message_size() const;
+    uint32_t message_size() const;
 
     // NOTE: this is a non-const pointer to the actual data, not a copy!
     // DO NOT DELETE IT! This is the pointer to the data portion, which 
