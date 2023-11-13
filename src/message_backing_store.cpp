@@ -34,7 +34,7 @@ const std::string_view MessageBackingStore::message_announce()
     return std::string_view((char*)get_data() - MESSAGE_HEADER_SIZE, 4);
 }
 
-const uint32_t MessageBackingStore::message_size() const 
+uint32_t MessageBackingStore::message_size() const 
 {
     const uint8_t* szpos = get_data() - MESSAGE_HEADER_SIZE + 4;
     return (uint32_t)(szpos[3] << 24 | szpos[2] << 16 | szpos[1] << 8 | szpos[0]);
