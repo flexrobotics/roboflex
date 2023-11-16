@@ -390,6 +390,8 @@ void RunnableNode::run()
     // Set myself as the signal handler
     SignalStacker s = SignalStacker(this);
 
+    this->stop_signal = false;
+
     // and let's go - just run in this thread
     child_thread_fn();
 }

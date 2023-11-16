@@ -130,7 +130,8 @@ public:
     virtual void request_stop();
     
     //bool stop_requested() const { return my_thread ? stop_token.stop_requested() : false; }
-    bool stop_requested() const { return my_thread ? stop_signal.load() : false; }
+    //bool stop_requested() const { return my_thread ? stop_signal.load() : false; }
+    bool stop_requested() const { return stop_signal.load(); }
 
     // Calls start_thread_fn in the current thread (does not launch
     // another thread).
