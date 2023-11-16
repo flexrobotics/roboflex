@@ -412,7 +412,9 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             py::arg("metrics_publisher"),
             py::arg("metrics_publishing_frequency_hz") = 1.0,
             py::arg("name") = "GraphRoot")
-        .def("start", &GraphRoot::start, py::arg("profile"))
+        .def("start", &GraphRoot::start, 
+            py::arg("profile"),
+            py::arg("node_to_run") = nullptr)
     ;
 
 

@@ -45,7 +45,7 @@ public:
         const float metrics_publishing_frequency_hz = 1.0,
         const string& name = "GraphRoot");
 
-    void start(bool profile = false);
+    void start(bool profile = false, const RunnableNodePtr node_to_run = nullptr);
     void stop() override;
 
     bool is_metrics_instrumented() const { return metrics_instrumented; }

@@ -154,6 +154,7 @@ protected:
 };
 
 using NodePtr = Node::NodePtr;
+using RunnableNodePtr = shared_ptr<RunnableNode>;
 
 } // roboflex::core
 

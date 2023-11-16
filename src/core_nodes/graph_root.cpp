@@ -23,19 +23,23 @@ GraphRoot::GraphRoot(
 
 }
 
-void GraphRoot::start(bool profile)
+void GraphRoot::start(bool profile, const RunnableNodePtr node_to_run)
 {
     if (profile) {
         instrument_metrics();
         this->metrics_trigger->start();
     }
 
-    this->walk_nodes_backwards([](NodePtr node, int depth){
+    this->walk_nodes_backwards([node_to_run](NodePtr node, int depth){
         auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
-        if (rn) {
+        if (rn && rn != node_to_run) {
             rn->start();
         }
     });
+
+    if (node_to_run) {
+        node_to_run->run();
+    }
 }
 
 void GraphRoot::stop()
