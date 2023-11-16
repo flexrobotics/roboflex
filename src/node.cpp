@@ -350,10 +350,10 @@ void RunnableNode::stop_and_join()
 
 void RunnableNode::request_stop()
 {
-    if (this->my_thread != nullptr) {
+    //if (this->my_thread != nullptr) {
         //this->my_thread->request_stop();
         this->stop_signal = true;
-    }
+    //}
 }
 
 // We switch the signal handler if run() is called. When run()
