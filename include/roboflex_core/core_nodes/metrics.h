@@ -64,15 +64,15 @@ struct MetricsMessage: public core::Message {
 
     map<string, MetricTracker> metrics;
 
-    const double elapsed_time() const {
+    double elapsed_time() const {
         return root_map()["elapsed_time"].AsDouble();
     }
 
-    const double time() const {
+    double time() const {
         return root_map()["time"].AsDouble();
     }
 
-    const uint64_t current_mem_usage() const {
+    uint64_t current_mem_usage() const {
         return root_map()["current_mem_usage"].AsUInt64();
     }
 

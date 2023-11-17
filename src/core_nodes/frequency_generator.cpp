@@ -72,7 +72,7 @@ void FrequencyGenerator::child_thread_fn()
     }
 }
 
-void FrequencyGenerator::on_trigger(double wall_clock_time)
+void FrequencyGenerator::on_trigger(double /*wall_clock_time*/)
 {
     // I will simply signal down-stream, but child classes may override
     this->signal(std::make_shared<BlankMessage>("FrequencyTrigger"));

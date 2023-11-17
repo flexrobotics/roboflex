@@ -81,7 +81,7 @@ public:
         });
     }
 
-    const float value() const {
+    float value() const {
         return root_map()["v"].AsFloat();
     }
 
@@ -108,7 +108,7 @@ public:
         });
     }
 
-    const float value() const {
+    float value() const {
         return root_map()["v"].AsDouble();
     }
 

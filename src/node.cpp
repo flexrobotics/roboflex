@@ -275,7 +275,7 @@ MessagePtr Node::signal_self(MessagePtr m)
     return m;
 }
 
-void Node::receive_from(MessagePtr m, const Node& from)
+void Node::receive_from(MessagePtr m, const Node& /*from*/)
 {
     receive(m);
 }
@@ -362,7 +362,7 @@ void RunnableNode::request_stop()
 // in the main thread of the process.
 std::atomic<RunnableNode*> running_node = NULL;
 
-void interrupt_signal_handler(int sig)
+void interrupt_signal_handler(int /*sig*/)
 {
     RunnableNode *rn = running_node;
     rn->request_stop();

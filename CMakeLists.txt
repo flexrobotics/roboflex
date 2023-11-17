@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
 
-project(roboflex_core VERSION 0.1.16)
+project(roboflex_core VERSION 0.1.17)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -90,7 +90,7 @@ add_library(roboflex_core STATIC
     src/node.cpp
     src/serialization/flex_tensor_format.cpp
     src/serialization/flex_utils.cpp
-    src/serialization/serialization.cpp
+    #src/serialization/serialization.cpp
     src/util/utils.cpp
     src/util/get_process_memory_usage.cpp
     
@@ -116,7 +116,7 @@ add_library(roboflex_core STATIC
     include/roboflex_core/serialization/flex_tensor_format.h
     include/roboflex_core/serialization/flex_utils.h
     include/roboflex_core/serialization/flex_xtensor.h
-    include/roboflex_core/serialization/serialization.h
+    #include/roboflex_core/serialization/serialization.h
     include/roboflex_core/serialization/serializer.h
     include/roboflex_core/util/event.h
     include/roboflex_core/util/utils.h

@@ -107,7 +107,7 @@ protected:
     uint64_t message_send_counter = 0;
 
     // called when I get connected to a node, both ways (whether I am the parent or child).
-    virtual void on_connect(const Node& node, bool node_is_child) {}
+    virtual void on_connect(const Node&, bool) {}
 };
 
 

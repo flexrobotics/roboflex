@@ -23,14 +23,14 @@ GraphRoot::GraphRoot(
 
 }
 
-void GraphRoot::start(bool profile, const RunnableNodePtr node_to_run)
+void GraphRoot::start() 
 {
-    if (profile) {
-        instrument_metrics();
-        this->metrics_trigger->start();
-    }
+    start_all(nullptr);
+}
 
-    this->walk_nodes_backwards([node_to_run](NodePtr node, int depth){
+void GraphRoot::start_all(const RunnableNodePtr node_to_run) 
+{
+    this->walk_nodes_backwards([node_to_run](NodePtr node, int){
         auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
         if (rn && rn != node_to_run) {
             rn->start();
@@ -42,9 +42,16 @@ void GraphRoot::start(bool profile, const RunnableNodePtr node_to_run)
     }
 }
 
+void GraphRoot::profile(const RunnableNodePtr node_to_run) 
+{
+    instrument_metrics();
+    this->metrics_trigger->start();
+    start_all(node_to_run);
+}
+
 void GraphRoot::stop()
 {
-    this->walk_nodes_forwards([](NodePtr node, int depth){
+    this->walk_nodes_forwards([](NodePtr node, int){
         auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
         if (rn) {
             rn->stop();
@@ -101,7 +108,7 @@ void GraphRoot::instrument_metrics()
     }
 
     // Insert metrics nodes on each connection.
-    this->walk_connections_backwards([this](NodePtr n1, NodePtr n2, int depth){
+    this->walk_connections_backwards([this](NodePtr n1, NodePtr n2, int){
         this->insert_metrics_between(n1, n2);
     });
 
@@ -115,7 +122,7 @@ void GraphRoot::deinstrument_metrics()
     }
 
     // Remove all Metrics Nodes
-    this->filter_nodes([this](NodePtr n, int depth){
+    this->filter_nodes([this](NodePtr n, int){
         return this->test_and_remove_metrics_node(n);
     });
 

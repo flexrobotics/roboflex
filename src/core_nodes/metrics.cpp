@@ -234,7 +234,7 @@ std::string MetricsMessage::to_pretty_string() const
 
 void MetricsMessage::pretty_print(const std::string& title, bool compact) const
 {
-    std::cout << source_node_name() << ": Metrics t = " << std::fixed << timestamp() << std::endl;
+    std::cout << title << source_node_name() << ": Metrics t = " << std::fixed << timestamp() << std::endl;
     std::cout << "  FROM " << parent_node_guid() << " \"" << parent_node_name() << "\"  TO " << child_node_guid() << " \"" << child_node_name() << "\"" << std::endl;
     std::cout << "  sample count: " << metrics.at("time").count << std::endl;
     std::cout << std::fixed << std::setprecision(6)
@@ -284,7 +284,7 @@ void MetricsPublisherNode::parent_node_set(const uuid& node_guid, const string& 
     }
 }
 
-void MetricsPublisherNode::receive_from(core::MessagePtr m, const core::Node& from)
+void MetricsPublisherNode::receive_from(core::MessagePtr, const core::Node&)
 {
     publish_and_reset();
 }

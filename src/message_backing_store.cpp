@@ -8,7 +8,7 @@ namespace roboflex::core {
 
 // -- MessageBackingStore --
 
-void MessageBackingStore::raw_data_deletion_function(void *data, void *hint)
+void MessageBackingStore::raw_data_deletion_function(void */*data*/, void *hint)
 {
     std::shared_ptr<MessageBackingStore>* p = (std::shared_ptr<MessageBackingStore>*)hint;
     delete p;
