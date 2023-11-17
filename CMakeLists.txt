@@ -23,6 +23,7 @@ FetchContent_Declare(xtl
     URL https://github.com/xtensor-stack/xtl/archive/0.7.5.zip
     URL_HASH SHA256=9e8e7dcc525500a4543226fe472a46a30636ee35274e4e30099071c5cbd4d05c
     DOWNLOAD_NO_PROGRESS ON
+    DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(xtl)
 
@@ -31,6 +32,7 @@ FetchContent_Declare(xsimd
     URL https://github.com/xtensor-stack/xsimd/archive/11.0.0.zip
     URL_HASH SHA256=5d362ec26c6f2332d1a2858891d770f5c0077133a81f885658f48c910a03fc90
     DOWNLOAD_NO_PROGRESS ON
+    DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(xsimd)
 
@@ -39,6 +41,7 @@ FetchContent_Declare(xtensor
     URL https://github.com/xtensor-stack/xtensor/archive/0.24.6.zip
     URL_HASH SHA256=8cd062cfefce0f5bff8961e0c42b3636d5e7eddbe33e5c3167e3fb6d8380f50e
     DOWNLOAD_NO_PROGRESS ON
+    DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(xtensor)
 
@@ -51,6 +54,7 @@ FetchContent_Declare(eigen
     GIT_TAG        877c2d1e9b08b9630a924ee2e06469048b124e2d 
     #GIT_TAG        origin/master
     DOWNLOAD_NO_PROGRESS ON
+    DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(eigen)
 
@@ -58,6 +62,7 @@ FetchContent_MakeAvailable(eigen)
 # Download and configure flatbuffers (although we only use flexbuffers)
 FetchContent_Declare(flatbuffers
     GIT_REPOSITORY https://github.com/colinator/flatbuffers.git
+    DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 
 # We want to be able to use ${flatbuffers_SOURCE_DIR}
