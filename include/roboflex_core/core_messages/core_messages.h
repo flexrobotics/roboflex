@@ -187,7 +187,7 @@ public:
         // get, ultimately, a pointer to the data that backs the tensor
         auto tensor_data_portion = root["data"].AsBlob();
         const uint8_t* tensor_const_data = tensor_data_portion.data();
-        uint8_t* tensor_data = (uint8_t*)tensor_const_data;
+        uint8_t* tensor_data = const_cast<uint8_t*>(tensor_const_data);
 
         // get the raw bytes of the new data
         const T* new_data = x.data();
@@ -208,7 +208,7 @@ public:
         // get, ultimately, a pointer to the data that backs the tensor
         auto tensor_data_portion = root["data"].AsBlob();
         const uint8_t* tensor_const_data = tensor_data_portion.data();
-        uint8_t* tensor_data = (uint8_t*)tensor_const_data;
+        uint8_t* tensor_data = const_cast<uint8_t*>(tensor_const_data);
         T * data_typed = (T*)tensor_data;
 
         // get an adapter over the data, and assign it

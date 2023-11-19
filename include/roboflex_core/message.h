@@ -116,7 +116,7 @@ public:
 
         auto data_portion = get_meta()[2].AsBlob();
         const uint8_t* const_data = data_portion.data();
-        uint8_t* data = (uint8_t*)const_data;
+        uint8_t* data = const_cast<uint8_t*>(const_data);
 
         memcpy((void*)data, (const void*)guidchars, 16);
     }
