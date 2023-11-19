@@ -259,12 +259,19 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
         .def("verbose", &UniversalDataPlayer::get_verbose)
     ;
 
-    // py::class_<LastOne, Node, std::shared_ptr<LastOne>>(m, "LastOne")
-    //     .def(py::init<const std::string &>(),
-    //         "Create a node that just remembers the last message, in a thread-safe way.",
-    //         py::arg("name") = "LastOne")
-    //     .def_property_readonly("last_one", &LastOne::get_last_one)
-    // ;
+    py::class_<EveryN, Node, std::shared_ptr<EveryN>>(m, "EveryN")
+        .def(py::init<int, const std::string &>(),
+            "Create an EveryN node, which signals every n'th received message.",
+            py::arg("n"),
+            py::arg("name") = "EveryN")
+    ;
+
+    py::class_<LastOne, Node, std::shared_ptr<LastOne>>(m, "LastOne")
+        .def(py::init<const std::string &>(),
+            "Create a node that just remembers the last message, in a thread-safe way.",
+            py::arg("name") = "LastOne")
+        .def_property_readonly("last_message", &LastOne::get_last_message)
+    ;
 
 
     // ---------- FRP-style helper functions -----------

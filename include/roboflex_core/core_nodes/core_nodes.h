@@ -11,6 +11,7 @@
 #include "roboflex_core/core_nodes/last_one.h"
 
 // various utilities
+#include "roboflex_core/core_nodes/every_n.h"
 #include "roboflex_core/core_nodes/frequency_generator.h"
 #include "roboflex_core/core_nodes/message_printer.h"
 #include "roboflex_core/core_nodes/metrics.h"
