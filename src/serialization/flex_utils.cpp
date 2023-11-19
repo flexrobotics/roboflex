@@ -38,8 +38,8 @@ void serialize_uuid(sole::uuid id, const std::string& key, flexbuffers::Builder&
 const sole::uuid deserialize_uuid(flexbuffers::Blob& blob)
 {
     const uint8_t * g = blob.data();
-    uint64_t ab = *(uint64_t*)(g);
-    uint64_t cd = *(uint64_t*)(g+8);
+    uint64_t ab = *(const uint64_t*)(g);
+    uint64_t cd = *(const uint64_t*)(g+8);
     return sole::rebuild(ab, cd);
 }
 
