@@ -424,9 +424,11 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             py::arg("name") = "GraphRoot",
             py::arg("debug") = false)
         .def("start_all", &GraphRoot::start_all, 
-            py::arg("node_to_run") = nullptr)
+            py::arg("node_to_run") = nullptr,
+            py::call_guard<py::gil_scoped_release>())
         .def("profile", &GraphRoot::profile, 
-            py::arg("node_to_run") = nullptr)
+            py::arg("node_to_run") = nullptr,
+            py::call_guard<py::gil_scoped_release>())
         .def_property_readonly("metrics_instrumented", &GraphRoot::is_metrics_instrumented)
     ;
 
