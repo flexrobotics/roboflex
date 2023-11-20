@@ -413,7 +413,8 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
     // ------------ utilities ------------
 
     py::class_<GraphRoot, roboflex::core::RunnableNode, std::shared_ptr<GraphRoot>>(m, "GraphRoot")
-        .def(py::init<const std::string&, bool>(), "Create a GraphRoot.", 
+        .def(py::init<const std::string&, bool>(), 
+            "Create a GraphRoot.", 
             py::arg("name"),
             py::arg("debug")=false)
         .def(py::init<roboflex::core::NodePtr, const float, const std::string&, bool>(),
@@ -426,6 +427,7 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
             py::arg("node_to_run") = nullptr)
         .def("profile", &GraphRoot::profile, 
             py::arg("node_to_run") = nullptr)
+        .def_property_readonly("metrics_instrumented", &GraphRoot::is_metrics_instrumented)
     ;
 
 
