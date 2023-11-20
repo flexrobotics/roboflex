@@ -38,16 +38,17 @@ using std::string, std::set;
 class GraphRoot: public RunnableNode {
 public:
 
-    GraphRoot(const string& name);
+    GraphRoot(const string& name, bool debug);
 
     GraphRoot(
         NodePtr metrics_publisher = nullptr,
         const float metrics_publishing_frequency_hz = 1.0,
-        const string& name = "GraphRoot");
+        const string& name = "GraphRoot",
+        bool debug = false);
 
     void start() override;
-    void start_all(const RunnableNodePtr node_to_run = nullptr);
-    void profile(const RunnableNodePtr node_to_run = nullptr);
+    void start_all(RunnableNodePtr node_to_run = nullptr);
+    void profile(RunnableNodePtr node_to_run = nullptr);
     void stop() override;
 
     bool is_metrics_instrumented() const { return metrics_instrumented; }
@@ -66,6 +67,8 @@ protected:
     shared_ptr<nodes::FrequencyGenerator> metrics_trigger;
     shared_ptr<Node> metrics_aggregator;
     shared_ptr<Node> metrics_publisher;
+
+    bool debug;
 };
 
 

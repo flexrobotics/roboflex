@@ -4,9 +4,10 @@
 namespace roboflex {
 namespace nodes {
 
-GraphRoot::GraphRoot(const string& name):
+GraphRoot::GraphRoot(const string& name, bool debug):
     RunnableNode(name),
-    metrics_instrumented(false)
+    metrics_instrumented(false),
+    debug(debug)
 {
 
 }
@@ -14,11 +15,13 @@ GraphRoot::GraphRoot(const string& name):
 GraphRoot::GraphRoot(
     shared_ptr<Node> metrics_publisher,
     const float metrics_publishing_frequency_hz,
-    const string& name):
+    const string& name,
+    bool debug):
         RunnableNode(name),
         metrics_instrumented(false),
         metrics_publishing_frequency_hz(metrics_publishing_frequency_hz),
-        metrics_publisher(metrics_publisher)
+        metrics_publisher(metrics_publisher),
+        debug(debug)
 {
 
 }
@@ -28,21 +31,27 @@ void GraphRoot::start()
     start_all(nullptr);
 }
 
-void GraphRoot::start_all(const RunnableNodePtr node_to_run) 
+void GraphRoot::start_all(RunnableNodePtr node_to_run) 
 {
-    this->walk_nodes_backwards([node_to_run](NodePtr node, int){
+    this->walk_nodes_backwards([node_to_run, debug=debug](NodePtr node, int){
         auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
         if (rn && rn != node_to_run) {
+            if (debug) {
+                std::cerr << "GraphRoot starting " << rn->get_name() << "\n";
+            }
             rn->start();
         }
     });
 
     if (node_to_run) {
+        if (debug) {
+            std::cerr << "GraphRoot running " << node_to_run->get_name() << "\n";
+        }
         node_to_run->run();
     }
 }
 
-void GraphRoot::profile(const RunnableNodePtr node_to_run) 
+void GraphRoot::profile(RunnableNodePtr node_to_run) 
 {
     instrument_metrics();
     this->metrics_trigger->start();
@@ -51,9 +60,12 @@ void GraphRoot::profile(const RunnableNodePtr node_to_run)
 
 void GraphRoot::stop()
 {
-    this->walk_nodes_forwards([](NodePtr node, int){
+    this->walk_nodes_forwards([debug=debug](NodePtr node, int){
         auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
         if (rn) {
+            if (debug) {
+                std::cerr << "GraphRoot stopping " << rn->get_name() << "\n";
+            }
             rn->stop();
         }
     });

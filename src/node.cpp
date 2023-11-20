@@ -370,9 +370,9 @@ void interrupt_signal_handler(int /*sig*/)
 
 void RunnableNode::run()
 {
-#if __APPLE__
+//#if __APPLE__
     // signal handling doesn't seem to work on mac...
-#else
+//#else
     struct SignalStacker {
         SignalStacker(RunnableNode* n) {
             running_node = n;
@@ -392,7 +392,7 @@ void RunnableNode::run()
 
     // Set myself as the signal handler
     SignalStacker s = SignalStacker(this);
-#endif
+//#endif
 
     this->stop_signal = false;
 
