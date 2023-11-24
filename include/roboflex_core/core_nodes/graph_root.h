@@ -39,7 +39,7 @@ class GraphRoot: public RunnableNode {
 public:
 
     GraphRoot(
-        const float metrics_printing_frequency_hz = 10.0,
+        const float metrics_printing_frequency_hz = 0.1,
         const string& name = "GraphRoot",
         bool debug = false);
 

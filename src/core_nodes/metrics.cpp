@@ -81,9 +81,10 @@ void MetricTracker::pretty_print(const std::string& title, bool compact) const
         std::cout << title << " " << std::fixed << std::setprecision(6) 
         << " μ:" << mean_value 
         << " σ²:" << variance_value()
-        << " N:" << std::setprecision(3) << count << ")"
-        << std::setprecision(6) 
-        << " [" << min_value << "," << max_value << "]";
+        << " N:" << std::setprecision(3) << count << ")";
+        if (count > 0) {
+            std::cout << std::setprecision(6) << " [" << min_value << "," << max_value << "]";
+        }
     } else {
         if (title.length() > 0) {
             std::cout << title << std::endl;
@@ -92,10 +93,13 @@ void MetricTracker::pretty_print(const std::string& title, bool compact) const
             << std::string("    sample count: ") << count << std::endl
             << std::fixed << std::setprecision(6)
             << "        mean: " << mean_value << std::endl
-            << "    variance: " << variance_value() << std::endl
-            << "         min: " << min_value << std::endl
-            << "         max: " << max_value << std::endl
-            << "   sum total: " << total << std::endl;
+            << "    variance: " << variance_value() << std::endl;
+        if (count > 0) {
+            std::cout 
+                << "         min: " << min_value << std::endl
+                << "         max: " << max_value << std::endl
+                << "   sum total: " << total << std::endl;
+        }
     }
 }
 
