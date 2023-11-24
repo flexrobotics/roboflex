@@ -413,10 +413,11 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
     // ------------ utilities ------------
 
     py::class_<GraphRoot, roboflex::core::RunnableNode, std::shared_ptr<GraphRoot>>(m, "GraphRoot")
-        .def(py::init<const std::string&, bool>(), 
-            "Create a GraphRoot.", 
-            py::arg("name"),
-            py::arg("debug")=false)
+        .def(py::init<const float, const std::string&, bool>(), 
+            "Create a GraphRoot.",
+            py::arg("metrics_printing_frequency_hz") = 10.0,
+            py::arg("name") = "GraphRoot",
+            py::arg("debug") = false)
         .def(py::init<roboflex::core::NodePtr, const float, const std::string&, bool>(),
             "Create a GraphRoot with a custom metrics publisher.",
             py::arg("metrics_publisher"),

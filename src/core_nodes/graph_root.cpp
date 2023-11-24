@@ -4,10 +4,13 @@
 namespace roboflex {
 namespace nodes {
 
-GraphRoot::GraphRoot(const string& name, bool debug):
-    RunnableNode(name),
-    metrics_instrumented(false),
-    debug(debug)
+GraphRoot::GraphRoot(
+    const float metrics_printing_frequency_hz,
+    const string& name, 
+    bool debug):
+        GraphRoot(
+            metrics_printing_frequency_hz > 0 ? std::make_shared<nodes::MetricsPrinter>() : nullptr, 
+            metrics_printing_frequency_hz, name, debug)
 {
 
 }
@@ -54,7 +57,9 @@ void GraphRoot::start_all(RunnableNodePtr node_to_run)
 void GraphRoot::profile(RunnableNodePtr node_to_run) 
 {
     instrument_metrics();
-    this->metrics_trigger->start();
+    if (this->metrics_trigger != nullptr) {
+        this->metrics_trigger->start();
+    }
     start_all(node_to_run);
 }
 
@@ -71,7 +76,9 @@ void GraphRoot::stop()
     });
 
     if (this->is_metrics_instrumented()) {
-        this->metrics_trigger->stop();
+        if (this->metrics_trigger != nullptr) {
+            this->metrics_trigger->stop();
+        }
         deinstrument_metrics();
     }
 }
@@ -95,7 +102,9 @@ void GraphRoot::insert_metrics_between(NodePtr n1, NodePtr n2)
     metrics_node->connect(n2);
 
     // Connect each metrics node to the metrics trigger and aggregator.
-    this->metrics_trigger->connect(metrics_node->publisher_node);
+    if (this->metrics_trigger != nullptr) {
+        this->metrics_trigger->connect(metrics_node->publisher_node);
+    }
     metrics_node->publisher_node->connect(this->metrics_aggregator);
 }
 
@@ -106,8 +115,10 @@ void GraphRoot::instrument_metrics()
     }
 
     // Create a frequency generator to trigger publishing
-    this->metrics_trigger = std::make_shared<FrequencyGenerator>(
-        metrics_publishing_frequency_hz, "MetricsPublishingTrigger");
+    if (metrics_publishing_frequency_hz > 0) {
+        this->metrics_trigger = std::make_shared<FrequencyGenerator>(
+            metrics_publishing_frequency_hz, "MetricsPublishingTrigger");
+    }
 
     // Create an aggregator node to receive all results
     this->metrics_aggregator = std::make_shared<Node>("MetricsAggregator");
@@ -153,7 +164,9 @@ bool GraphRoot::test_and_remove_metrics_node(NodePtr node)
         return true;
     } else {
         // remove from the metrics trigger and aggregator
-        this->metrics_trigger->disconnect(metrics_node);
+        if (this->metrics_trigger != nullptr) {
+            this->metrics_trigger->disconnect(metrics_node);
+        }
         metrics_node->publisher_node->disconnect(this->metrics_aggregator);
         // return false: this node will be sectioned from the graph and deleted.
         return false;

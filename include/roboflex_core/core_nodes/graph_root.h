@@ -38,10 +38,13 @@ using std::string, std::set;
 class GraphRoot: public RunnableNode {
 public:
 
-    GraphRoot(const string& name, bool debug);
+    GraphRoot(
+        const float metrics_printing_frequency_hz = 10.0,
+        const string& name = "GraphRoot",
+        bool debug = false);
 
     GraphRoot(
-        NodePtr metrics_publisher = nullptr,
+        NodePtr metrics_publisher,
         const float metrics_publishing_frequency_hz = 1.0,
         const string& name = "GraphRoot",
         bool debug = false);
@@ -62,11 +65,11 @@ protected:
     bool test_and_remove_metrics_node(NodePtr node);
 
     bool metrics_instrumented = false;
-    float metrics_publishing_frequency_hz;
+    float metrics_publishing_frequency_hz = 1.0;
     
-    shared_ptr<nodes::FrequencyGenerator> metrics_trigger;
-    shared_ptr<Node> metrics_aggregator;
-    shared_ptr<Node> metrics_publisher;
+    shared_ptr<nodes::FrequencyGenerator> metrics_trigger = nullptr;
+    shared_ptr<Node> metrics_aggregator = nullptr;
+    shared_ptr<Node> metrics_publisher = nullptr;
 
     bool debug;
 };

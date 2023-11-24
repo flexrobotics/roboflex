@@ -203,7 +203,8 @@ public:
     void receive(core::MessagePtr m) override {
         if (m->message_name() == MetricsMessage::MetricsMessageType) {
             MetricsMessage(*m).pretty_print(get_name(), compact);
-        }
+        } 
+        this->signal(m);
     }
 
     bool compact;
