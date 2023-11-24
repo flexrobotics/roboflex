@@ -29,7 +29,7 @@ struct MetricTracker {
     void pretty_print_on(ostream& os) const;
     string to_string() const;
     string to_pretty_string() const;
-    void pretty_print(const std::string& title="", bool compact=false) const;
+    void pretty_print(const std::string& title="", bool compact=true) const;
 
     unsigned int count;
     double total;
@@ -202,7 +202,8 @@ public:
 
     void receive(core::MessagePtr m) override {
         if (m->message_name() == MetricsMessage::MetricsMessageType) {
-            MetricsMessage(*m).pretty_print(get_name(), compact);
+            //MetricsMessage(*m).pretty_print(get_name(), compact);
+            MetricsMessage(*m).pretty_print_on(std::cerr);
         } 
         this->signal(m);
     }

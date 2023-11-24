@@ -81,7 +81,7 @@ void MetricTracker::pretty_print(const std::string& title, bool compact) const
         std::cout << title << " " << std::fixed << std::setprecision(6) 
         << " μ:" << mean_value 
         << " σ²:" << variance_value()
-        << " N:" << std::setprecision(3) << count << ")";
+        << " N:" << std::setprecision(3) << count;
         if (count > 0) {
             std::cout << std::setprecision(6) << " [" << min_value << "," << max_value << "]";
         }
@@ -244,21 +244,29 @@ std::string MetricsMessage::to_pretty_string() const
 
 void MetricsMessage::pretty_print(const std::string& title, bool compact) const
 {
-    std::cout << title << source_node_name() << ": Metrics t = " << std::fixed << timestamp() << std::endl;
-    std::cout << "  FROM " << parent_node_guid() << " \"" << parent_node_name() << "\"  TO " << child_node_guid() << " \"" << child_node_name() << "\"" << std::endl;
-    std::cout << "  sample count: " << metrics.at("time").count << std::endl;
-    std::cout << std::fixed << std::setprecision(6)
-        << "  elapsed time, seconds: " << elapsed_time() << std::endl
-        << "  current mem usage, bytes: " << current_mem_usage() << std::endl
-        << "  frequency, hz: " << (1.0 / metrics.at("dt").mean_value) << std::endl
-        << "  time fraction: " << (metrics.at("time").count * metrics.at("time").mean_value) / elapsed_time() << std::endl
-        << "  bytes per sec: " << (metrics.at("bytes").total) / elapsed_time() << std::endl;
+    pretty_print_on(std::cerr);
+    // std::cout << title << source_node_name() << ": Metrics t = " << std::fixed << timestamp() << std::endl;
+    // std::cout << "  FROM " << parent_node_guid() << " \"" << parent_node_name() << "\"  TO " << child_node_guid() << " \"" << child_node_name() << "\"" << std::endl;
+    // std::cout << "        sample count: " << metrics.at("time").count << std::endl;
+    // std::cout << std::fixed << std::setprecision(6)
+    //     << "     elapsed time, seconds: " << elapsed_time() << std::endl
+    //     << "  current mem usage, bytes: " << current_mem_usage() << std::endl
+    //     << "             frequency, hz: " << (1.0 / metrics.at("dt").mean_value) << std::endl
+    //     << "             time fraction: " << (metrics.at("time").count * metrics.at("time").mean_value) / elapsed_time() << std::endl
+    //     << "             bytes per sec: " << (metrics.at("bytes").total) / elapsed_time() << std::endl;
 
-    metrics.at("time").pretty_print("  receive time, seconds", compact);
-    metrics.at("bytes").pretty_print("  bytes", compact);
-    metrics.at("dt").pretty_print("  dt, seconds", compact);
-    metrics.at("latency").pretty_print("  latency, seconds", compact);
-    metrics.at("missed").pretty_print("  missed messages", compact);
+    // // metrics.at("time"). pretty_print  ("     receive time, seconds: ", compact);
+    // // std::cout << std::endl;
+    // // metrics.at("bytes").pretty_print  ("                     bytes: ", compact);
+    // // std::cout << std::endl;
+    // metrics.at("dt").pretty_print     ("               dt, seconds: ", compact);
+    // std::cout << std::endl;
+    // metrics.at("latency").pretty_print("          latency, seconds: ", compact);
+    // std::cout << std::endl;
+    // metrics.at("missed").pretty_print ("           missed messages: ", compact);
+    // std::cout << std::endl;
+
+    // std::cout << std::endl;
 }
 
 
