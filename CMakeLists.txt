@@ -47,17 +47,16 @@ FetchContent_MakeAvailable(xtensor)
 
 # Download and configure eigen
 FetchContent_Declare(eigen
+    # eigen 3.4.0 seems to have a problemo...
     # URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip
     # URL_HASH SHA256=1ccaabbfe870f60af3d6a519c53e09f3dcf630207321dffa553564a8e75c4fc8
-    # DOWNLOAD_NO_PROGRESS ON
+    # GIT_TAG        origin/master
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
     GIT_TAG        877c2d1e9b08b9630a924ee2e06469048b124e2d 
-    #GIT_TAG        origin/master
     DOWNLOAD_NO_PROGRESS ON
     DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
 FetchContent_MakeAvailable(eigen)
-
 
 # Download and configure flatbuffers (although we only use flexbuffers)
 FetchContent_Declare(flatbuffers
@@ -71,6 +70,7 @@ if(NOT flatbuffers_POPULATED)
     FetchContent_Populate(flatbuffers)
 endif()
 
+# So we create our own flatbuffers library target
 add_library(flatbuffers_util INTERFACE)
 target_include_directories(flatbuffers_util INTERFACE
     $<BUILD_INTERFACE:${flatbuffers_SOURCE_DIR}/include>
