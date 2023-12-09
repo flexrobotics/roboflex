@@ -36,6 +36,8 @@ void GraphRoot::start()
 
 void GraphRoot::start_all(RunnableNodePtr node_to_run) 
 {
+    this->_node_to_run = node_to_run;
+
     this->walk_nodes_backwards([node_to_run, debug=debug](NodePtr node, int){
         auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
         if (rn && rn != node_to_run) {
@@ -65,9 +67,9 @@ void GraphRoot::profile(RunnableNodePtr node_to_run)
 
 void GraphRoot::stop()
 {
-    this->walk_nodes_forwards([debug=debug](NodePtr node, int){
+    this->walk_nodes_forwards([debug=debug, node_to_run=this->_node_to_run](NodePtr node, int){
         auto rn = std::dynamic_pointer_cast<RunnableNode>(node);
-        if (rn) {
+        if (rn && rn != node_to_run) {
             if (debug) {
                 std::cerr << "GraphRoot stopping " << rn->get_name() << "\n";
             }

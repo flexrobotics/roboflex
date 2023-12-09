@@ -72,6 +72,8 @@ protected:
     shared_ptr<Node> metrics_publisher = nullptr;
 
     bool debug;
+
+    RunnableNodePtr _node_to_run = nullptr;
 };
 
 
