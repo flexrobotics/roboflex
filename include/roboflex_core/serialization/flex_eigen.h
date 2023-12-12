@@ -12,8 +12,8 @@
 namespace roboflex {
 namespace serialization {
 
-template <typename T, int NRows, int NCols>
-void serialize_eigen_matrix(flexbuffers::Builder& fbb, const Eigen::Matrix<T, NRows, NCols>& matrix, const std::string& name="")
+template <typename T, int NRows, int NCols, int Options=Eigen::ColMajor>
+void serialize_eigen_matrix(flexbuffers::Builder& fbb, const Eigen::Matrix<T, NRows, NCols, Options>& matrix, const std::string& name="")
 {
     // get a vector of the shape
     std::vector<uint64_t> shape_vector = { (uint64_t)matrix.rows(), (uint64_t)matrix.cols() };
@@ -39,8 +39,8 @@ void serialize_eigen_matrix(flexbuffers::Builder& fbb, const Eigen::Matrix<T, NR
 }
 
 
-template <typename T, int NRows, int NCols>
-Eigen::Map<const Eigen::Matrix<T, NRows, NCols>> deserialize_eigen_matrix(flexbuffers::Reference r)
+template <typename T, int NRows, int NCols, int Options=Eigen::ColMajor>
+Eigen::Map<const Eigen::Matrix<T, NRows, NCols, Options>> deserialize_eigen_matrix(flexbuffers::Reference r)
 {
     if (r.IsNull()) {
         throw std::runtime_error("flex_tensor::deserialize_eigen_matrix was handed a null reference");
@@ -96,7 +96,7 @@ Eigen::Map<const Eigen::Matrix<T, NRows, NCols>> deserialize_eigen_matrix(flexbu
     // Return a Map object. If all is well, then this
     // should perform no copies - it should basically
     // be a 'view' over the blob's data.
-    auto retval = Eigen::Map<const Eigen::Matrix<T, NRows, NCols>>(
+    auto retval = Eigen::Map<const Eigen::Matrix<T, NRows, NCols, Options>>(
         data_typed,
         vshape[0],
         vshape[1]);

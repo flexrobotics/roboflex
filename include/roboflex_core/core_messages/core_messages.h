@@ -7,10 +7,12 @@
 
 #include <xtensor/xfunction.hpp>
 #include <xtensor/xio.hpp>
+#include <Eigen/Dense>
 #include "flatbuffers/flexbuffers.h"
 #include "roboflex_core/message.h"
 #include "roboflex_core/message_backing_store.h"
 #include "roboflex_core/serialization/flex_xtensor.h"
+#include "roboflex_core/serialization/flex_eigen.h"
 
 using namespace std;
 
@@ -229,6 +231,53 @@ protected:
     string key;
 };
 
+/**
+ * Carries a single eigen matrix under some map key.
+ * Supports writing: you may overwrite the matrix
+ * with a new one of the exact same shape and dtype.
+ */
+template <typename T, int NRows, int NCols, int Options=Eigen::ColMajor>
+class EigenMessage: public Message {
+public:
+
+    inline static const string DefaultMessageName = "EigenMessage";
+    inline static const string DefaultKey = "t";
+
+    EigenMessage(Message& other, const string& key="t"): Message(other), key(key) {}
+
+    EigenMessage(const Eigen::Matrix<T, NRows, NCols, Options>& matrix, const string& message_name=DefaultMessageName, const string& key=DefaultKey):
+        Message(CoreModuleName, message_name, nullptr), key(key)
+    {
+        flexbuffers::Builder fbb = get_builder();
+        WriteMapRoot(fbb, [&](){
+            serialization::serialize_eigen_matrix<T, NRows, NCols, Options>(fbb, matrix, key);
+        });
+    }
+
+    static shared_ptr<EigenMessage<T, NRows, NCols, Options=Eigen::ColMajor>> Ptr(const Eigen::Matrix<T, NRows, NCols, Options>& matrix, const string& message_name=DefaultMessageName, const string& key=DefaultKey) {
+        return std::make_shared<EigenMessage<T, NRows, NCols, Options>>(matrix, message_name, key);
+    }
+
+    void print_on(ostream& os) const override {
+        auto root = root_map()[this->key].AsMap();
+        auto dtype = root["dtype"].AsInt8();
+        os << "<EigenMessage" << " key:" << this->key 
+           << " shape: ()" << NRows << ", " << NCols << ")"
+           << " dtype:" << serialization::type_name_from_code(dtype) 
+           << " ";
+        Message::print_on(os);
+        os << ">";
+    }
+
+    const Eigen::Map<const Eigen::Matrix<T, NRows, NCols, Options>> value() const {
+        auto root = root_val(this->key);
+        return serialization::deserialize_eigen_matrix<T, NRows, NCols, Options>(root);
+    }
+
+protected:
+
+    string key;
+};
 
 constexpr char PingMessageName[] = "ping";
 constexpr char PongMessageName[] = "pong";

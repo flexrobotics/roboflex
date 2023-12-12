@@ -79,7 +79,7 @@ public:
     // the timestamp, message counter, source node info,
     // and so on...
     flexbuffers::Vector get_meta() const {
-        return root_map()["_meta"].AsVector();
+        return root_val("_meta").AsVector();
     }
 
     // Position 0: timestamp

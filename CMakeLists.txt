@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
 
-project(roboflex_core VERSION 0.1.26)
+project(roboflex_core VERSION 0.1.27)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -43,6 +43,7 @@ FetchContent_Declare(xtensor
     DOWNLOAD_NO_PROGRESS ON
     DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
+set(XTENSOR_USE_XSIMD 1)
 FetchContent_MakeAvailable(xtensor)
 
 # Download and configure eigen
@@ -141,6 +142,8 @@ target_link_libraries(roboflex_core PUBLIC
     xtensor 
     xsimd 
     xtl 
+    #xtensor::optimize 
+    #xtensor::use_xsimd
     Eigen3::Eigen
     ${CMAKE_THREAD_LIBS_INIT}
 )
