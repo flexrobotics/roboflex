@@ -122,7 +122,7 @@ public:
 };
 
 /**
- * Carries a single tensor under the some map key.
+ * Carries a single tensor under some map key, default of "t".
  * Supports writing: you may overwrite the tensor
  * with a new one of the exact same shape and dtype.
  */
@@ -233,8 +233,6 @@ protected:
 
 /**
  * Carries a single eigen matrix under some map key.
- * Supports writing: you may overwrite the matrix
- * with a new one of the exact same shape and dtype.
  */
 template <typename T, int NRows, int NCols, int Options=Eigen::ColMajor>
 class EigenMessage: public Message {
@@ -254,7 +252,7 @@ public:
         });
     }
 
-    static shared_ptr<EigenMessage<T, NRows, NCols, Options=Eigen::ColMajor>> Ptr(const Eigen::Matrix<T, NRows, NCols, Options>& matrix, const string& message_name=DefaultMessageName, const string& key=DefaultKey) {
+    static shared_ptr<EigenMessage<T, NRows, NCols, Options>> Ptr(const Eigen::Matrix<T, NRows, NCols, Options>& matrix, const string& message_name=DefaultMessageName, const string& key=DefaultKey) {
         return std::make_shared<EigenMessage<T, NRows, NCols, Options>>(matrix, message_name, key);
     }
 
