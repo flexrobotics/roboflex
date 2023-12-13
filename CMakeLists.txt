@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
 
-project(roboflex_core VERSION 0.1.27)
+project(roboflex_core VERSION 0.1.28)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -62,7 +62,7 @@ FetchContent_MakeAvailable(eigen)
 # Download and configure flatbuffers (although we only use flexbuffers)
 FetchContent_Declare(flatbuffers
     GIT_REPOSITORY https://github.com/colinator/flatbuffers.git
-    DOWNLOAD_EXTRACT_TIMESTAMP 1
+    GIT_TAG origin/master
 )
 
 # We want to be able to use ${flatbuffers_SOURCE_DIR}
