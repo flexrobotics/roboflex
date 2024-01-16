@@ -104,6 +104,10 @@ A roboflex Node represents a basic unit of computation. Nodes can connect to oth
     # ----------- 
     # connect nodes of the graph. It's easy to distribute the graph into
     # multiple cpus using nodes in roboflex/transport.
+    #
+    # 'frequency_generator > tensor_creator' is syntactic sugar for
+    # 'frequency_generator.connect(tensor_creator)'.
+    #
     frequency_generator > tensor_creator > message_printer > tensor_printer
 
     # ----------- 
