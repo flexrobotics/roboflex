@@ -118,6 +118,13 @@ struct type_caster<std::shared_ptr<Message>> {
                         return_value_policy rvp,
                         handle h)
     {
+        if (base == nullptr) {
+            return py::none().release();
+            //return py::none();
+            //return pybind11::cast<pybind11::none>(Py_None);
+            //return none().release();
+        }
+
         // Perform a switcheroo: instead of just casting
         // the base a smart pointer (which is what BaseCaster does),
         // we actually use pybind's c++ api to load the
