@@ -63,6 +63,13 @@ void GraphRoot::profile(RunnableNodePtr node_to_run)
         this->metrics_trigger->start();
     }
     start_all(node_to_run);
+
+    // If we're running a node as the main thread, 
+    // then when we get here we're done, so stop
+    // the graph.
+    if (node_to_run != nullptr) {
+        stop();
+    }
 }
 
 void GraphRoot::stop()
