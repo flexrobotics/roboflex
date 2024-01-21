@@ -214,6 +214,12 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
 
     // ---------- Utility nodes -----------
 
+    py::class_<Null, Node, std::shared_ptr<Null>>(m, "Null")
+        .def(py::init<const std::string &>(),
+            "Create a Null node.",
+            py::arg("name") = "null")
+    ;
+
     py::class_<FrequencyGenerator, RunnableNode, PyFrequencyGenerator<>, std::shared_ptr<FrequencyGenerator>>(m, "FrequencyGenerator")
         .def(py::init<const float, const std::string &>(),
             "Create a Frequency Generator node. Be sure to call start()!",

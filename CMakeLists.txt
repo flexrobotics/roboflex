@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
 
-project(roboflex_core VERSION 0.1.30)
+project(roboflex_core VERSION 0.1.31)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -103,6 +103,7 @@ add_library(roboflex_core STATIC
     # Header files (not strictly necessary for building, but can be useful for some IDEs)
     include/roboflex_core/core.h
     include/roboflex_core/core_messages/core_messages.h
+    include/roboflex_core/core_nodes/null.h
     include/roboflex_core/core_nodes/callback_fun.h
     include/roboflex_core/core_nodes/core_nodes.h
     include/roboflex_core/core_nodes/every_n.h

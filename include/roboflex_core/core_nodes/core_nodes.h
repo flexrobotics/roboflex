@@ -6,6 +6,7 @@
 #include "roboflex_core/core_nodes/callback_fun.h"
 #include "roboflex_core/core_nodes/filter_fun.h"
 #include "roboflex_core/core_nodes/take.h"
+#include "roboflex_core/core_nodes/null.h"
 
 // queuing
 #include "roboflex_core/core_nodes/last_one.h"
