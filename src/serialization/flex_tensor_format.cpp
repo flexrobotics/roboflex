@@ -19,6 +19,7 @@ std::string type_name_from_code(int type_code) {
         case 11: return "double";
         //case 12: return "complex64";
         //case 13: return "complex128";
+        case 14: return "float16";
         default: return "wat";
     }
 }
@@ -38,6 +39,7 @@ static std::map<std::string, int> TypeNamesToCodes = {
     { "double", 11 },
     // { "complex64", 12 },
     // { "complex128", 13 },
+    { "float16", 14 },
     { "wat", -1 }
 };
 

@@ -48,6 +48,7 @@ supported_numpy_types = [
     np.float64,
     np.complex64,
     np.complex128,
+    np.float16,
 ]
 
 def _encode_dtype(t):

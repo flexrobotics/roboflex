@@ -50,7 +50,7 @@ long_description = (Path(__file__).parent / "README.md").read_text()
 
 setup(
     name='roboflex',
-    version='0.1.31',
+    version='0.1.32',
     description='Roboflex Core Library: a C++20 and python library for distributed robotics and automation.',
     url="https://github.com/flexrobotics/roboflex",
     author='Colin Prepscius',

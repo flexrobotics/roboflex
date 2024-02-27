@@ -34,7 +34,8 @@
         np.uint8, np.uint16, np.uint32, np.uint64,
         np.intp, np.uintp,
         np.float32, np.float64,
-        np.complex64, np.complex128
+        np.complex64, np.complex128,
+        np.float16
     ]
  *
  * All the fancy template code you see is designed to turn a numeric
@@ -52,6 +53,7 @@
 #define ROBOFLEX_SERIALIZATION_CORE_FLEX_TENSOR_FORMAT__H
 
 #include <flatbuffers/flexbuffers.h>
+#include <xtl/xhalf_float.hpp>
 
 namespace roboflex {
 namespace serialization {
@@ -84,6 +86,7 @@ template <> struct tensor_dtype_indexer<float> { constexpr static int index = 10
 template <> struct tensor_dtype_indexer<double> { constexpr static int index = 11; };
 //template <> struct tensor_dtype_indexer<complex64> { constexpr static int index = 12; };
 //template <> struct tensor_dtype_indexer<complex128> { constexpr static int index = 13; };
+template <> struct tensor_dtype_indexer<xtl::half_float> { constexpr static int index = 14; };
 
 template <typename T> struct tensor_dtype_namer { constexpr static std::string_view name = "wat"; };
 template <> struct tensor_dtype_namer<int8_t> { constexpr static std::string_view name = "int8_t"; };
@@ -100,6 +103,7 @@ template <> struct tensor_dtype_namer<float> { constexpr static std::string_view
 template <> struct tensor_dtype_namer<double> { constexpr static std::string_view name = "double"; };
 //template <> struct tensor_dtype_namer<complex64> { constexpr static std::string_view name = "complex64"; };
 //template <> struct tensor_dtype_namer<complex128> { constexpr static std::string_view name = "complex128"; };
+template <> struct tensor_dtype_namer<xtl::half_float> { constexpr static std::string_view name = "float16"; };
 
 
 // useful for debugging

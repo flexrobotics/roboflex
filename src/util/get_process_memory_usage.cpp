@@ -29,7 +29,8 @@
 #endif
 
 #else
-#error "Cannot define getPeakRSS( ) or getCurrentRSS( ) for an unknown OS."
+//#error "Cannot define getPeakRSS( ) or getCurrentRSS( ) for an unknown OS."
+#include <stdio.h> // for size_t, which is actually in stddef.h, but clang might have trouble.
 #endif
 
 
