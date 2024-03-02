@@ -96,10 +96,14 @@ class TensorRightBuffer: public Node {
 public:
     TensorRightBuffer(
         const std::vector<size_t>& shape,
-        const std::string& message_tensor_key = "buffer",
+        const std::string& tensor_key_in = "t",
+        const std::string& tensor_key_out = "buffer",
+        const std::string& count_key_out = "count",
         const std::string& name = "TensorBuffer"):
             Node(name),
-            message_tensor_key(message_tensor_key),
+            tensor_key_in(tensor_key_in),
+            tensor_key_out(tensor_key_out),
+            count_key_out(count_key_out),
             buf(shape) {}
 
     void receive(MessagePtr m) override;
@@ -108,7 +112,9 @@ public:
 
 protected:
 
-    std::string message_tensor_key;
+    std::string tensor_key_in;
+    std::string tensor_key_out;
+    std::string count_key_out;
     mutable std::recursive_mutex buffer_mutex;
     XArrayRightBuf<T> buf;
     uint64_t count = 0;
@@ -118,7 +124,7 @@ template <typename T>
 void TensorRightBuffer<T>::receive(MessagePtr m) 
 {
     // get the map at the key holding the tensor
-    auto tensor_map = m->root_val(message_tensor_key);
+    auto tensor_map = m->root_val(tensor_key_in);
 
     // deserialize into an xtensor adapter... no copy yet!
     serialization::flextensor_adaptor<T> tensor_adapter = serialization::deserialize_flex_array<T>(tensor_map);
@@ -133,7 +139,7 @@ void TensorRightBuffer<T>::receive(MessagePtr m)
     auto buffer_tensor = buf.add(tensor_adapter);
 
     // create a new message with the buffer tensor
-    auto msg = std::make_shared<TensorBufferMessage<T>>(buffer_tensor, count);
+    auto msg = std::make_shared<TensorBufferMessage<T>>(buffer_tensor, count, tensor_key_out, count_key_out);
 
     // signal it
     this->signal(msg);

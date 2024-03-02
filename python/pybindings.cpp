@@ -60,10 +60,14 @@ public:
     py::class_<TensorRightBuffer<T>, Node, std::shared_ptr<TensorRightBuffer<T>>>(m, Name) \
         .def(py::init<const std::vector<size_t>&, \
                       const std::string&, \
+                      const std::string&, \
+                      const std::string&, \
                       const std::string&>(), \
              "Create a Name node.", \
              py::arg("shape"), \
-             py::arg("message_tensor_key") = "buffer", \
+             py::arg("tensor_key_in") = "t", \
+             py::arg("tensor_key_out") = "buffer", \
+             py::arg("count_key_out") = "count", \
              py::arg("name") = Name) \
         .def("chop", &TensorRightBuffer<T>::chop)
 
