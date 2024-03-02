@@ -48,6 +48,20 @@ public:
             }
         }
     };
+
+    bool wait_once(int timeout_milliseconds=0) {
+        std::unique_lock<std::mutex> unique_lock(mutex);
+        if (isSet_) {
+            return true;
+        } else {
+            if (timeout_milliseconds > 0) {
+                cv.wait_for(unique_lock, timeout_milliseconds*1ms);
+            } else {
+                cv.wait(unique_lock);
+            }
+        }
+        return isSet_;
+    };
 };
 
 } // namespace util

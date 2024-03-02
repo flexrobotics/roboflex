@@ -277,6 +277,55 @@ protected:
     string key;
 };
 
+
+/**
+ * Carries a single xtensor-xarray buffer under some map key,
+ * and also a uint64 count of the total number of values
+ * seen so far in the highest dimension.
+  
+ */
+template <typename T>
+class TensorBufferMessage: public Message {
+public:
+    TensorBufferMessage(
+        Message& other, 
+        const string& buffer_key="buffer", 
+        const string& count_key="count"): 
+            Message(other),
+            buffer_key(buffer_key),
+            count_key(count_key) {}
+
+    TensorBufferMessage(
+        const xt::xarray<T>& matrix, 
+        uint64_t count, 
+        const string& buffer_key="buffer",
+        const string& count_key="count"):
+            Message(CoreModuleName, "TensorBuffer"),
+            buffer_key(buffer_key),
+            count_key(count_key)
+    {
+        flexbuffers::Builder fbb = get_builder();
+        WriteMapRoot(fbb, [&](){
+            fbb.UInt(count_key.c_str(), count);
+            serialization::serialize_flex_array<T>(fbb, matrix, buffer_key);
+        });
+    }
+
+    const serialization::flextensor_adaptor<T> buffer() const {
+        auto root = root_map()[buffer_key];
+        return serialization::deserialize_flex_array<T>(root);
+    }
+
+    uint64_t count() const {
+        return root_map()[count_key].AsUInt64();
+    }
+
+protected:
+
+    string buffer_key;
+    string count_key;
+};
+
 constexpr char PingMessageName[] = "ping";
 constexpr char PongMessageName[] = "pong";
 constexpr char GetNameMessageName[] = "getname";

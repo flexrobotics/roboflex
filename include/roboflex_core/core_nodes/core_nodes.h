@@ -7,9 +7,11 @@
 #include "roboflex_core/core_nodes/filter_fun.h"
 #include "roboflex_core/core_nodes/take.h"
 #include "roboflex_core/core_nodes/null.h"
+#include "roboflex_core/core_nodes/producer.h"
 
 // queuing
 #include "roboflex_core/core_nodes/last_one.h"
+#include "roboflex_core/core_nodes/tensor_buffer.h"
 
 // various utilities
 #include "roboflex_core/core_nodes/every_n.h"

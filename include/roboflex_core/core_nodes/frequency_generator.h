@@ -45,4 +45,4 @@ constexpr char SetFrequency[] = "set_frequency";
 } // namespace nodes
 } // namespace roboflex
 
-#endif // SRL_FREQUENCY_GENERATOR_NODE__H
+#endif // ROBOFLEX_FREQUENCY_GENERATOR_NODE__H

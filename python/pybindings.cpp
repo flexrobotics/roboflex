@@ -11,6 +11,7 @@
 #include "roboflex_core/core_nodes/core_nodes.h"
 
 #define FORCE_IMPORT_ARRAY                // numpy C api loading
+#include <xtl/xhalf_float.hpp>
 #include <xtensor-python/pyarray.hpp>
 #include <xtensor-python/pytensor.hpp>
 
@@ -35,6 +36,16 @@ public:
     }
 };
 
+template <class ProducerBase = Producer> 
+class PyProducer: public PyRunnableNode<ProducerBase> {
+public:
+    using PyRunnableNode<ProducerBase>::PyRunnableNode;
+
+    MessagePtr produce(MessagePtr m) override {
+        PYBIND11_OVERRIDE(MessagePtr, ProducerBase, produce, m);
+    }
+};
+
 // Allows inheritance in Python from Message
 class PyMessage: public Message {
 public:
@@ -43,6 +54,18 @@ public:
         PYBIND11_OVERRIDE(std::string, Message, to_string, );
     }
 };
+
+// Really? A define? Never thought I'd see the day... 
+#define REGISTER_TENSOR_RIGHT_BUFFER(T, Name) \
+    py::class_<TensorRightBuffer<T>, Node, std::shared_ptr<TensorRightBuffer<T>>>(m, Name) \
+        .def(py::init<const std::vector<size_t>&, \
+                      const std::string&, \
+                      const std::string&>(), \
+             "Create a Name node.", \
+             py::arg("shape"), \
+             py::arg("message_tensor_key") = "buffer", \
+             py::arg("name") = Name) \
+        .def("chop", &TensorRightBuffer<T>::chop)
 
 
 PYBIND11_MODULE(roboflex_core_python_ext, m) 
@@ -279,6 +302,18 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
         .def_property_readonly("last_message", &LastOne::get_last_message)
     ;
 
+    REGISTER_TENSOR_RIGHT_BUFFER(int8_t, "TensorRightBufferInt8");
+    REGISTER_TENSOR_RIGHT_BUFFER(int16_t, "TensorRightBufferInt16");
+    REGISTER_TENSOR_RIGHT_BUFFER(int32_t, "TensorRightBufferInt32");
+    REGISTER_TENSOR_RIGHT_BUFFER(int64_t, "TensorRightBufferInt64");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint8_t, "TensorRightBufferUInt8");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint16_t, "TensorRightBufferUInt16");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint32_t, "TensorRightBufferUInt32");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint64_t, "TensorRightBufferUInt64");
+    REGISTER_TENSOR_RIGHT_BUFFER(float, "TensorRightBufferFloat");
+    REGISTER_TENSOR_RIGHT_BUFFER(double, "TensorRightBufferDouble");
+    REGISTER_TENSOR_RIGHT_BUFFER(xtl::half_float, "TensorRightBufferFloat16");
+
 
     // ---------- FRP-style helper functions -----------
 
@@ -296,6 +331,15 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
         py::call_guard<py::gil_scoped_release>(),
         py::arg("from"),
         py::arg("timeout_milliseconds")=0);
+
+    py::class_<Producer, RunnableNode, PyProducer<>, std::shared_ptr<Producer>>(m, "Producer")
+        .def(py::init<int, const std::string &>(),
+            "Create a Producer node. Be sure to call start()!",
+            py::arg("timeout_milliseconds") = 1000,
+            py::arg("name") = "Producer")
+        .def_property_readonly("timeout_milliseconds", &Producer::get_timeout_milliseconds)
+        .def_property_readonly("latest_message", &Producer::get_latest_message)
+    ;
 
 
     // ---------- Metrics -----------
