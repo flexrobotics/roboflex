@@ -46,8 +46,18 @@ public:
 
 protected:
 
-    void child_thread_fn() override;
-    virtual MessagePtr produce(MessagePtr m) { return m; }
+    void child_thread_fn() override {
+        while (!this->stop_requested()) {
+            bool has_new_message = has_new_message_event.wait_once(timeout_milliseconds);
+            if (has_new_message) {
+                MessagePtr m = get_latest_message();
+                has_new_message_event.clear();
+                this->produce(m);
+            }
+        }
+    }
+    
+    virtual void produce(MessagePtr m) {}
 
     int timeout_milliseconds;
 

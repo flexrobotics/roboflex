@@ -110,6 +110,9 @@ public:
     std::string to_string() const override;
     void chop(size_t len, T value);
 
+    // hmm - sort of difficult
+    //XArrayRightBuf<T>& get_buffer() { return buf; }
+
 protected:
 
     std::string tensor_key_in;
@@ -144,6 +147,7 @@ void TensorRightBuffer<T>::receive(MessagePtr m)
     // signal it
     this->signal(msg);
 }
+
 
 template <typename T>
 std::string TensorRightBuffer<T>::to_string() const

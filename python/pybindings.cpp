@@ -41,8 +41,8 @@ class PyProducer: public PyRunnableNode<ProducerBase> {
 public:
     using PyRunnableNode<ProducerBase>::PyRunnableNode;
 
-    MessagePtr produce(MessagePtr m) override {
-        PYBIND11_OVERRIDE(MessagePtr, ProducerBase, produce, m);
+    void produce(MessagePtr m) override {
+        PYBIND11_OVERRIDE(void, ProducerBase, produce, m);
     }
 };
 
@@ -56,20 +56,27 @@ public:
 };
 
 // Really? A define? Never thought I'd see the day... 
-#define REGISTER_TENSOR_RIGHT_BUFFER(T, Name) \
-    py::class_<TensorRightBuffer<T>, Node, std::shared_ptr<TensorRightBuffer<T>>>(m, Name) \
+#define REGISTER_TENSOR_RIGHT_BUFFER(T, BufferName, NodeName) \
+    py::class_<XArrayRightBuf<T>, std::shared_ptr<XArrayRightBuf<T>>>(m, BufferName) \
+        .def(py::init<const std::vector<size_t>&>(), \
+             "Create a XArrayRightBuf node.", \
+             py::arg("shape")) \
+        .def("chop", &XArrayRightBuf<T>::chop); \
+    py::class_<TensorRightBuffer<T>, Node, std::shared_ptr<TensorRightBuffer<T>>>(m, NodeName) \
         .def(py::init<const std::vector<size_t>&, \
                       const std::string&, \
                       const std::string&, \
                       const std::string&, \
                       const std::string&>(), \
-             "Create a Name node.", \
+             "Create a TensorRightBuffer node.", \
              py::arg("shape"), \
              py::arg("tensor_key_in") = "t", \
              py::arg("tensor_key_out") = "buffer", \
              py::arg("count_key_out") = "count", \
-             py::arg("name") = Name) \
-        .def("chop", &TensorRightBuffer<T>::chop)
+             py::arg("name") = NodeName) \
+        .def("chop", &TensorRightBuffer<T>::chop) 
+        
+        //.def_property_readonly("buffer", &XArrayRightBuf<T>::chop)
 
 
 PYBIND11_MODULE(roboflex_core_python_ext, m) 
@@ -306,17 +313,17 @@ PYBIND11_MODULE(roboflex_core_python_ext, m)
         .def_property_readonly("last_message", &LastOne::get_last_message)
     ;
 
-    REGISTER_TENSOR_RIGHT_BUFFER(int8_t, "TensorRightBufferInt8");
-    REGISTER_TENSOR_RIGHT_BUFFER(int16_t, "TensorRightBufferInt16");
-    REGISTER_TENSOR_RIGHT_BUFFER(int32_t, "TensorRightBufferInt32");
-    REGISTER_TENSOR_RIGHT_BUFFER(int64_t, "TensorRightBufferInt64");
-    REGISTER_TENSOR_RIGHT_BUFFER(uint8_t, "TensorRightBufferUInt8");
-    REGISTER_TENSOR_RIGHT_BUFFER(uint16_t, "TensorRightBufferUInt16");
-    REGISTER_TENSOR_RIGHT_BUFFER(uint32_t, "TensorRightBufferUInt32");
-    REGISTER_TENSOR_RIGHT_BUFFER(uint64_t, "TensorRightBufferUInt64");
-    REGISTER_TENSOR_RIGHT_BUFFER(float, "TensorRightBufferFloat");
-    REGISTER_TENSOR_RIGHT_BUFFER(double, "TensorRightBufferDouble");
-    REGISTER_TENSOR_RIGHT_BUFFER(xtl::half_float, "TensorRightBufferFloat16");
+    REGISTER_TENSOR_RIGHT_BUFFER(int8_t, "XArrayRightBufInt8", "TensorRightBufferInt8");
+    REGISTER_TENSOR_RIGHT_BUFFER(int16_t, "XArrayRightBufInt16", "TensorRightBufferInt16");
+    REGISTER_TENSOR_RIGHT_BUFFER(int32_t, "XArrayRightBufInt32", "TensorRightBufferInt32");
+    REGISTER_TENSOR_RIGHT_BUFFER(int64_t, "XArrayRightBufInt64", "TensorRightBufferInt64");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint8_t, "XArrayRightBufUInt8", "TensorRightBufferUInt8");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint16_t, "XArrayRightBufUInt16", "TensorRightBufferUInt16");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint32_t, "XArrayRightBufUInt32", "TensorRightBufferUInt32");
+    REGISTER_TENSOR_RIGHT_BUFFER(uint64_t, "XArrayRightBufUInt64", "TensorRightBufferUInt64");
+    REGISTER_TENSOR_RIGHT_BUFFER(float, "XArrayRightBufFloat", "TensorRightBufferFloat");
+    REGISTER_TENSOR_RIGHT_BUFFER(double, "XArrayRightBufDouble", "TensorRightBufferDouble");
+    REGISTER_TENSOR_RIGHT_BUFFER(xtl::half_float, "XArrayRightBufFloat16", "TensorRightBufferFloat16");
 
 
     // ---------- FRP-style helper functions -----------
