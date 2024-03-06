@@ -139,7 +139,7 @@ void TensorRightBuffer<T>::receive(MessagePtr m)
     count += tensor_adapter.shape().back();
 
     // add the tensor to the buffer
-    auto buffer_tensor = buf.add(tensor_adapter);
+    typename XArrayRightBuf<T>::BufferTensorType buffer_tensor = buf.add(tensor_adapter);
 
     // create a new message with the buffer tensor
     auto msg = std::make_shared<TensorBufferMessage<T>>(buffer_tensor, count, tensor_key_out, count_key_out);
