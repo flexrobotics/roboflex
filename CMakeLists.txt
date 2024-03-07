@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.18)
 
 option(BUILD_ROBOFLEX_PYTHON_EXT "Build the Roboflex Python Extension" ON)
 
-project(roboflex_core VERSION 0.1.36)
+project(roboflex_core VERSION 0.1.37)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -47,7 +47,7 @@ set(XTENSOR_USE_XSIMD 1)
 FetchContent_MakeAvailable(xtensor)
 
 # Download and configure eigen
-FetchContent_Declare(eigen
+FetchContent_Declare(eigen_download
     # eigen 3.4.0 seems to have a problemo...
     # URL https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.zip
     # URL_HASH SHA256=1ccaabbfe870f60af3d6a519c53e09f3dcf630207321dffa553564a8e75c4fc8
@@ -57,7 +57,13 @@ FetchContent_Declare(eigen
     DOWNLOAD_NO_PROGRESS ON
     DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
-FetchContent_MakeAvailable(eigen)
+# FetchContent_MakeAvailable(eigen)
+FetchContent_GetProperties(eigen_download)
+if(NOT eigen_download_POPULATED)
+    FetchContent_Populate(eigen_download)
+endif()
+add_library(eigen INTERFACE IMPORTED)
+target_include_directories(eigen INTERFACE ${eigen_download_SOURCE_DIR})
 
 # Download and configure flatbuffers (although we only use flexbuffers)
 FetchContent_Declare(flatbuffers
@@ -147,7 +153,7 @@ target_link_libraries(roboflex_core PUBLIC
     xtl 
     #xtensor::optimize 
     #xtensor::use_xsimd
-    Eigen3::Eigen
+    eigen
     ${CMAKE_THREAD_LIBS_INIT}
 )
 
