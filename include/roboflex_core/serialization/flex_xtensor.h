@@ -6,9 +6,9 @@
 #include <vector>
 #include <string_view>
 #include <flatbuffers/flexbuffers.h>
-#include <xtensor/xtensor.hpp>
-#include <xtensor/xadapt.hpp>
-#include <xtensor/xarray.hpp>
+#include <xtensor/containers/xtensor.hpp>
+#include <xtensor/containers/xadapt.hpp>
+#include <xtensor/containers/xarray.hpp>
 #include "flex_tensor_format.h"
 
 namespace roboflex {

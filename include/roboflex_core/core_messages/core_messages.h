@@ -5,8 +5,8 @@
  * A little library of core messages that are used in many places.
  */
 
-#include <xtensor/xfunction.hpp>
-#include <xtensor/xio.hpp>
+#include <xtensor/core/xfunction.hpp>
+#include <xtensor/io/xio.hpp>
 #include <Eigen/Dense>
 #include "flatbuffers/flexbuffers.h"
 #include "roboflex_core/message.h"

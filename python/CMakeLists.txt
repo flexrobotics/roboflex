@@ -19,7 +19,7 @@ include(FetchContent)
 # download and build pybind11
 FetchContent_Declare(pybind11
     GIT_REPOSITORY https://github.com/pybind/pybind11.git
-    GIT_TAG        v2.11.1
+    GIT_TAG        v2.13.6
 )
 FetchContent_MakeAvailable(pybind11)
 # add_subdirectory(pybind11)
@@ -27,7 +27,7 @@ FetchContent_MakeAvailable(pybind11)
 # download and build xtensor_python
 FetchContent_Declare(xtensor-python
     GIT_REPOSITORY https://github.com/xtensor-stack/xtensor-python.git
-    GIT_TAG        0.26.1
+    GIT_TAG        0.29.0
 )
 FetchContent_MakeAvailable(xtensor-python)
 

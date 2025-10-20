@@ -1,6 +1,15 @@
-# BUILDING roboflex
+# CMAKE
 
-Roboflex currently uses bazel to build. We recommend installing 'bazelisk', which will install and continously update bazel.
+    mkdir build && cd build
+    cmake ..
+    make
+    make install
+
+# OBSOLETE BUILDING roboflex with Bazel
+
+I you really need us to bring bazel back, we will... otherwise, just use cmake.
+
+Roboflex no longer uses bazel to build. We recommend installing 'bazelisk', which will install and continously update bazel.
 
 If you have all system dependencies installed, you can build the world like this:
 

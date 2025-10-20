@@ -20,8 +20,8 @@ include(FetchContent)
 
 # Download and configure xtl
 FetchContent_Declare(xtl
-    URL https://github.com/xtensor-stack/xtl/archive/0.7.5.zip
-    URL_HASH SHA256=9e8e7dcc525500a4543226fe472a46a30636ee35274e4e30099071c5cbd4d05c
+    URL https://github.com/xtensor-stack/xtl/archive/0.8.1.zip
+    URL_HASH SHA256=de6ef01ab56541f7fff68c1871e396ce90b4c52a8e3b4e9052c2ab9423d8b65a
     DOWNLOAD_NO_PROGRESS ON
     DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
@@ -29,8 +29,8 @@ FetchContent_MakeAvailable(xtl)
 
 # Download and configure xsimd
 FetchContent_Declare(xsimd
-    URL https://github.com/xtensor-stack/xsimd/archive/11.0.0.zip
-    URL_HASH SHA256=5d362ec26c6f2332d1a2858891d770f5c0077133a81f885658f48c910a03fc90
+    URL https://github.com/xtensor-stack/xsimd/archive/13.2.0.zip
+    URL_HASH SHA256=3ff360dc82109b11b35389a5dfed8ac15155f356f39840dff2be2e230b935b8c
     DOWNLOAD_NO_PROGRESS ON
     DOWNLOAD_EXTRACT_TIMESTAMP 1
 )
@@ -38,8 +38,8 @@ FetchContent_MakeAvailable(xsimd)
 
 # Download and configure xtensor
 FetchContent_Declare(xtensor
-    URL https://github.com/xtensor-stack/xtensor/archive/0.24.6.zip
-    URL_HASH SHA256=8cd062cfefce0f5bff8961e0c42b3636d5e7eddbe33e5c3167e3fb6d8380f50e
+    URL https://github.com/xtensor-stack/xtensor/archive/0.27.1.zip
+    URL_HASH SHA256=7db3ac10534abaeac7a313211ec94a4ee7652d76cf32f2d70c988a3818ffffea
     DOWNLOAD_NO_PROGRESS ON
     DOWNLOAD_EXTRACT_TIMESTAMP 1
 )

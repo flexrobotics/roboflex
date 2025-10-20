@@ -4,7 +4,7 @@
 #include "roboflex_core/node.h"
 #include "roboflex_core/serialization/flex_xtensor.h"
 #include "roboflex_core/core_messages/core_messages.h"
-#include <xtensor/xview.hpp>
+#include <xtensor/views/xview.hpp>
 
 namespace roboflex {
 using namespace core;
