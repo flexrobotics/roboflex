@@ -126,3 +126,7 @@ A roboflex Node represents a basic unit of computation. Nodes can connect to oth
 ## Examples
 
 see [examples/README.md](examples/README.md)
+
+
+## 🔗 Related
+- [RoboFlex Meta Manifest](https://github.com/flexrobotics/roboflex-meta) — ecosystem overview and repo catalog
